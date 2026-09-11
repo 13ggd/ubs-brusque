@@ -53,7 +53,7 @@ const CONFIG = {
        precisa de um caminho de volta para achar outra unidade. NÃO é
        redirecionamento automático — é só um link visível. Deixe vazio ('')
        para não mostrar nada. */
-    paginaUnidades: 'https://www.smsbrusque.sc.gov.br/unidade',
+    paginaUnidades: 'https://ubs-brusque-painel.vercel.app',
 
     /* Foto do prédio (fachada). Deixe vazio ('') para não mostrar nada.
        Mesma regra das fotos da equipe: coloque o arquivo na pasta "fotos"
