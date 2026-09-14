@@ -16,8 +16,18 @@ The repo root is **not** a single UBS — it's a monorepo publishing several UBS
 deploy. Each UBS is a self-contained folder (currently only `ubs-paqueta/`) holding its own copy of every
 file described below (`index.html`, `app.js`, `config.js`, `estilo.css`, `sw.js`, `cartaz.html`, `qr.js`,
 plus that UBS's own `guia-da-planilha.md` and, for `ubs-paqueta/` specifically, its `pesquisa/` research
-material). The root `index.html` is just a static list of links to each UBS folder — no shared JS, no
-routing, nothing dynamic.
+material).
+
+The root `index.html` and `admin/index.html` are **not** template/app files — they're the citywide
+**painel** (public list + internal admin page) for all 27 UBS of Brusque, brought in from the sibling
+repository [`13ggd/ubs-brusque-painel`](https://github.com/13ggd/ubs-brusque-painel) (still published
+separately for now; retiring/redirecting it is a manual follow-up, not automatic). Each is a static,
+self-contained HTML file with an inline `UNIDADES` array (name, site link, and — in `admin/` only — the
+Google Sheet link) rendered client-side; no shared JS with the per-UBS folders, no routing, nothing
+dynamic. A UBS not yet migrated into this monorepo keeps an absolute link to its own separate deploy in
+both arrays; only `ubs-paqueta/` (the one folder migrated so far) uses a relative link (`ubs-paqueta/` in
+`index.html`, `../ubs-paqueta/` in `admin/index.html`, since `admin/` is one level deeper). When another
+UBS folder is added here, update its entry in both arrays the same way — see `README.md`.
 
 This shape exists so all UBS can be published under **one shared domain/subdomain** (e.g.
 `ubs.smsbrusque.sc.gov.br/ubs-paqueta/`, `/ubs-<outra>/`) with a single one-time DNS request to the

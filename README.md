@@ -10,10 +10,27 @@ sua própria planilha do Google e um arquivo de configuração — sem escrever 
 ## Estrutura do repositório
 
 Este repositório publica **várias UBS ao mesmo tempo**, uma pasta por unidade — hoje só
-[`ubs-paqueta/`](ubs-paqueta/), a UBS Paquetá. O `index.html` da raiz é só uma lista de links para as
-unidades publicadas; cada unidade é autocontida dentro da sua própria pasta (HTML, CSS, JS, service
-worker, cartaz, tudo). Isso permite publicar todas sob um único domínio/deploy — ver "Servindo no
-domínio da Secretaria de Saúde" abaixo para o porquê disso importar.
+[`ubs-paqueta/`](ubs-paqueta/), a UBS Paquetá. Cada unidade é autocontida dentro da sua própria pasta
+(HTML, CSS, JS, service worker, cartaz, tudo). Isso permite publicar todas sob um único domínio/deploy —
+ver "Servindo no domínio da Secretaria de Saúde" abaixo para o porquê disso importar.
+
+O `index.html` da raiz **não** é uma lista simples desta UBS — é o **painel de todas as 27 UBS de
+Brusque** (busca, painel de acessibilidade, avisos de urgência/fonte dos dados), trazido do repositório
+irmão [`13ggd/ubs-brusque-painel`](https://github.com/13ggd/ubs-brusque-painel), que segue publicado
+separadamente por enquanto (ver nota no fim desta seção). Cada UBS que **ainda não** faz parte deste
+monorepo continua listada com um link absoluto para o seu próprio deploy (ex:
+`https://ubs-centro.vercel.app`); só a UBS Paquetá, por já estar aqui dentro, tem um link relativo
+(`ubs-paqueta/`). Há também uma pasta [`admin/`](admin/) — página interna (`noindex`, sem link visível no
+painel público) com o site **e** a planilha do Google de cada uma das 27 unidades, para quem administra
+o projeto.
+
+Ao migrar uma UBS nova para dentro deste monorepo (ver "Replicando para outra UBS" abaixo), troque o
+link dela, nesses dois arquivos (`index.html` e `admin/index.html` da raiz), de absoluto para o caminho
+relativo da pasta nova — as instruções de replicação já cobrem esse passo.
+
+> **Nota:** o repositório separado `13ggd/ubs-brusque-painel` continua no ar por enquanto. Desativá-lo
+> ou redirecioná-lo para este monorepo é um passo manual, a ser feito só depois de confirmar que esta
+> versão integrada está publicada e correta — não é automático.
 
 ## Como funciona (visão geral)
 
@@ -64,8 +81,11 @@ publicação**, sem repositório nem deploy novo.
    - Seções 3 a 6 — atualize os dados de reserva (`setoresReserva`, `avisosReserva`, `equipeReserva`,
      `areasEquipeReserva`, `notasRecorrentesReserva`) com informações reais da nova unidade, para que o
      site nunca fique vazio caso a planilha falhe.
-4. **Acrescente um link para a pasta nova** no [`index.html`](index.html) da raiz do repositório (a
-   lista de unidades) — é só copiar o `<li>` de uma unidade existente.
+4. **Atualize a entrada dessa UBS** no array `UNIDADES`, tanto no [`index.html`](index.html) quanto no
+   [`admin/index.html`](admin/index.html) da raiz do repositório: se ela já estava listada (com link
+   absoluto para o deploy separado), troque o link pelo caminho relativo da pasta nova (ex:
+   `ubs-<nome>/`, e `../ubs-<nome>/` no `admin/index.html`, que está uma pasta abaixo). Se for uma UBS
+   nova que nunca teve site, acrescente a linha no array.
 5. **Publique** (`git commit` + `git push` — a Vercel republica o repositório inteiro sozinha).
 6. **Volte no `config.js` da pasta nova e preencha `unidade.site`** com o endereço publicado, incluindo a
    subpasta (ex: `https://ubspaqueta.vercel.app/ubs-<nova-unidade>`, sem barra no final). É desse campo

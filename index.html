@@ -2,94 +2,626 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Unidades de Saúde</title>
-<meta name="description" content="Lista das unidades de saúde publicadas neste endereço — horários, avisos e telefones de cada uma.">
-<meta name="theme-color" content="#02301A">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UBS Brusque — Painel</title>
+<meta name="description" content="Lista com o site de cada Unidade Básica de Saúde de Brusque.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%A5%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --verde: #02301A;
-    --fundo: #F6F5F0;
-    --texto: #1a1a1a;
-    --borda: #d8d5c8;
+    --esc:1;                    /* multiplicador do tamanho da letra — painel de acessibilidade */
+    --bg: #f6f4ef;
+    --bg-raised: #ffffff;
+    --ink: #1b231f;
+    --ink-dim: #55625a;
+    --line: #dcd6c9;
+    --accent: #0f6e63;
+    --accent-ink: #ffffff;
+    --accent-soft: #e3efec;
+    --link: #0d5c8f;
+    --sheet: #1a7a3e;
+    --sheet-soft: #e5f3e8;
+    --focus: #b4832f;
+    --shadow: 0 1px 2px rgba(27,35,31,.06), 0 8px 24px -12px rgba(27,35,31,.18);
+    --urgente: #b3120f;
+    --urgente-claro: #fdecea;
+    --aviso-cor: #8a4e00;
+    --aviso-claro: #fdf2e0;
   }
-  *{ box-sizing: border-box; }
+  html{ font-size:calc(100% * var(--esc)); }
+
+  /* Alto contraste — mesma lógica dos sites das UBS: troca só as variáveis
+     de cor, ativado/desativado pelo painel de acessibilidade abaixo. */
+  body.alto-contraste{
+    --bg:#000000; --bg-raised:#0a0a0a;
+    --ink:#ffffff; --ink-dim:#e0e0e0; --line:#707070;
+    --accent:#00e676; --accent-ink:#000000; --accent-soft:#052012;
+    --link:#7fd396; --sheet:#00e676; --sheet-soft:#052012;
+    --focus:#ffd54a;
+    --shadow:0 0 0 2px #fff;
+    --urgente:#ff5252; --urgente-claro:#2b0000;
+    --aviso-cor:#ffa726; --aviso-claro:#2b1b00;
+  }
+  body.alto-contraste .lista,
+  body.alto-contraste .barra{ border-width:2px; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #0e1512;
+      --bg-raised: #151f1a;
+      --ink: #e9efe9;
+      --ink-dim: #9fb0a6;
+      --line: #263630;
+      --accent: #55c9ae;
+      --accent-ink: #08211b;
+      --accent-soft: #17332b;
+      --link: #7cc0f0;
+      --sheet: #7fd396;
+      --sheet-soft: #14301f;
+      --focus: #e0b258;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      --urgente: #ff8a80;
+      --urgente-claro: #2b0000;
+      --aviso-cor: #ffb74d;
+      --aviso-claro: #2b1b00;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #0e1512;
+    --bg-raised: #151f1a;
+    --ink: #e9efe9;
+    --ink-dim: #9fb0a6;
+    --line: #263630;
+    --accent: #55c9ae;
+    --accent-ink: #08211b;
+    --accent-soft: #17332b;
+    --link: #7cc0f0;
+    --sheet: #7fd396;
+    --sheet-soft: #14301f;
+    --focus: #e0b258;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    --urgente: #ff8a80;
+    --urgente-claro: #2b0000;
+    --aviso-cor: #ffb74d;
+    --aviso-claro: #2b1b00;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
   body{
-    margin: 0;
-    background: var(--fundo);
-    color: var(--texto);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.5;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
   }
+  a{color:var(--link);}
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:2px solid var(--focus);
+    outline-offset:2px;
+  }
+
   .wrap{
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 2.5rem 1.25rem 3rem;
+    max-width:960px;
+    margin:0 auto;
+    padding:2.5rem 1.25rem 4rem;
   }
-  header{
-    background: var(--verde);
-    color: #fff;
-    padding: 2rem 1.25rem;
-    text-align: center;
+
+  header.topo{
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+    margin-bottom:1.75rem;
   }
-  header h1{
-    margin: 0;
-    font-size: 1.4rem;
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.78rem;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
   }
-  header p{
-    margin: 0.4rem 0 0;
-    opacity: 0.85;
-    font-size: 0.95rem;
+  h1{
+    margin:0;
+    font-size:clamp(1.7rem, 1.3rem + 1.6vw, 2.35rem);
+    font-weight:700;
+    letter-spacing:-.01em;
+    text-wrap:balance;
   }
-  ul{
-    list-style: none;
-    margin: 1.5rem 0 0;
-    padding: 0;
+  .sub{
+    margin:0;
+    color:var(--ink-dim);
+    font-size:1rem;
+    max-width:62ch;
   }
-  li + li{
-    margin-top: 0.75rem;
+
+  .barra{
+    display:flex;
+    align-items:center;
+    gap:.75rem;
+    flex-wrap:wrap;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.6rem .75rem;
+    margin-bottom:1.25rem;
+    box-shadow:var(--shadow);
   }
-  a.unidade{
-    display: block;
-    padding: 1rem 1.1rem;
-    background: #fff;
-    border: 1px solid var(--borda);
-    border-radius: 10px;
-    text-decoration: none;
-    color: var(--texto);
-    font-weight: 600;
+  .busca{
+    flex:1 1 220px;
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    color:var(--ink-dim);
   }
-  a.unidade:hover, a.unidade:focus{
-    border-color: var(--verde);
+  .busca svg{flex:none;width:18px;height:18px;}
+  .busca input{
+    flex:1;
+    border:none;
+    background:transparent;
+    color:var(--ink);
+    font:inherit;
+    font-size:.98rem;
+    padding:.35rem 0;
   }
-  a.unidade span{
-    display: block;
-    font-weight: 400;
-    font-size: 0.85rem;
-    color: #555;
-    margin-top: 0.2rem;
+  .busca input::placeholder{color:var(--ink-dim);}
+  .contagem{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.85rem;
+    color:var(--ink-dim);
+    font-variant-numeric: tabular-nums;
+    white-space:nowrap;
   }
+  .contagem b{color:var(--ink);}
+
+  .lista{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .linha{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    padding:1.05rem 1.1rem;
+    border-bottom:1px solid var(--line);
+    text-decoration:none;
+    color:inherit;
+    min-height:56px;
+    transition:background-color .12s ease;
+  }
+  .linha:last-child{border-bottom:none;}
+  .linha:hover, .linha:focus-visible{
+    background:var(--accent-soft);
+  }
+  .nome{
+    font-weight:600;
+    font-size:1.02rem;
+  }
+  .ir{
+    display:inline-flex;
+    align-items:center;
+    gap:.4rem;
+    flex:none;
+    color:var(--accent);
+    font-size:.9rem;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .ir svg{width:17px;height:17px;flex:none;}
+
+  .vazio{
+    padding:2.5rem 1rem;
+    text-align:center;
+    color:var(--ink-dim);
+    display:none;
+  }
+  .vazio.mostrar{display:block;}
+
+  footer{
+    margin-top:2.5rem;
+    padding-top:1.5rem;
+    border-top:1px solid var(--line);
+  }
+  .rodape-tit{
+    font-size:1.3rem;
+    font-weight:700;
+    margin-bottom:1rem;
+    letter-spacing:-.01em;
+  }
+  .rodape-cards{
+    display:flex;
+    flex-direction:column;
+    gap:.75rem;
+    margin-bottom:1.5rem;
+  }
+  .aviso-painel{
+    border-radius:8px;
+    border-left:6px solid var(--line);
+    background:var(--bg-raised);
+    padding:.85rem 1rem;
+  }
+  .aviso-painel.urgente{ background:var(--urgente-claro); border-left-color:var(--urgente); }
+  .aviso-painel.fonte{ background:var(--sheet-soft); border-left-color:var(--sheet); }
+  .aviso-painel.pendente{ background:var(--aviso-claro); border-left-color:var(--aviso-cor); }
+  .aviso-tarja{
+    display:inline-block;
+    font-size:.72rem;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:#fff;
+    border-radius:5px;
+    padding:.15rem .5rem;
+    margin-bottom:.4rem;
+  }
+  .aviso-painel.urgente .aviso-tarja{ background:var(--urgente); }
+  .aviso-painel.fonte .aviso-tarja{ background:var(--sheet); }
+  .aviso-painel.pendente .aviso-tarja{ background:var(--aviso-cor); }
+  .aviso-titulo{
+    font-size:1rem;
+    font-weight:700;
+    margin:0 0 .3rem;
+  }
+  .aviso-texto{
+    font-size:.92rem;
+    line-height:1.5;
+    color:var(--ink);
+    margin:0;
+  }
+  .aviso-texto a{ font-weight:700; }
+  .aviso-texto .tel-grande{
+    font-size:1.2rem;
+    font-weight:700;
+    color:var(--urgente);
+    text-decoration:none;
+  }
+  .rodape-base{
+    display:flex; flex-wrap:wrap; gap:.4rem 1rem; justify-content:space-between;
+    font-size:.8rem; color:var(--ink-dim);
+  }
+  .rodape-base a{color:inherit;}
+
+  /* ------------------------------------------------- ACESSIBILIDADE (FAB) -- */
+  .a11y-fab{
+    position:fixed;right:14px;bottom:14px;z-index:50;
+    width:56px;height:56px;border-radius:50%;
+    background:var(--accent);color:var(--accent-ink);border:3px solid var(--bg-raised);
+    box-shadow:var(--shadow);
+    font-family:"IBM Plex Sans",sans-serif;font-weight:700;font-size:18px;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .a11y-fundo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:60;}
+  .a11y-painel{
+    position:fixed;left:0;right:0;bottom:0;z-index:70;
+    background:var(--bg-raised);color:var(--ink);
+    border-radius:16px 16px 0 0;
+    padding:1rem 1.1rem calc(1.25rem + env(safe-area-inset-bottom));
+    max-width:960px;margin:0 auto;max-height:82vh;overflow-y:auto;
+    box-shadow:0 -6px 24px rgba(0,0,0,.25);
+    border-top:1px solid var(--line);
+  }
+  .a11y-topo{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;}
+  .a11y-topo h2{font-size:1.1rem;font-weight:700;}
+  .a11y-fechar{
+    width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+    background:var(--bg-raised);font-size:1rem;font-weight:700;cursor:pointer;color:var(--ink);
+    flex:0 0 auto;
+  }
+  .a11y-grupo{margin-bottom:1rem;}
+  .a11y-grupo:last-child{margin-bottom:0;}
+  .a11y-grupo-tit{font-size:.85rem;font-weight:700;color:var(--ink-dim);margin-bottom:.5rem;}
+  .a11y-letra-btns{display:flex;gap:.5rem;}
+  .a11y-letra-btns button, .idioma-bt{
+    font-family:inherit;font-weight:700;cursor:pointer;flex:1;
+    background:var(--bg);border:1px solid var(--line);
+    color:var(--ink);border-radius:8px;min-height:48px;
+    display:flex;align-items:center;justify-content:center;text-decoration:none;
+  }
+  .a11y-letra-btns button.a1{font-size:.95rem;}
+  .a11y-letra-btns button.a2{font-size:1.15rem;}
+  .a11y-letra-btns button.a3{font-size:1.4rem;}
+  .a11y-letra-btns button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  .idioma-bt:hover{background:var(--accent-soft);}
+  .a11y-idioma-ajuda{font-size:.78rem;color:var(--ink-dim);margin-bottom:.5rem;line-height:1.4;}
+  .a11y-toggle{
+    width:100%;text-align:left;display:flex;align-items:center;gap:.6rem;
+    background:var(--bg);border:1px solid var(--line);border-radius:10px;
+    padding:.7rem .85rem;min-height:48px;font-family:inherit;
+    font-size:.95rem;font-weight:600;color:var(--ink);cursor:pointer;
+  }
+  .a11y-toggle[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+  .a11y-toggle .ic{font-size:1.1rem;flex:0 0 auto;}
 </style>
 </head>
 <body>
-
-<header>
-  <h1>Unidades de Saúde</h1>
-  <p>Escolha a unidade para ver horários, avisos e telefones.</p>
-</header>
-
 <div class="wrap">
-  <!-- Cada UBS publicada neste domínio ganha uma linha aqui — é só copiar
-       o <li> abaixo ao replicar a pasta para uma nova unidade. -->
-  <ul>
-    <li>
-      <a class="unidade" href="ubs-paqueta/">
-        UBS Paquetá
-        <span>Bairro Paquetá — Brusque/SC</span>
-      </a>
-    </li>
-  </ul>
+
+  <header class="topo">
+    <span class="eyebrow">Secretaria de Saúde · Brusque/SC</span>
+    <h1>UBS de Brusque</h1>
+    <p class="sub">Encontre o site de cada Unidade Básica de Saúde de Brusque.</p>
+  </header>
+
+  <div class="barra">
+    <label class="busca">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="busca" type="search" placeholder="Buscar unidade…" autocomplete="off">
+    </label>
+    <span class="contagem"><b id="qtd">27</b> de 27 unidades</span>
+  </div>
+
+  <div class="lista" id="lista"></div>
+  <p class="vazio" id="vazio">Nenhuma unidade encontrada com esse nome.</p>
+
+  <footer>
+    <p class="rodape-tit">Informações importantes</p>
+    <div class="rodape-cards">
+      <div class="aviso-painel urgente">
+        <span class="aviso-tarja"><span aria-hidden="true">🚑</span> Urgência</span>
+        <p class="aviso-titulo">Precisa de atendimento agora?</p>
+        <p class="aviso-texto">Ligue <a class="tel-grande" href="tel:192">192</a> — é o SAMU, atende todos os dias, a qualquer hora.</p>
+      </div>
+      <div class="aviso-painel fonte">
+        <span class="aviso-tarja"><span aria-hidden="true">📍</span> Fonte dos dados</span>
+        <p class="aviso-titulo">Endereços e telefones</p>
+        <p class="aviso-texto">Confirmados no <a href="https://www.smsbrusque.sc.gov.br/unidade" target="_blank" rel="noopener">site oficial da Secretaria de Saúde de Brusque</a>.</p>
+      </div>
+      <div class="aviso-painel pendente">
+        <span class="aviso-tarja"><span aria-hidden="true">⚠️</span> Ainda em configuração</span>
+        <p class="aviso-titulo">Horário de atendimento e equipe</p>
+        <p class="aviso-texto">Ainda não foram confirmados em cada unidade — ligue antes de ir.</p>
+      </div>
+    </div>
+    <div class="rodape-base">
+      <span>27 unidades de saúde de Brusque.</span>
+      <span><a href="https://github.com/13ggd" target="_blank" rel="noopener">github.com/13ggd</a></span>
+    </div>
+  </footer>
+
+  <button type="button" id="a11y-fab" class="a11y-fab"
+          aria-haspopup="dialog" aria-expanded="false" aria-controls="a11y-painel"
+          aria-label="Abrir opções de acessibilidade">
+    <span aria-hidden="true">Aa</span>
+  </button>
+
+  <div id="a11y-fundo" class="a11y-fundo" hidden></div>
+
+  <div id="a11y-painel" class="a11y-painel" role="dialog" aria-modal="true"
+       aria-labelledby="a11y-titulo" hidden>
+    <div class="a11y-topo">
+      <h2 id="a11y-titulo">Acessibilidade</h2>
+      <button type="button" id="a11y-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
+    </div>
+
+    <div class="a11y-grupo">
+      <p class="a11y-grupo-tit">Tamanho da letra</p>
+      <div class="a11y-letra-btns" role="group" aria-label="Escolher o tamanho da letra">
+        <button type="button" class="a1" data-esc="1"    aria-pressed="true"  aria-label="Letra normal">A</button>
+        <button type="button" class="a2" data-esc="1.22" aria-pressed="false" aria-label="Letra grande">A</button>
+        <button type="button" class="a3" data-esc="1.45" aria-pressed="false" aria-label="Letra muito grande">A</button>
+      </div>
+    </div>
+
+    <div class="a11y-grupo">
+      <p class="a11y-grupo-tit">Contraste</p>
+      <button type="button" id="a11y-contraste" class="a11y-toggle" aria-pressed="false">
+        <span class="ic" aria-hidden="true">◐</span> Ativar alto contraste
+      </button>
+    </div>
+
+    <div class="a11y-grupo">
+      <p class="a11y-grupo-tit">Ouvir</p>
+      <button type="button" id="a11y-ouvir" class="a11y-toggle" aria-pressed="false">
+        <span class="ic" aria-hidden="true">🔊</span> Ouvir esta página
+      </button>
+    </div>
+
+    <div class="a11y-grupo">
+      <p class="a11y-grupo-tit">Idioma / Language</p>
+      <p class="a11y-idioma-ajuda">Abre a página traduzida em outra aba, pelo tradutor do Google.</p>
+      <div class="a11y-letra-btns">
+        <a class="idioma-bt" id="idioma-en" href="#" target="_blank" rel="noopener">English</a>
+        <a class="idioma-bt" id="idioma-es" href="#" target="_blank" rel="noopener">Español</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIBRAS (VLibras — widget oficial do Governo Federal) -->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script async src="https://vlibras.gov.br/app/vlibras-plugin.js"
+    onload="if(window.VLibras){ new window.VLibras.Widget('https://vlibras.gov.br/app'); }"></script>
+
 </div>
 
+<script>
+var UNIDADES = [
+  ["UBS Águas Claras","https://ubs-aguas-claras.vercel.app"],
+  ["UBS Azambuja","https://ubs-azambuja.vercel.app"],
+  ["UBS Bateas","https://ubs-bateas.vercel.app"],
+  ["UBS Cedrinho","https://ubs-cedrinho.vercel.app"],
+  ["UBS Centro","https://ubs-centro.vercel.app"],
+  ["UBS Dom Joaquim","https://ubs-dom-joaquim.vercel.app"],
+  ["UBS Emma II","https://ubs-emma-ii.vercel.app"],
+  ["UBS Guarani","https://ubs-guarani.vercel.app"],
+  ["UBS Jardim Maluche","https://ubs-jardim-maluche.vercel.app"],
+  ["UBS Limeira","https://ubs-limeira.vercel.app"],
+  ["UBS Limeira Alta","https://ubs-limeira-alta.vercel.app"],
+  ["UBS Nova Brasília","https://ubs-nova-brasilia.vercel.app"],
+  ["UBS Paquetá","ubs-paqueta/"],
+  ["UBS Planalto","https://ubs-planalto.vercel.app"],
+  ["UBS Ponta Russa","https://ubs-ponta-russa.vercel.app"],
+  ["UBS Poço Fundo","https://ubs-poco-fundo.vercel.app"],
+  ["UBS Rio Branco","https://ubs-rio-branco.vercel.app"],
+  ["UBS Rua Nova Trento","https://ubs-rua-nova-trento.vercel.app"],
+  ["UBS Santa Luzia","https://ubs-santa-luzia.vercel.app"],
+  ["UBS Santa Rita","https://ubs-santa-rita.vercel.app"],
+  ["UBS Santa Terezinha","https://ubs-santa-terezinha.vercel.app"],
+  ["UBS São João","https://ubs-sao-joao.vercel.app"],
+  ["UBS São Luiz","https://ubs-sao-luiz.vercel.app"],
+  ["UBS São Pedro","https://ubs-sao-pedro.vercel.app"],
+  ["UBS Steffen","https://ubs-steffen.vercel.app"],
+  ["UBS Volta Grande","https://ubs-volta-grande.vercel.app"],
+  ["UBS Zantão","https://ubs-zantao.vercel.app"]
+];
+
+function limpo(s){
+  var d=document.createElement("div");
+  d.textContent=s;
+  return d.innerHTML;
+}
+
+function iconeExterno(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';
+}
+
+function montar(lista){
+  var host = document.getElementById("lista");
+  var vazio = document.getElementById("vazio");
+  document.getElementById("qtd").textContent = lista.length;
+
+  if(!lista.length){
+    host.innerHTML = "";
+    vazio.classList.add("mostrar");
+    return;
+  }
+  vazio.classList.remove("mostrar");
+
+  host.innerHTML = lista.map(function(u){
+    return '<a class="linha" href="' + u[1] + '" target="_blank" rel="noopener">' +
+      '<span class="nome">' + limpo(u[0]) + '</span>' +
+      '<span class="ir">Abrir site ' + iconeExterno() + '</span>' +
+    '</a>';
+  }).join("");
+}
+
+function chave(s){
+  return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+}
+
+var campo = document.getElementById("busca");
+campo.addEventListener("input", function(){
+  var termo = chave(campo.value.trim());
+  if(!termo){ montar(UNIDADES); return; }
+  montar(UNIDADES.filter(function(u){ return chave(u[0]).indexOf(termo) !== -1; }));
+});
+
+montar(UNIDADES);
+
+/* =========================== ACESSIBILIDADE ============================
+   Mesma lógica dos sites das UBS: tamanho da letra, alto contraste,
+   ouvir a página (SpeechSynthesis) e tradução, tudo guardado no aparelho. */
+function guardar(chave, valor){ try{ localStorage.setItem(chave, valor); }catch(e){} }
+function lerGuardado(chave){ try{ return localStorage.getItem(chave); }catch(e){ return null; } }
+
+/* ---- tamanho da letra ---- */
+var botoesLetra = document.querySelectorAll(".a11y-letra-btns button");
+function aplicarLetra(botao, salvar){
+  Array.prototype.forEach.call(botoesLetra, function(o){ o.setAttribute("aria-pressed","false"); });
+  botao.setAttribute("aria-pressed","true");
+  document.documentElement.style.setProperty("--esc", botao.dataset.esc);
+  if(salvar) guardar("painel-letra", botao.dataset.esc);
+}
+Array.prototype.forEach.call(botoesLetra, function(b){
+  b.addEventListener("click", function(){ aplicarLetra(b, true); });
+});
+var letraSalva = lerGuardado("painel-letra");
+if(letraSalva){
+  var alvoLetra = Array.prototype.find.call(botoesLetra, function(b){ return b.dataset.esc === letraSalva; });
+  if(alvoLetra) aplicarLetra(alvoLetra, false);
+}
+
+/* ---- alto contraste ---- */
+var btContraste = document.getElementById("a11y-contraste");
+function aplicarContraste(ligado, salvar){
+  document.body.classList.toggle("alto-contraste", ligado);
+  btContraste.setAttribute("aria-pressed", ligado ? "true" : "false");
+  btContraste.lastChild.textContent = ligado ? " Desativar alto contraste" : " Ativar alto contraste";
+  if(salvar) guardar("painel-contraste", ligado ? "1" : "0");
+}
+btContraste.addEventListener("click", function(){
+  aplicarContraste(!document.body.classList.contains("alto-contraste"), true);
+});
+if(lerGuardado("painel-contraste") === "1") aplicarContraste(true, false);
+
+/* ---- ouvir a página ---- */
+var falando = false;
+function textoParaOuvir(){
+  var partes = ["Painel das UBS de Brusque.", UNIDADES.length + " unidades listadas."];
+  UNIDADES.forEach(function(u){ partes.push(u[0] + "."); });
+  partes.push("Em caso de emergência, ligue 192, o SAMU.");
+  return partes.join(" ");
+}
+var btOuvir = document.getElementById("a11y-ouvir");
+btOuvir.addEventListener("click", function(){
+  if(!("speechSynthesis" in window)){
+    btOuvir.disabled = true;
+    btOuvir.querySelector(".ic").nextSibling.textContent = " Leitura não é possível neste navegador";
+    return;
+  }
+  if(falando){
+    window.speechSynthesis.cancel();
+    falando = false;
+    btOuvir.setAttribute("aria-pressed","false");
+    return;
+  }
+  var fala = new SpeechSynthesisUtterance(textoParaOuvir());
+  fala.lang = "pt-BR";
+  fala.rate = 0.95;
+  var vozes = window.speechSynthesis.getVoices();
+  var voz = vozes.find(function(v){ return v.lang === "pt-BR"; }) ||
+            vozes.find(function(v){ return v.lang && v.lang.indexOf("pt") === 0; });
+  if(voz) fala.voice = voz;
+  fala.onend = function(){ falando = false; btOuvir.setAttribute("aria-pressed","false"); };
+  fala.onerror = function(){ falando = false; btOuvir.setAttribute("aria-pressed","false"); };
+  falando = true;
+  btOuvir.setAttribute("aria-pressed","true");
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(fala);
+});
+
+/* ---- idioma (tradutor do Google, aba nova) ---- */
+function linkTraducao(idiomaDestino){
+  return "https://translate.google.com/translate?sl=pt&tl=" + idiomaDestino + "&u=" + encodeURIComponent(location.href);
+}
+document.getElementById("idioma-en").href = linkTraducao("en");
+document.getElementById("idioma-es").href = linkTraducao("es");
+
+/* ---- abrir/fechar o painel flutuante ---- */
+(function(){
+  var botao  = document.getElementById("a11y-fab");
+  var painel = document.getElementById("a11y-painel");
+  var fundo  = document.getElementById("a11y-fundo");
+  var fechar = document.getElementById("a11y-fechar");
+
+  function aoTeclar(e){ if(e.key === "Escape") fecharPainel(); }
+  function abrirPainel(){
+    painel.hidden = false;
+    fundo.hidden = false;
+    botao.setAttribute("aria-expanded","true");
+    fechar.focus();
+    document.addEventListener("keydown", aoTeclar);
+  }
+  function fecharPainel(){
+    if(painel.hidden) return;
+    painel.hidden = true;
+    fundo.hidden = true;
+    botao.setAttribute("aria-expanded","false");
+    document.removeEventListener("keydown", aoTeclar);
+  }
+  botao.addEventListener("click", abrirPainel);
+  fechar.addEventListener("click", function(){ fecharPainel(); botao.focus(); });
+  fundo.addEventListener("click", function(){ fecharPainel(); botao.focus(); });
+})();
+</script>
 </body>
 </html>
