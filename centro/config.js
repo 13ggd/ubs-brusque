@@ -24,7 +24,7 @@ const CONFIG = {
     orgao:    'Prefeitura de Brusque · Secretaria de Saúde',
     nome:     'UBS Centro',
     subtitulo:'Unidade Básica de Saúde',
-    endereco: 'R. Pref. Germano Schaeffer, 66',
+    endereco: 'Av. Lauro Muller, 124',
     bairro:   'Bairro Centro — Brusque/SC',
     telefone: '(47) 20170-521',
     telefoneLink: '+554720170521',
@@ -35,7 +35,7 @@ const CONFIG = {
     secretaria:     '(47) 3255-6800',
     secretariaLink: '+554732556800',
     /* Link "Abrir o mapa no celular" — só depois de confirmar o endereço. */
-    mapa: 'UBS Centro, R. Pref. Germano Schaeffer, 66, Brusque - SC',
+    mapa: 'UBS Centro, Av. Lauro Muller, 124, Brusque - SC',
     instagram: '',
 
     /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/centro').
