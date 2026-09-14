@@ -2,332 +2,626 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>UBS Paquetá</title>
-<meta name="description" content="Horários, avisos e telefones da Unidade Básica de Saúde do bairro Paquetá, em Brusque, Santa Catarina.">
-<meta name="theme-color" content="#02301A">
-
-<!-- ===================== COMPARTILHAMENTO (Open Graph) ====================
-     A imagem + título que aparecem quando alguém cola o link no WhatsApp,
-     Facebook, Telegram etc. Precisa ficar aqui no HTML fixo: o robô dessas
-     redes NÃO lê o config.js (não roda JavaScript).
-
-     >>> TROQUE o endereço "https://ubspaqueta.vercel.app" nas linhas
-         og:url e og:image (e nas twitter:image) pelo endereço REAL do
-         site publicado — o mesmo valor de CONFIG.unidade.site no
-         config.js, só que escrito por extenso e com https:// na frente.
-         Se ficar errado, o WhatsApp mostra o link sem imagem.
-
-     A imagem "fotos/compartilhamento.jpg" precisa ter no máximo ~300 KB
-     (senão o WhatsApp não mostra) e o tamanho declarado abaixo (800x524).
-     ====================================================================== -->
-<meta property="og:type" content="website">
-<meta property="og:locale" content="pt_BR">
-<meta property="og:site_name" content="UBS Paquetá">
-<meta property="og:title" content="UBS Paquetá — está aberta agora?">
-<meta property="og:description" content="Horários de cada setor, avisos do dia, equipe e telefones de urgência da Unidade Básica de Saúde do bairro Paquetá, em Brusque/SC.">
-<meta property="og:url" content="https://ubspaqueta.vercel.app/">
-<meta property="og:image" content="https://ubspaqueta.vercel.app/fotos/compartilhamento.jpg">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:width" content="800">
-<meta property="og:image:height" content="524">
-<meta property="og:image:alt" content="Fachada da UBS Paquetá, em Brusque, Santa Catarina.">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="UBS Paquetá — está aberta agora?">
-<meta name="twitter:description" content="Horários de cada setor, avisos do dia, equipe e telefones de urgência da Unidade Básica de Saúde do bairro Paquetá, em Brusque/SC.">
-<meta name="twitter:image" content="https://ubspaqueta.vercel.app/fotos/compartilhamento.jpg">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="UBS Paquetá">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UBS Brusque — Painel</title>
+<meta name="description" content="Lista com o site de cada Unidade Básica de Saúde de Brusque.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%A5%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --esc:1;                    /* multiplicador do tamanho da letra — painel de acessibilidade */
+    --bg: #f6f4ef;
+    --bg-raised: #ffffff;
+    --ink: #1b231f;
+    --ink-dim: #55625a;
+    --line: #dcd6c9;
+    --accent: #0f6e63;
+    --accent-ink: #ffffff;
+    --accent-soft: #e3efec;
+    --link: #0d5c8f;
+    --sheet: #1a7a3e;
+    --sheet-soft: #e5f3e8;
+    --focus: #b4832f;
+    --shadow: 0 1px 2px rgba(27,35,31,.06), 0 8px 24px -12px rgba(27,35,31,.18);
+    --urgente: #b3120f;
+    --urgente-claro: #fdecea;
+    --aviso-cor: #8a4e00;
+    --aviso-claro: #fdf2e0;
+  }
+  html{ font-size:calc(100% * var(--esc)); }
+
+  /* Alto contraste — mesma lógica dos sites das UBS: troca só as variáveis
+     de cor, ativado/desativado pelo painel de acessibilidade abaixo. */
+  body.alto-contraste{
+    --bg:#000000; --bg-raised:#0a0a0a;
+    --ink:#ffffff; --ink-dim:#e0e0e0; --line:#707070;
+    --accent:#00e676; --accent-ink:#000000; --accent-soft:#052012;
+    --link:#7fd396; --sheet:#00e676; --sheet-soft:#052012;
+    --focus:#ffd54a;
+    --shadow:0 0 0 2px #fff;
+    --urgente:#ff5252; --urgente-claro:#2b0000;
+    --aviso-cor:#ffa726; --aviso-claro:#2b1b00;
+  }
+  body.alto-contraste .lista,
+  body.alto-contraste .barra{ border-width:2px; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #0e1512;
+      --bg-raised: #151f1a;
+      --ink: #e9efe9;
+      --ink-dim: #9fb0a6;
+      --line: #263630;
+      --accent: #55c9ae;
+      --accent-ink: #08211b;
+      --accent-soft: #17332b;
+      --link: #7cc0f0;
+      --sheet: #7fd396;
+      --sheet-soft: #14301f;
+      --focus: #e0b258;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      --urgente: #ff8a80;
+      --urgente-claro: #2b0000;
+      --aviso-cor: #ffb74d;
+      --aviso-claro: #2b1b00;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #0e1512;
+    --bg-raised: #151f1a;
+    --ink: #e9efe9;
+    --ink-dim: #9fb0a6;
+    --line: #263630;
+    --accent: #55c9ae;
+    --accent-ink: #08211b;
+    --accent-soft: #17332b;
+    --link: #7cc0f0;
+    --sheet: #7fd396;
+    --sheet-soft: #14301f;
+    --focus: #e0b258;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    --urgente: #ff8a80;
+    --urgente-claro: #2b0000;
+    --aviso-cor: #ffb74d;
+    --aviso-claro: #2b1b00;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--link);}
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:2px solid var(--focus);
+    outline-offset:2px;
+  }
+
+  .wrap{
+    max-width:960px;
+    margin:0 auto;
+    padding:2.5rem 1.25rem 4rem;
+  }
+
+  header.topo{
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+    margin-bottom:1.75rem;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.78rem;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  h1{
+    margin:0;
+    font-size:clamp(1.7rem, 1.3rem + 1.6vw, 2.35rem);
+    font-weight:700;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .sub{
+    margin:0;
+    color:var(--ink-dim);
+    font-size:1rem;
+    max-width:62ch;
+  }
+
+  .barra{
+    display:flex;
+    align-items:center;
+    gap:.75rem;
+    flex-wrap:wrap;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.6rem .75rem;
+    margin-bottom:1.25rem;
+    box-shadow:var(--shadow);
+  }
+  .busca{
+    flex:1 1 220px;
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    color:var(--ink-dim);
+  }
+  .busca svg{flex:none;width:18px;height:18px;}
+  .busca input{
+    flex:1;
+    border:none;
+    background:transparent;
+    color:var(--ink);
+    font:inherit;
+    font-size:.98rem;
+    padding:.35rem 0;
+  }
+  .busca input::placeholder{color:var(--ink-dim);}
+  .contagem{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.85rem;
+    color:var(--ink-dim);
+    font-variant-numeric: tabular-nums;
+    white-space:nowrap;
+  }
+  .contagem b{color:var(--ink);}
+
+  .lista{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .linha{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    padding:1.05rem 1.1rem;
+    border-bottom:1px solid var(--line);
+    text-decoration:none;
+    color:inherit;
+    min-height:56px;
+    transition:background-color .12s ease;
+  }
+  .linha:last-child{border-bottom:none;}
+  .linha:hover, .linha:focus-visible{
+    background:var(--accent-soft);
+  }
+  .nome{
+    font-weight:600;
+    font-size:1.02rem;
+  }
+  .ir{
+    display:inline-flex;
+    align-items:center;
+    gap:.4rem;
+    flex:none;
+    color:var(--accent);
+    font-size:.9rem;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .ir svg{width:17px;height:17px;flex:none;}
+
+  .vazio{
+    padding:2.5rem 1rem;
+    text-align:center;
+    color:var(--ink-dim);
+    display:none;
+  }
+  .vazio.mostrar{display:block;}
+
+  footer{
+    margin-top:2.5rem;
+    padding-top:1.5rem;
+    border-top:1px solid var(--line);
+  }
+  .rodape-tit{
+    font-size:1.3rem;
+    font-weight:700;
+    margin-bottom:1rem;
+    letter-spacing:-.01em;
+  }
+  .rodape-cards{
+    display:flex;
+    flex-direction:column;
+    gap:.75rem;
+    margin-bottom:1.5rem;
+  }
+  .aviso-painel{
+    border-radius:8px;
+    border-left:6px solid var(--line);
+    background:var(--bg-raised);
+    padding:.85rem 1rem;
+  }
+  .aviso-painel.urgente{ background:var(--urgente-claro); border-left-color:var(--urgente); }
+  .aviso-painel.fonte{ background:var(--sheet-soft); border-left-color:var(--sheet); }
+  .aviso-painel.pendente{ background:var(--aviso-claro); border-left-color:var(--aviso-cor); }
+  .aviso-tarja{
+    display:inline-block;
+    font-size:.72rem;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:#fff;
+    border-radius:5px;
+    padding:.15rem .5rem;
+    margin-bottom:.4rem;
+  }
+  .aviso-painel.urgente .aviso-tarja{ background:var(--urgente); }
+  .aviso-painel.fonte .aviso-tarja{ background:var(--sheet); }
+  .aviso-painel.pendente .aviso-tarja{ background:var(--aviso-cor); }
+  .aviso-titulo{
+    font-size:1rem;
+    font-weight:700;
+    margin:0 0 .3rem;
+  }
+  .aviso-texto{
+    font-size:.92rem;
+    line-height:1.5;
+    color:var(--ink);
+    margin:0;
+  }
+  .aviso-texto a{ font-weight:700; }
+  .aviso-texto .tel-grande{
+    font-size:1.2rem;
+    font-weight:700;
+    color:var(--urgente);
+    text-decoration:none;
+  }
+  .rodape-base{
+    display:flex; flex-wrap:wrap; gap:.4rem 1rem; justify-content:space-between;
+    font-size:.8rem; color:var(--ink-dim);
+  }
+  .rodape-base a{color:inherit;}
+
+  /* ------------------------------------------------- ACESSIBILIDADE (FAB) -- */
+  .a11y-fab{
+    position:fixed;right:14px;bottom:14px;z-index:50;
+    width:56px;height:56px;border-radius:50%;
+    background:var(--accent);color:var(--accent-ink);border:3px solid var(--bg-raised);
+    box-shadow:var(--shadow);
+    font-family:"IBM Plex Sans",sans-serif;font-weight:700;font-size:18px;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .a11y-fundo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:60;}
+  .a11y-painel{
+    position:fixed;left:0;right:0;bottom:0;z-index:70;
+    background:var(--bg-raised);color:var(--ink);
+    border-radius:16px 16px 0 0;
+    padding:1rem 1.1rem calc(1.25rem + env(safe-area-inset-bottom));
+    max-width:960px;margin:0 auto;max-height:82vh;overflow-y:auto;
+    box-shadow:0 -6px 24px rgba(0,0,0,.25);
+    border-top:1px solid var(--line);
+  }
+  .a11y-topo{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;}
+  .a11y-topo h2{font-size:1.1rem;font-weight:700;}
+  .a11y-fechar{
+    width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+    background:var(--bg-raised);font-size:1rem;font-weight:700;cursor:pointer;color:var(--ink);
+    flex:0 0 auto;
+  }
+  .a11y-grupo{margin-bottom:1rem;}
+  .a11y-grupo:last-child{margin-bottom:0;}
+  .a11y-grupo-tit{font-size:.85rem;font-weight:700;color:var(--ink-dim);margin-bottom:.5rem;}
+  .a11y-letra-btns{display:flex;gap:.5rem;}
+  .a11y-letra-btns button, .idioma-bt{
+    font-family:inherit;font-weight:700;cursor:pointer;flex:1;
+    background:var(--bg);border:1px solid var(--line);
+    color:var(--ink);border-radius:8px;min-height:48px;
+    display:flex;align-items:center;justify-content:center;text-decoration:none;
+  }
+  .a11y-letra-btns button.a1{font-size:.95rem;}
+  .a11y-letra-btns button.a2{font-size:1.15rem;}
+  .a11y-letra-btns button.a3{font-size:1.4rem;}
+  .a11y-letra-btns button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  .idioma-bt:hover{background:var(--accent-soft);}
+  .a11y-idioma-ajuda{font-size:.78rem;color:var(--ink-dim);margin-bottom:.5rem;line-height:1.4;}
+  .a11y-toggle{
+    width:100%;text-align:left;display:flex;align-items:center;gap:.6rem;
+    background:var(--bg);border:1px solid var(--line);border-radius:10px;
+    padding:.7rem .85rem;min-height:48px;font-family:inherit;
+    font-size:.95rem;font-weight:600;color:var(--ink);cursor:pointer;
+  }
+  .a11y-toggle[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+  .a11y-toggle .ic{font-size:1.1rem;flex:0 0 auto;}
+</style>
 </head>
 <body>
+<div class="wrap">
 
-<a href="#conteudo" class="pular-link">Pular para o conteúdo</a>
+  <header class="topo">
+    <span class="eyebrow">Secretaria de Saúde · Brusque/SC</span>
+    <h1>UBS de Brusque</h1>
+    <p class="sub">Encontre o site de cada Unidade Básica de Saúde de Brusque.</p>
+  </header>
 
-<!-- ============================ TOPO ============================ -->
-<header class="topo">
-  <div class="wrap">
-    <p class="orgao" id="orgao"></p>
-    <h1 id="nome-unidade">UBS Paquetá</h1>
-    <p class="subtitulo" id="subtitulo"></p>
+  <div class="barra">
+    <label class="busca">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="busca" type="search" placeholder="Buscar unidade…" autocomplete="off">
+    </label>
+    <span class="contagem"><b id="qtd">27</b> de 27 unidades</span>
   </div>
-</header>
 
-<!-- ==================== RESPOSTA PRINCIPAL ====================== -->
-<section class="resposta">
-  <div class="wrap">
-    <!-- Aviso de "sem internet". Fica escondido enquanto houver conexão.
-         Preenchido por atualizarAvisoDeInternet(), no app.js. Existe porque
-         o site abre offline (service worker) e mostrar horário guardado sem
-         avisar que é guardado faria a pessoa vir à toa confiando na tela. -->
-    <div id="sem-internet" class="sem-internet" role="status" hidden></div>
+  <div class="lista" id="lista"></div>
+  <p class="vazio" id="vazio">Nenhuma unidade encontrada com esse nome.</p>
 
-    <img id="foto-unidade" class="foto-unidade" alt="" hidden
-         onerror="this.hidden=true;">
-    <div id="status" aria-live="polite"></div>
-
-    <div class="botoes">
-      <a class="botao cheio" id="bt-ligar" href="#">
-        <span class="icone" aria-hidden="true">☎</span> Ligar para a UBS
-      </a>
-      <a class="botao" id="bt-mapa" href="#" target="_blank" rel="noopener">
-        <span class="icone" aria-hidden="true">📍</span> Ver no mapa
-      </a>
-    </div>
-  </div>
-</section>
-
-<main class="wrap" id="conteudo">
-
-  <!-- ---------------------------- AVISOS ------------------------ -->
-  <section class="secao" id="avisos-secao">
-    <h2>Avisos de hoje</h2>
-    <p class="ajuda">Coisas que mudaram e você precisa saber antes de vir.</p>
-    <div id="avisos"></div>
-
-    <div id="avisos-futuros-bloco" class="futuros-bloco" hidden>
-      <h3 class="futuros-tit">Avisos futuros</h3>
-      <p class="ajuda">Ainda não vale hoje, mas já está programado.</p>
-      <div id="avisos-futuros"></div>
-    </div>
-  </section>
-
-  <!-- --------------------------- MINHA RUA ---------------------- -->
-  <!-- Responde "moro na rua X, que horas eu consulto?" cruzando a aba
-       "ruas" (rua → equipe) com a coluna "horario" da aba "equipe"
-       (equipe → turno). Fica escondida se a unidade não tiver ruas
-       cadastradas — quem mostra/esconde é desenharMinhaRua(), no app.js. -->
-  <section class="secao" id="minha-rua-secao" hidden>
-    <h2>Minha rua</h2>
-
-    <div id="rua-busca">
-      <p class="ajuda">Escreva o nome da sua rua para saber qual equipe atende você e em que horário.</p>
-      <label class="rua-rotulo" for="rua-campo">Nome da rua</label>
-      <input class="rua-campo" id="rua-campo" type="search" autocomplete="off"
-             autocorrect="off" spellcheck="false" placeholder="Ex.: Waldemar Hoffmann">
-      <div class="rua-sugestoes" id="rua-sugestoes" aria-live="polite"></div>
-    </div>
-
-    <div class="rua-resposta" id="rua-resposta" aria-live="polite"></div>
-  </section>
-
-  <!-- ---------------------------- SETORES ------------------------ -->
-  <section class="secao" id="setores-secao">
-    <h2>O que você precisa?</h2>
-    <p class="ajuda">Toque em “Ver os dias da semana” para saber quando cada setor atende.</p>
-    <div id="setores"></div>
-  </section>
-
-  <!-- ---------------------------- EQUIPE ------------------------ -->
-  <section class="secao" id="equipe-secao">
-    <h2>Quem trabalha aqui</h2>
-    <p class="ajuda">A equipe da unidade e o que cada pessoa faz.</p>
-
-    <div class="pessoas" id="equipe"></div>
-  </section>
-
-  <!-- --------------------------- URGÊNCIA ----------------------- -->
-  <section class="secao" id="urgencia-secao">
-    <h2>Passando mal? Precisa de ajuda agora?</h2>
-    <p class="ajuda">Se a UBS estiver aberta, procure o Acolhimento para avaliação. Se estiver fechada ou for muito grave, procure um destes lugares.</p>
-
-    <div class="urgencia">
-      <h2>Atendimento a qualquer hora</h2>
-      <p class="sub">Aberto de dia e de noite, inclusive sábado e domingo.</p>
-
-      <a class="samu" id="samu" href="#">
-        <span class="num" id="samu-num">192</span>
-        <span class="lab" id="samu-lab"></span>
-      </a>
-
-      <div id="lugares"></div>
-    </div>
-  </section>
-
-  <!-- -------------------------- ONDE FICA ----------------------- -->
-  <section class="secao" id="contato-secao">
-    <h2>Onde fica e telefones</h2>
-    <div class="cartao">
-      <div class="info">
-        <p class="info-rot">Endereço</p>
-        <p class="info-val" id="info-endereco"></p>
+  <footer>
+    <p class="rodape-tit">Informações importantes</p>
+    <div class="rodape-cards">
+      <div class="aviso-painel urgente">
+        <span class="aviso-tarja"><span aria-hidden="true">🚑</span> Urgência</span>
+        <p class="aviso-titulo">Precisa de atendimento agora?</p>
+        <p class="aviso-texto">Ligue <a class="tel-grande" href="tel:192">192</a> — é o SAMU, atende todos os dias, a qualquer hora.</p>
       </div>
-      <div class="info">
-        <p class="info-rot">Telefone da UBS</p>
-        <div class="info-val" id="info-telefone"></div>
+      <div class="aviso-painel fonte">
+        <span class="aviso-tarja"><span aria-hidden="true">📍</span> Fonte dos dados</span>
+        <p class="aviso-titulo">Endereços e telefones</p>
+        <p class="aviso-texto">Confirmados no <a href="https://www.smsbrusque.sc.gov.br/unidade" target="_blank" rel="noopener">site oficial da Secretaria de Saúde de Brusque</a>.</p>
       </div>
-      <div class="info">
-        <p class="info-rot">Secretaria de Saúde</p>
-        <p class="info-val" id="info-secretaria"></p>
+      <div class="aviso-painel pendente">
+        <span class="aviso-tarja"><span aria-hidden="true">⚠️</span> Ainda em configuração</span>
+        <p class="aviso-titulo">Horário de atendimento e equipe</p>
+        <p class="aviso-texto">Ainda não foram confirmados em cada unidade — ligue antes de ir.</p>
       </div>
-      <div class="info">
-        <p class="info-rot">Localização</p>
-        <p class="info-val" id="info-mapa"></p>
-      </div>
-      <div class="info" id="info-instagram-linha" hidden>
-        <p class="info-rot">Instagram</p>
-        <p class="info-val" id="info-instagram"></p>
-      </div>
-
-      <details class="tel-uteis" id="tel-uteis-bloco" hidden>
-        <summary>Outros telefones úteis</summary>
-        <div class="tel-uteis-lista" id="tel-uteis-lista"></div>
-      </details>
     </div>
-
-    <div class="fonte-dados" id="fonte-dados">Carregando horários…</div>
-  </section>
-
-  <footer class="rodape">
-    <p id="rodape"></p>
-    <p class="rodape-unidades" id="rodape-unidades" hidden></p>
+    <div class="rodape-base">
+      <span>27 unidades de saúde de Brusque.</span>
+      <span><a href="https://github.com/13ggd" target="_blank" rel="noopener">github.com/13ggd</a></span>
+    </div>
   </footer>
-</main>
 
-<!-- =================== BARRA DE TESTE ===========================
-     Fica escondida no site normal.
-     Para testar outros dias e horários, acesse o site com ?teste
-     no final do endereço. Exemplo:  meusite.vercel.app/?teste
-     ============================================================== -->
-<div class="teste">
-  <div class="teste-in">
-    <span class="teste-selo">Teste</span>
-    <div class="teste-ct">
-      <input type="date" id="data" aria-label="Data para testar">
-      <input type="range" id="hora" min="0" max="1425" step="15" value="600" aria-label="Hora para testar">
-      <span class="teste-h" id="lbl">10:00</span>
-      <button type="button" id="bt-agora">Agora</button>
+  <button type="button" id="a11y-fab" class="a11y-fab"
+          aria-haspopup="dialog" aria-expanded="false" aria-controls="a11y-painel"
+          aria-label="Abrir opções de acessibilidade">
+    <span aria-hidden="true">Aa</span>
+  </button>
+
+  <div id="a11y-fundo" class="a11y-fundo" hidden></div>
+
+  <div id="a11y-painel" class="a11y-painel" role="dialog" aria-modal="true"
+       aria-labelledby="a11y-titulo" hidden>
+    <div class="a11y-topo">
+      <h2 id="a11y-titulo">Acessibilidade</h2>
+      <button type="button" id="a11y-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
     </div>
-  </div>
-</div>
 
-<noscript>
-  <div class="wrap" style="padding-top:24px">
-    <div class="cartao">
-      <p class="info-val">UBS Paquetá — Rua Waldemar Hoffmann, sem número, bairro Paquetá, Brusque/SC.</p>
-      <p class="info-val" style="margin-top:12px">Telefone: (47) 2017-0548</p>
-      <p class="info-val" style="margin-top:12px">Atendimento de segunda a sexta, das 7h às 19h.</p>
-      <p class="info-val" style="margin-top:12px">Emergência a qualquer hora: ligue 192.</p>
+    <div class="a11y-grupo">
+      <p class="a11y-grupo-tit">Tamanho da letra</p>
+      <div class="a11y-letra-btns" role="group" aria-label="Escolher o tamanho da letra">
+        <button type="button" class="a1" data-esc="1"    aria-pressed="true"  aria-label="Letra normal">A</button>
+        <button type="button" class="a2" data-esc="1.22" aria-pressed="false" aria-label="Letra grande">A</button>
+        <button type="button" class="a3" data-esc="1.45" aria-pressed="false" aria-label="Letra muito grande">A</button>
+      </div>
     </div>
-  </div>
-</noscript>
 
-<!-- ================== ACESSIBILIDADE (botão flutuante) ==================
-     Substitui os botões A A A que ficavam no topo. Agora tudo isso mora
-     aqui dentro: tamanho da letra, alto contraste e ouvir a página.
-     ======================================================================= -->
-<button type="button" id="a11y-fab" class="a11y-fab"
-        aria-haspopup="dialog" aria-expanded="false" aria-controls="a11y-painel"
-        aria-label="Abrir opções de acessibilidade">
-  <span aria-hidden="true">Aa</span>
-</button>
+    <div class="a11y-grupo">
+      <p class="a11y-grupo-tit">Contraste</p>
+      <button type="button" id="a11y-contraste" class="a11y-toggle" aria-pressed="false">
+        <span class="ic" aria-hidden="true">◐</span> Ativar alto contraste
+      </button>
+    </div>
 
-<div id="a11y-fundo" class="a11y-fundo" hidden></div>
+    <div class="a11y-grupo">
+      <p class="a11y-grupo-tit">Ouvir</p>
+      <button type="button" id="a11y-ouvir" class="a11y-toggle" aria-pressed="false">
+        <span class="ic" aria-hidden="true">🔊</span> Ouvir esta página
+      </button>
+    </div>
 
-<div id="a11y-painel" class="a11y-painel" role="dialog" aria-modal="true"
-     aria-labelledby="a11y-titulo" hidden>
-  <div class="a11y-topo">
-    <h2 id="a11y-titulo">Acessibilidade</h2>
-    <button type="button" id="a11y-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
-  </div>
-
-  <div class="a11y-grupo">
-    <p class="a11y-grupo-tit">Tamanho da letra</p>
-    <div class="a11y-letra-btns" role="group" aria-label="Escolher o tamanho da letra">
-      <button type="button" class="a1" data-esc="1"    aria-pressed="true"  aria-label="Letra normal">A</button>
-      <button type="button" class="a2" data-esc="1.22" aria-pressed="false" aria-label="Letra grande">A</button>
-      <button type="button" class="a3" data-esc="1.45" aria-pressed="false" aria-label="Letra muito grande">A</button>
+    <div class="a11y-grupo">
+      <p class="a11y-grupo-tit">Idioma / Language</p>
+      <p class="a11y-idioma-ajuda">Abre a página traduzida em outra aba, pelo tradutor do Google.</p>
+      <div class="a11y-letra-btns">
+        <a class="idioma-bt" id="idioma-en" href="#" target="_blank" rel="noopener">English</a>
+        <a class="idioma-bt" id="idioma-es" href="#" target="_blank" rel="noopener">Español</a>
+      </div>
     </div>
   </div>
 
-  <div class="a11y-grupo">
-    <p class="a11y-grupo-tit">Contraste</p>
-    <button type="button" id="a11y-contraste" class="a11y-toggle" aria-pressed="false">
-      <span class="ic" aria-hidden="true">◐</span> Ativar alto contraste
-    </button>
-  </div>
-
-  <div class="a11y-grupo">
-    <p class="a11y-grupo-tit">Ouvir</p>
-    <button type="button" id="a11y-ouvir" class="a11y-toggle" aria-pressed="false">
-      <span class="ic" aria-hidden="true">🔊</span> Ouvir esta página
-    </button>
-  </div>
-
-  <div class="a11y-grupo">
-    <p class="a11y-grupo-tit">Idioma / Language</p>
-    <p class="a11y-idioma-ajuda">Abre a página traduzida em outra aba, pelo tradutor do Google.</p>
-    <div class="a11y-letra-btns">
-      <a class="idioma-bt" id="idioma-en" href="#" target="_blank" rel="noopener">English</a>
-      <a class="idioma-bt" id="idioma-es" href="#" target="_blank" rel="noopener">Español</a>
+  <!-- LIBRAS (VLibras — widget oficial do Governo Federal) -->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
     </div>
   </div>
+  <script async src="https://vlibras.gov.br/app/vlibras-plugin.js"
+    onload="if(window.VLibras){ new window.VLibras.Widget('https://vlibras.gov.br/app'); }"></script>
+
 </div>
 
-<!-- ====================== MENU (ir para uma parte da página) ============
-     Botão flutuante no canto superior direito, em cima — o de
-     acessibilidade fica embaixo. Assim os dois não competem no mesmo canto.
-     Abre uma lista de atalhos; a página continua sendo uma rolagem só.
-     ======================================================================= -->
-<button type="button" id="nav-fab" class="nav-fab"
-        aria-haspopup="dialog" aria-expanded="false" aria-controls="nav-painel"
-        aria-label="Abrir menu para ir direto a uma parte da página">
-  <span aria-hidden="true">☰</span>
-</button>
+<script>
+var UNIDADES = [
+  ["UBS Águas Claras","aguas-claras/"],
+  ["UBS Azambuja","azambuja/"],
+  ["UBS Bateas","bateas/"],
+  ["UBS Cedrinho","cedrinho/"],
+  ["UBS Centro","centro/"],
+  ["UBS Dom Joaquim","dom-joaquim/"],
+  ["UBS Emma II","emma-ii/"],
+  ["UBS Guarani","guarani/"],
+  ["UBS Jardim Maluche","jardim-maluche/"],
+  ["UBS Limeira","limeira/"],
+  ["UBS Limeira Alta","limeira-alta/"],
+  ["UBS Nova Brasília","nova-brasilia/"],
+  ["UBS Paquetá","paqueta/"],
+  ["UBS Planalto","planalto/"],
+  ["UBS Ponta Russa","ponta-russa/"],
+  ["UBS Poço Fundo","poco-fundo/"],
+  ["UBS Rio Branco","rio-branco/"],
+  ["UBS Rua Nova Trento","rua-nova-trento/"],
+  ["UBS Santa Luzia","santa-luzia/"],
+  ["UBS Santa Rita","santa-rita/"],
+  ["UBS Santa Terezinha","santa-terezinha/"],
+  ["UBS São João","sao-joao/"],
+  ["UBS São Luiz","sao-luiz/"],
+  ["UBS São Pedro","sao-pedro/"],
+  ["UBS Steffen","steffen/"],
+  ["UBS Volta Grande","volta-grande/"],
+  ["UBS Zantão","zantao/"]
+];
 
-<div id="nav-fundo" class="a11y-fundo" hidden></div>
+function limpo(s){
+  var d=document.createElement("div");
+  d.textContent=s;
+  return d.innerHTML;
+}
 
-<div id="nav-painel" class="a11y-painel" role="dialog" aria-modal="true"
-     aria-labelledby="nav-titulo" hidden>
-  <div class="a11y-topo">
-    <h2 id="nav-titulo">Ir para</h2>
-    <button type="button" id="nav-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
-  </div>
+function iconeExterno(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';
+}
 
-  <ul class="nav-lista">
-    <li><a class="nav-item" href="#avisos-secao"><span class="ic" aria-hidden="true">📣</span> Avisos de hoje</a></li>
-    <li id="nav-minha-rua" hidden><a class="nav-item" href="#minha-rua-secao"><span class="ic" aria-hidden="true">🏠</span> Minha rua</a></li>
-    <li><a class="nav-item" href="#setores-secao"><span class="ic" aria-hidden="true">🕒</span> Horários dos setores</a></li>
-    <li><a class="nav-item" href="#equipe-secao"><span class="ic" aria-hidden="true">👥</span> Quem trabalha aqui</a></li>
-    <li><a class="nav-item" href="#urgencia-secao"><span class="ic" aria-hidden="true">🚑</span> Urgência</a></li>
-    <li><a class="nav-item" href="#contato-secao"><span class="ic" aria-hidden="true">📍</span> Onde fica e telefones</a></li>
-  </ul>
-</div>
+function montar(lista){
+  var host = document.getElementById("lista");
+  var vazio = document.getElementById("vazio");
+  document.getElementById("qtd").textContent = lista.length;
 
-<!-- ================ DETALHE DA PESSOA (clique num card da equipe) =======
-     Painel único, reaproveitado pra qualquer pessoa clicada — o conteúdo
-     é preenchido na hora pelo JS (ver abrirPessoaPainel em app.js).
-     ======================================================================= -->
-<div id="pessoa-fundo" class="a11y-fundo" hidden></div>
+  if(!lista.length){
+    host.innerHTML = "";
+    vazio.classList.add("mostrar");
+    return;
+  }
+  vazio.classList.remove("mostrar");
 
-<div id="pessoa-painel" class="a11y-painel pessoa-painel" role="dialog" aria-modal="true"
-     aria-labelledby="pessoa-nome" hidden>
-  <div class="a11y-topo">
-    <h2 id="pessoa-nome"></h2>
-    <button type="button" id="pessoa-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
-  </div>
-  <div id="pessoa-detalhe"></div>
-</div>
+  host.innerHTML = lista.map(function(u){
+    return '<a class="linha" href="' + u[1] + '" target="_blank" rel="noopener">' +
+      '<span class="nome">' + limpo(u[0]) + '</span>' +
+      '<span class="ir">Abrir site ' + iconeExterno() + '</span>' +
+    '</a>';
+  }).join("");
+}
 
-<!-- ================== LIBRAS (VLibras — widget oficial do Governo Federal)
-     Gratuito, mantido pelo governo. Se não quiser esse recurso, apague
-     este bloco inteiro (as 6 linhas abaixo) e o site funciona normalmente.
-     ======================================================================= -->
-<div vw class="enabled">
-  <div vw-access-button class="active"></div>
-  <div vw-plugin-wrapper>
-    <div class="vw-plugin-top-wrapper"></div>
-  </div>
-</div>
-<script async src="https://vlibras.gov.br/app/vlibras-plugin.js"
-  onload="if(window.VLibras){ new window.VLibras.Widget('https://vlibras.gov.br/app'); }"></script>
+function chave(s){
+  return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+}
 
-<script src="config.js"></script>
-<script src="app.js"></script>
+var campo = document.getElementById("busca");
+campo.addEventListener("input", function(){
+  var termo = chave(campo.value.trim());
+  if(!termo){ montar(UNIDADES); return; }
+  montar(UNIDADES.filter(function(u){ return chave(u[0]).indexOf(termo) !== -1; }));
+});
+
+montar(UNIDADES);
+
+/* =========================== ACESSIBILIDADE ============================
+   Mesma lógica dos sites das UBS: tamanho da letra, alto contraste,
+   ouvir a página (SpeechSynthesis) e tradução, tudo guardado no aparelho. */
+function guardar(chave, valor){ try{ localStorage.setItem(chave, valor); }catch(e){} }
+function lerGuardado(chave){ try{ return localStorage.getItem(chave); }catch(e){ return null; } }
+
+/* ---- tamanho da letra ---- */
+var botoesLetra = document.querySelectorAll(".a11y-letra-btns button");
+function aplicarLetra(botao, salvar){
+  Array.prototype.forEach.call(botoesLetra, function(o){ o.setAttribute("aria-pressed","false"); });
+  botao.setAttribute("aria-pressed","true");
+  document.documentElement.style.setProperty("--esc", botao.dataset.esc);
+  if(salvar) guardar("painel-letra", botao.dataset.esc);
+}
+Array.prototype.forEach.call(botoesLetra, function(b){
+  b.addEventListener("click", function(){ aplicarLetra(b, true); });
+});
+var letraSalva = lerGuardado("painel-letra");
+if(letraSalva){
+  var alvoLetra = Array.prototype.find.call(botoesLetra, function(b){ return b.dataset.esc === letraSalva; });
+  if(alvoLetra) aplicarLetra(alvoLetra, false);
+}
+
+/* ---- alto contraste ---- */
+var btContraste = document.getElementById("a11y-contraste");
+function aplicarContraste(ligado, salvar){
+  document.body.classList.toggle("alto-contraste", ligado);
+  btContraste.setAttribute("aria-pressed", ligado ? "true" : "false");
+  btContraste.lastChild.textContent = ligado ? " Desativar alto contraste" : " Ativar alto contraste";
+  if(salvar) guardar("painel-contraste", ligado ? "1" : "0");
+}
+btContraste.addEventListener("click", function(){
+  aplicarContraste(!document.body.classList.contains("alto-contraste"), true);
+});
+if(lerGuardado("painel-contraste") === "1") aplicarContraste(true, false);
+
+/* ---- ouvir a página ---- */
+var falando = false;
+function textoParaOuvir(){
+  var partes = ["Painel das UBS de Brusque.", UNIDADES.length + " unidades listadas."];
+  UNIDADES.forEach(function(u){ partes.push(u[0] + "."); });
+  partes.push("Em caso de emergência, ligue 192, o SAMU.");
+  return partes.join(" ");
+}
+var btOuvir = document.getElementById("a11y-ouvir");
+btOuvir.addEventListener("click", function(){
+  if(!("speechSynthesis" in window)){
+    btOuvir.disabled = true;
+    btOuvir.querySelector(".ic").nextSibling.textContent = " Leitura não é possível neste navegador";
+    return;
+  }
+  if(falando){
+    window.speechSynthesis.cancel();
+    falando = false;
+    btOuvir.setAttribute("aria-pressed","false");
+    return;
+  }
+  var fala = new SpeechSynthesisUtterance(textoParaOuvir());
+  fala.lang = "pt-BR";
+  fala.rate = 0.95;
+  var vozes = window.speechSynthesis.getVoices();
+  var voz = vozes.find(function(v){ return v.lang === "pt-BR"; }) ||
+            vozes.find(function(v){ return v.lang && v.lang.indexOf("pt") === 0; });
+  if(voz) fala.voice = voz;
+  fala.onend = function(){ falando = false; btOuvir.setAttribute("aria-pressed","false"); };
+  fala.onerror = function(){ falando = false; btOuvir.setAttribute("aria-pressed","false"); };
+  falando = true;
+  btOuvir.setAttribute("aria-pressed","true");
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(fala);
+});
+
+/* ---- idioma (tradutor do Google, aba nova) ---- */
+function linkTraducao(idiomaDestino){
+  return "https://translate.google.com/translate?sl=pt&tl=" + idiomaDestino + "&u=" + encodeURIComponent(location.href);
+}
+document.getElementById("idioma-en").href = linkTraducao("en");
+document.getElementById("idioma-es").href = linkTraducao("es");
+
+/* ---- abrir/fechar o painel flutuante ---- */
+(function(){
+  var botao  = document.getElementById("a11y-fab");
+  var painel = document.getElementById("a11y-painel");
+  var fundo  = document.getElementById("a11y-fundo");
+  var fechar = document.getElementById("a11y-fechar");
+
+  function aoTeclar(e){ if(e.key === "Escape") fecharPainel(); }
+  function abrirPainel(){
+    painel.hidden = false;
+    fundo.hidden = false;
+    botao.setAttribute("aria-expanded","true");
+    fechar.focus();
+    document.addEventListener("keydown", aoTeclar);
+  }
+  function fecharPainel(){
+    if(painel.hidden) return;
+    painel.hidden = true;
+    fundo.hidden = true;
+    botao.setAttribute("aria-expanded","false");
+    document.removeEventListener("keydown", aoTeclar);
+  }
+  botao.addEventListener("click", abrirPainel);
+  fechar.addEventListener("click", function(){ fecharPainel(); botao.focus(); });
+  fundo.addEventListener("click", function(){ fecharPainel(); botao.focus(); });
+})();
+</script>
 </body>
 </html>

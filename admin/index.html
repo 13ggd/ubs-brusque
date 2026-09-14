@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UBS Brusque — Painel administrativo</title>
+<meta name="description" content="Painel interno com o site publicado e a planilha de dados de cada UBS de Brusque.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A7%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #f6f4ef;
+    --bg-raised: #ffffff;
+    --ink: #1b231f;
+    --ink-dim: #55625a;
+    --line: #dcd6c9;
+    --accent: #0f6e63;
+    --accent-soft: #e3efec;
+    --link: #0d5c8f;
+    --sheet: #1a7a3e;
+    --sheet-soft: #e5f3e8;
+    --focus: #b4832f;
+    --shadow: 0 1px 2px rgba(27,35,31,.06), 0 8px 24px -12px rgba(27,35,31,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg: #0e1512;
+      --bg-raised: #151f1a;
+      --ink: #e9efe9;
+      --ink-dim: #9fb0a6;
+      --line: #263630;
+      --accent: #55c9ae;
+      --accent-soft: #17332b;
+      --link: #7cc0f0;
+      --sheet: #7fd396;
+      --sheet-soft: #14301f;
+      --focus: #e0b258;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--link);}
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:2px solid var(--focus);
+    outline-offset:2px;
+  }
+
+  .wrap{
+    max-width:960px;
+    margin:0 auto;
+    padding:2.5rem 1.25rem 4rem;
+  }
+
+  header.topo{
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+    margin-bottom:1.75rem;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.78rem;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+  h1{
+    margin:0;
+    font-size:clamp(1.7rem, 1.3rem + 1.6vw, 2.35rem);
+    font-weight:700;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .sub{
+    margin:0;
+    color:var(--ink-dim);
+    font-size:1rem;
+    max-width:62ch;
+  }
+
+  .barra{
+    display:flex;
+    align-items:center;
+    gap:.75rem;
+    flex-wrap:wrap;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.6rem .75rem;
+    margin-bottom:1.25rem;
+    box-shadow:var(--shadow);
+  }
+  .busca{
+    flex:1 1 220px;
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    color:var(--ink-dim);
+  }
+  .busca svg{flex:none;width:18px;height:18px;}
+  .busca input{
+    flex:1;
+    border:none;
+    background:transparent;
+    color:var(--ink);
+    font:inherit;
+    font-size:.98rem;
+    padding:.35rem 0;
+  }
+  .busca input::placeholder{color:var(--ink-dim);}
+  .contagem{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.85rem;
+    color:var(--ink-dim);
+    font-variant-numeric: tabular-nums;
+    white-space:nowrap;
+  }
+  .contagem b{color:var(--ink);}
+
+  .lista{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .linha{
+    display:grid;
+    grid-template-columns: 1fr auto auto;
+    align-items:center;
+    gap:1rem;
+    padding:.85rem 1rem;
+    border-bottom:1px solid var(--line);
+  }
+  .linha:last-child{border-bottom:none;}
+  .nome{
+    font-weight:600;
+    font-size:.98rem;
+  }
+  .acoes{
+    display:flex;
+    gap:.5rem;
+  }
+  .botao{
+    display:inline-flex;
+    align-items:center;
+    gap:.4rem;
+    text-decoration:none;
+    font-size:.85rem;
+    font-weight:600;
+    padding:.4rem .7rem;
+    border-radius:7px;
+    border:1px solid transparent;
+    white-space:nowrap;
+    transition:filter .12s ease, transform .12s ease;
+  }
+  .botao:active{transform:translateY(1px);}
+  .botao.site{
+    background:var(--accent-soft);
+    color:var(--accent);
+    border-color:color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .botao.site:hover{filter:brightness(0.96);}
+  @media (prefers-color-scheme: dark){
+    .botao.site:hover{filter:brightness(1.15);}
+  }
+  .botao.planilha{
+    background:var(--sheet-soft);
+    color:var(--sheet);
+    border-color:color-mix(in srgb, var(--sheet) 30%, transparent);
+  }
+  .botao svg{width:14px;height:14px;flex:none;}
+
+  .vazio{
+    padding:2.5rem 1rem;
+    text-align:center;
+    color:var(--ink-dim);
+    display:none;
+  }
+  .vazio.mostrar{display:block;}
+
+  .rodape-base{
+    margin-top:2rem;
+    padding-top:1.25rem;
+    border-top:1px solid var(--line);
+    display:flex; flex-wrap:wrap; gap:.4rem 1rem; justify-content:space-between;
+    font-size:.8rem; color:var(--ink-dim);
+  }
+  .rodape-base a{color:inherit;}
+
+  @media (max-width: 620px){
+    .linha{
+      grid-template-columns: 1fr;
+      align-items:flex-start;
+      gap:.6rem;
+    }
+    .acoes{width:100%;}
+    .botao{flex:1;justify-content:center;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="topo">
+    <span class="eyebrow">Uso interno · Secretaria de Saúde · Brusque/SC</span>
+    <h1>Painel administrativo das UBS de Brusque</h1>
+    <p class="sub">Site publicado e planilha de dados (horários, equipe, avisos) de cada Unidade Básica de Saúde de Brusque. Esta página não é destinada aos usuários do site — veja a <a href="../">lista pública</a>.</p>
+  </header>
+
+  <div class="barra">
+    <label class="busca">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="busca" type="search" placeholder="Buscar unidade…" autocomplete="off">
+    </label>
+    <span class="contagem"><b id="qtd">27</b> de 27 unidades</span>
+  </div>
+
+  <div class="lista" id="lista"></div>
+  <p class="vazio" id="vazio">Nenhuma unidade encontrada com esse nome.</p>
+
+  <div class="rodape-base">
+    <span>27 unidades de saúde de Brusque.</span>
+    <span><a href="https://github.com/13ggd" target="_blank" rel="noopener">github.com/13ggd</a></span>
+  </div>
+
+</div>
+
+<script>
+var UNIDADES = [
+  ["UBS Águas Claras","../aguas-claras/","https://docs.google.com/spreadsheets/d/1mou4IT6NjGcp4PFIpECp7aRsDQZJULTlWqITxn3c3R0/edit"],
+  ["UBS Azambuja","../azambuja/","https://docs.google.com/spreadsheets/d/1guUvQ8qhRiahT_LbWIoG9jOW4FIT2zaL3dy6gdQhNQ0/edit"],
+  ["UBS Bateas","../bateas/","https://docs.google.com/spreadsheets/d/1Wg67wYnKInaIGpZPHJfekHK4wvDeagksj1gHY7GsGrg/edit"],
+  ["UBS Cedrinho","../cedrinho/","https://docs.google.com/spreadsheets/d/1ekhrgJneHLzU0NErDncaCxRrcBv5H_7mmG69XTsoFLc/edit"],
+  ["UBS Centro","../centro/","https://docs.google.com/spreadsheets/d/1KGVQf61jygJzHRSKvuZz7dvSyugk_kEJ9K47Ss8Ws4g/edit"],
+  ["UBS Dom Joaquim","../dom-joaquim/","https://docs.google.com/spreadsheets/d/1yxPU7qIQJ7hpucyZ_BQbqUtVNxwJwsBBriL_kU6XthQ/edit"],
+  ["UBS Emma II","../emma-ii/","https://docs.google.com/spreadsheets/d/1WJSLhyTfXMoeJ_1cRL1Nm6i0xSHlE1Zc4qXNZOfQq4w/edit"],
+  ["UBS Guarani","../guarani/","https://docs.google.com/spreadsheets/d/1AriG6tiVcNaVcgvpa48mxJXMshn7jj53MyDzD8dXiLI/edit"],
+  ["UBS Jardim Maluche","../jardim-maluche/","https://docs.google.com/spreadsheets/d/1Zq53hB5s3hL9hZK5aPdpAPKPJg-Vqiv-6EP-TA0jE3s/edit"],
+  ["UBS Limeira","../limeira/","https://docs.google.com/spreadsheets/d/1nKLTu5u6y4GiuO7UXE2GRKOUjHQrmizEInSkPCZ1dVI/edit"],
+  ["UBS Limeira Alta","../limeira-alta/","https://docs.google.com/spreadsheets/d/1p9cpqf840rVkZ0YF9qVi-XI2a2sYmNv4EoZ4Nu97Olg/edit"],
+  ["UBS Nova Brasília","../nova-brasilia/","https://docs.google.com/spreadsheets/d/1LoFTxsQ9HRldh7LAmu5NXXpSgep8Hs5q3uuiNf86BX4/edit"],
+  ["UBS Paquetá","../paqueta/","https://docs.google.com/spreadsheets/d/1-RLhGWQlNl64BDa4kfpCRz1dgagQgoZB9cSce8Ob0jU/edit"],
+  ["UBS Planalto","../planalto/","https://docs.google.com/spreadsheets/d/1VWdk9ib_2xgI6K74RF_trUvaFZlpxElaC79AYs2Vb6Q/edit"],
+  ["UBS Ponta Russa","../ponta-russa/","https://docs.google.com/spreadsheets/d/1l8JcZLzcSaXvdwhFxg3Orvw4dCkCqp5LrEh-ofG4iHI/edit"],
+  ["UBS Poço Fundo","../poco-fundo/","https://docs.google.com/spreadsheets/d/1bVOmXsx1xujTn1KDxkRAHdqs7lwA29B-Zuxp5UWTpYI/edit"],
+  ["UBS Rio Branco","../rio-branco/","https://docs.google.com/spreadsheets/d/18zHGVanNssI37McJ0BMERgX3c9rz2Ivp7O9Yydx6jfM/edit"],
+  ["UBS Rua Nova Trento","../rua-nova-trento/","https://docs.google.com/spreadsheets/d/1W83iRYMJKSU9c_zLor36HqFaRG_tiDoQ-4vQIgGrX2U/edit"],
+  ["UBS Santa Luzia","../santa-luzia/","https://docs.google.com/spreadsheets/d/1GiKgIsk9JBEod45nGVP1MwL9GNaS-GCIWs8csgwW7pQ/edit"],
+  ["UBS Santa Rita","../santa-rita/","https://docs.google.com/spreadsheets/d/1gBB8Iiy_Ov8BgbGEmkhQn2oIzKxYa8Si51t2gO7OYgY/edit"],
+  ["UBS Santa Terezinha","../santa-terezinha/","https://docs.google.com/spreadsheets/d/1KNr_3vaeO7GnMzr621TyumlNQwlWg_CqCJ63Fgb2_Yo/edit"],
+  ["UBS São João","../sao-joao/","https://docs.google.com/spreadsheets/d/1E7Wgzd5WPbBQ0baBH2NLIG8ITQnGqcrwgoIKRzCpJJo/edit"],
+  ["UBS São Luiz","../sao-luiz/","https://docs.google.com/spreadsheets/d/1s7WGkVLDU87FJjsOspS_aigwb5FOML2jGhxUPt3EVfY/edit"],
+  ["UBS São Pedro","../sao-pedro/","https://docs.google.com/spreadsheets/d/1t8-2rSaEs0I7bUmTBInTFhBPFwC8EiEJh7d-DjwDdQE/edit"],
+  ["UBS Steffen","../steffen/","https://docs.google.com/spreadsheets/d/1oZ3KsOzcmdwh3HGue1X9bdImgJESJ6gETz7flqs7b3s/edit"],
+  ["UBS Volta Grande","../volta-grande/","https://docs.google.com/spreadsheets/d/1ooAgCNoONvoRrcgv6BdYNXffKiplO8s4z_y35m_GpnQ/edit"],
+  ["UBS Zantão","../zantao/","https://docs.google.com/spreadsheets/d/1RtHknfXkkbXK6FG-gGPGX_4nDwZsamaGe0RGrbJNg3o/edit"]
+];
+
+function limpo(s){
+  var d=document.createElement("div");
+  d.textContent=s;
+  return d.innerHTML;
+}
+
+function iconeExterno(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';
+}
+function iconePlanilha(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>';
+}
+
+function montar(lista){
+  var host = document.getElementById("lista");
+  var vazio = document.getElementById("vazio");
+  document.getElementById("qtd").textContent = lista.length;
+
+  if(!lista.length){
+    host.innerHTML = "";
+    vazio.classList.add("mostrar");
+    return;
+  }
+  vazio.classList.remove("mostrar");
+
+  host.innerHTML = lista.map(function(u){
+    return '<div class="linha">' +
+      '<span class="nome">' + limpo(u[0]) + '</span>' +
+      '<div class="acoes">' +
+        '<a class="botao site" href="' + u[1] + '" target="_blank" rel="noopener">' + iconeExterno() + ' Site</a>' +
+        '<a class="botao planilha" href="' + u[2] + '" target="_blank" rel="noopener">' + iconePlanilha() + ' Planilha</a>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+}
+
+function chave(s){
+  return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+}
+
+var campo = document.getElementById("busca");
+campo.addEventListener("input", function(){
+  var termo = chave(campo.value.trim());
+  if(!termo){ montar(UNIDADES); return; }
+  montar(UNIDADES.filter(function(u){ return chave(u[0]).indexOf(termo) !== -1; }));
+});
+
+montar(UNIDADES);
+</script>
+</body>
+</html>

@@ -10,9 +10,43 @@ Brusque/SC). It is written as a **reusable template**: to stand up the site for 
 the whole folder and edit only `config.js`. The step-by-step replication checklist for a new UBS lives in
 [`README.md`](README.md), not here.
 
-Around that core sit four things that exist because the site is also a **first-semester intervention
-research project**, not just a website — and a website nobody finds, nobody maintains, and nobody
-measured is not an intervention:
+### Repository layout: one deploy, many UBS
+
+The repo root is **not** a single UBS — it's a monorepo publishing **all 27 UBS of Brusque** side by
+side from one deploy, one self-contained folder per unit (`paqueta/`, `centro/`, `santa-rita/`, ...),
+each holding its own copy of every file described below (`index.html`, `app.js`, `config.js`,
+`estilo.css`, `sw.js`, `cartaz.html`, `qr.js`, plus that UBS's own `guia-da-planilha.md`). Each folder
+was brought in from that UBS's own repository (`13ggd/ubs-<nome>`) **as it was** — the code is not
+identical between units (they drifted independently over time), and this migration deliberately did not
+homogenize them. `pesquisa/` is the one exception that isn't per-UBS: it only exists in `paqueta/`,
+tied to the UBS Paquetá case study specifically.
+
+The root `index.html` and `admin/index.html` are **not** template/app files — they're the citywide
+**painel** (public list + internal admin page) for all 27 UBS of Brusque, brought in from the sibling
+repository [`13ggd/ubs-brusque-painel`](https://github.com/13ggd/ubs-brusque-painel) (still published
+separately for now; retiring/redirecting it is a manual follow-up, not automatic). Each is a static,
+self-contained HTML file with an inline `UNIDADES` array (name, site link, and — in `admin/` only — the
+Google Sheet link) rendered client-side; no shared JS with the per-UBS folders, no routing, nothing
+dynamic. Since all 27 units now live in this monorepo, every entry in both arrays uses a relative link
+(`centro/` in `index.html`, `../centro/` in `admin/index.html`, since `admin/` is one level deeper) — a
+UBS added here later that used to be a separate deploy should have its entry switched from an absolute
+link the same way; see `README.md`.
+
+This shape exists so all UBS can be published under **one shared domain/subdomain** (e.g.
+`ubs.smsbrusque.sc.gov.br/paqueta/`, `/<outra>/`) with a single one-time DNS request to the
+health secretariat's IT — see `guia-dominio-secretaria.md` — instead of one subdomain (and one IT
+request) per clinic. Nothing about the app's own logic changes because of this: `app.js`/`sw.js`/`qr.js`
+already resolve every path relative to their own location (confirmed when this structure was
+introduced), so each UBS folder works identically whether it sits at the domain root or under a
+subpath — including the service worker, which gets a scope automatically limited to its own folder
+(`navigator.serviceWorker.register('sw.js')` uses a relative path), so one UBS's cache can never leak
+into another's. Every mention of `index.html`, `app.js`, `config.js`, `sw.js`, `cartaz.html`, `qr.js`,
+`fotos/`, `guia-da-planilha.md` and `pesquisa/` elsewhere in this file refers to that path **inside a
+UBS's own folder** (e.g. `paqueta/app.js`), not a root-level file.
+
+Around that per-UBS core sit four things that exist because the site is also a **first-semester
+intervention research project**, not just a website — and a website nobody finds, nobody maintains, and
+nobody measured is not an intervention:
 
 - `sw.js` — makes the site open without internet (see "Offline" below).
 - `cartaz.html` + `qr.js` — printable A4 poster and hand-out slips with a QR code, the physical bridge
@@ -21,7 +55,9 @@ measured is not an intervention:
   *used*, not merely that it exists.
 - `pesquisa/` + `guia-da-planilha.md` — the evaluation instruments (baseline/post questionnaires, SUS,
   reception tally, staff interview) and the one-page operational guide for whoever keeps the
-  spreadsheet alive after the semester ends.
+  spreadsheet alive after the semester ends. These two are per-UBS: `pesquisa/` in particular is tied to
+  the UBS Paquetá case study and is not copied by default when replicating the template for a new,
+  production-only UBS.
 
 None of these four are needed to serve hours to a resident, and each can be deleted without touching
 the others.
@@ -29,16 +65,22 @@ the others.
 ## Commands
 
 There is no build, package manager, linter, or test runner — it's plain HTML/CSS/JS loaded directly by
-the browser. To preview locally, serve the folder with any static file server, e.g.:
+the browser. To preview locally, serve the **repo root** (not a UBS subfolder) with any static file
+server, e.g.:
 
 ```bash
 python -m http.server 8000
 ```
 
-then open `http://localhost:8000/?teste` (see "Manual time-travel testing" below).
+then open `http://localhost:8000/` for the list of UBS, or go straight to a UBS with
+`http://localhost:8000/paqueta/?teste` (see "Manual time-travel testing" below). Serving the repo
+root rather than a single UBS folder matters here specifically because each UBS's service worker scope
+depends on the path it's registered from — serving `paqueta/` in isolation would still work, but
+would hide the very path-under-a-shared-domain behaviour ("Repository layout" above) that this structure
+exists to support.
 
-Opening `index.html` straight from the folder (`file://`) still works, but service workers only exist
-on `http`/`https`, so the offline behaviour can only be exercised through a server —
+Opening a UBS's `index.html` straight from its folder (`file://`) still works, but service workers only
+exist on `http`/`https`, so the offline behaviour can only be exercised through a server —
 `registrarServiceWorker()` bails out early on any other protocol rather than throwing.
 
 There are no automated tests in the repo. `qr.js` and `sw.js` were each verified once with a throwaway

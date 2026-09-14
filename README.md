@@ -7,6 +7,32 @@ Feito como projeto de intervenção do 1º semestre (grupo de UBS), com o objeti
 por qualquer UBS de Brusque**: o mesmo código serve para todas, e cada unidade só precisa preencher
 sua própria planilha do Google e um arquivo de configuração — sem escrever código.
 
+## Estrutura do repositório
+
+Este repositório publica **todas as 27 UBS de Brusque ao mesmo tempo**, uma pasta por unidade
+(`paqueta/`, `centro/`, `santa-rita/`, ...). Cada unidade é autocontida dentro da sua própria pasta
+(HTML, CSS, JS, service worker, cartaz, tudo) — cada uma veio de um repositório próprio
+(`13ggd/ubs-<nome>`), trazida como estava, sem homogeneizar o código entre unidades. Isso permite
+publicar todas sob um único domínio/deploy — ver "Servindo no domínio da Secretaria de Saúde" abaixo
+para o porquê disso importar.
+
+O `index.html` da raiz **não** é uma lista simples de uma UBS — é o **painel de todas as 27 UBS de
+Brusque** (busca, painel de acessibilidade, avisos de urgência/fonte dos dados), trazido do repositório
+irmão [`13ggd/ubs-brusque-painel`](https://github.com/13ggd/ubs-brusque-painel), que segue publicado
+separadamente por enquanto (ver nota no fim desta seção). Como as 27 unidades já estão todas aqui
+dentro, todas as entradas do painel usam link relativo (`centro/`, `santa-rita/`, ...) em vez de apontar
+para um deploy separado. Há também uma pasta [`admin/`](admin/) — página interna (`noindex`, sem link
+visível no painel público) com o site **e** a planilha do Google de cada uma das 27 unidades, para quem
+administra o projeto.
+
+Ao migrar uma UBS nova para dentro deste monorepo (ver "Replicando para outra UBS" abaixo) — ou ao
+cadastrar uma UBS que nunca teve site —, atualize a entrada dela nesses dois arquivos (`index.html` e
+`admin/index.html` da raiz): as instruções de replicação já cobrem esse passo.
+
+> **Nota:** o repositório separado `13ggd/ubs-brusque-painel` continua no ar por enquanto. Desativá-lo
+> ou redirecioná-lo para este monorepo é um passo manual, a ser feito só depois de confirmar que esta
+> versão integrada está publicada e correta — não é automático.
+
 ## Como funciona (visão geral)
 
 - O site é só HTML/CSS/JavaScript puro — não tem build, não tem instalação, não tem servidor próprio.
@@ -16,8 +42,8 @@ sua própria planilha do Google e um arquivo de configuração — sem escrever 
   próprio código, para nunca aparecer vazio.
 - Depois da primeira visita, o site **abre mesmo sem internet** — avisando na tela que a informação
   pode estar velha.
-- Tem um **cartaz A4 com QR code** pronto para imprimir ([`cartaz.html`](cartaz.html)) — é o que faz as
-  pessoas descobrirem que o site existe.
+- Tem um **cartaz A4 com QR code** pronto para imprimir (`cartaz.html`, dentro da pasta de cada UBS) —
+  é o que faz as pessoas descobrirem que o site existe.
 - Detalhes técnicos de como cada peça funciona estão em [`CLAUDE.md`](CLAUDE.md) — vale a leitura se for
   mexer na lógica do site.
 
@@ -42,38 +68,47 @@ conseguir lê-la.
 ## Replicando para outra UBS
 
 Nenhuma etapa abaixo exige mexer em `app.js` ou `estilo.css` — só copiar, criar uma planilha e editar
-um arquivo.
+um arquivo. E como o repositório já publica várias UBS lado a lado, a nova unidade entra **na mesma
+publicação**, sem repositório nem deploy novo.
 
-1. **Crie um repositório novo no GitHub** a partir deste (copie a pasta inteira, ou use "Use this
-   template" se este repositório virar um template do GitHub).
+1. **Copie a pasta [`paqueta/`](paqueta/) inteira** dentro deste mesmo repositório, com um novo
+   nome (ex: `<bairro-da-nova-unidade>/`).
 2. **Crie uma planilha do Google nova** para a unidade, com a aba `setores` (obrigatória) e as que
    fizerem sentido entre `mudancas-horario`, `recados`, `equipe`, `faltas`, `ruas` e `reunioes` (veja a
    tabela acima), e compartilhe como "Qualquer pessoa com o link → Leitor".
-3. **Edite só o [`config.js`](config.js)** da cópia nova:
+3. **Edite só o `config.js`** da pasta nova:
    - Seção 1 — nome, endereço, telefones, link do mapa e do Instagram, foto da unidade.
    - Seção 2 — cole o ID da nova planilha em `planilhaId` (o pedaço do meio do link do Google Sheets).
    - Seções 3 a 6 — atualize os dados de reserva (`setoresReserva`, `avisosReserva`, `equipeReserva`,
      `areasEquipeReserva`, `notasRecorrentesReserva`) com informações reais da nova unidade, para que o
      site nunca fique vazio caso a planilha falhe.
-4. **Publique o site** (Vercel ou GitHub Pages funcionam bem para esse tipo de site estático e são
-   gratuitos).
-5. **Volte no `config.js` e preencha `site`** com o endereço publicado (ex:
-   `https://ubspaqueta.vercel.app`). É desse campo que sai o QR code do cartaz impresso.
+4. **Atualize a entrada dessa UBS** no array `UNIDADES`, tanto no [`index.html`](index.html) quanto no
+   [`admin/index.html`](admin/index.html) da raiz do repositório: se ela já estava listada (com link
+   absoluto para o deploy separado), troque o link pelo caminho relativo da pasta nova (ex:
+   `<nome>/`, e `../<nome>/` no `admin/index.html`, que está uma pasta abaixo). Se for uma UBS
+   nova que nunca teve site, acrescente a linha no array.
+5. **Publique** (`git commit` + `git push` — a Vercel republica o repositório inteiro sozinha).
+6. **Volte no `config.js` da pasta nova e preencha `unidade.site`** com o endereço publicado, incluindo a
+   subpasta (ex: `https://ubspaqueta.vercel.app/<nova-unidade>`, sem barra no final). É desse campo
+   que sai o QR code do cartaz impresso. Ajuste também o bloco Open Graph no topo do `index.html` da
+   pasta nova (mesmo endereço, com barra no final).
 
 ## Servindo no domínio da Secretaria de Saúde
 
-Para o site abrir num endereço da própria Secretaria (ex:
-`paqueta.smsbrusque.sc.gov.br`) em vez de `...vercel.app` — mantendo o
-cadeado e o domínio oficial —, o passo a passo está em
+Para todas as UBS abrirem num subdomínio da própria Secretaria (ex:
+`ubs.smsbrusque.sc.gov.br/paqueta/`) em vez de `...vercel.app` — mantendo
+o cadeado e o domínio oficial —, o passo a passo está em
 [`guia-dominio-secretaria.md`](guia-dominio-secretaria.md). Ele tem uma parte
 para a equipe do projeto e uma parte pronta para enviar ao setor de TI da
-Secretaria (é um único registro de DNS do lado deles).
+Secretaria (é um único registro de DNS do lado deles, feito **uma vez só**
+para todas as UBS atuais e futuras — não um pedido por unidade).
 
 ## Imprimindo o cartaz com QR code
 
 O site pode estar perfeito e ninguém descobrir que ele existe. O cartaz é o que liga um ao outro.
 
-Abra **[`cartaz.html`](cartaz.html)** no navegador (é só dar dois cliques no arquivo). Aparece uma barra
+Abra **`cartaz.html`** (dentro da pasta da UBS, ex: [`paqueta/cartaz.html`](paqueta/cartaz.html))
+no navegador (é só dar dois cliques no arquivo). Aparece uma barra
 no topo com o endereço do site, a escolha entre dois formatos e um botão de imprimir:
 
 - **Cartaz A4** — para colar na porta da unidade, no balcão e na sala de espera. Tem o QR grande, o
@@ -108,16 +143,18 @@ cinza no fim da página diz de quando eles são ("guardados no aparelho ontem à
 nunca tiver conseguido abrir o site com internet é que ele cai nos dados de reserva do `config.js` —
 e a mesma linha avisa isso também, com todas as letras.
 
-Quem cuida disso é o arquivo [`sw.js`](sw.js). **Se você mexer em qualquer arquivo do site, troque o
-número em `VERSAO`, na primeira linha dele** (`'ubs-v2'` → `'ubs-v3'`) — é isso que faz o celular das
-pessoas jogar fora a versão antiga. Sem trocar, quem já visitou pode continuar vendo o site velho.
+Quem cuida disso é o arquivo `sw.js` de cada UBS (ex: [`paqueta/sw.js`](paqueta/sw.js)). **Se
+você mexer em qualquer arquivo daquela UBS, troque o número em `VERSAO`, na primeira linha dele**
+(`'ubs-v9'` → `'ubs-v10'`) — é isso que faz o celular das pessoas jogar fora a versão antiga. Sem trocar,
+quem já visitou pode continuar vendo o site velho. Cada UBS tem seu próprio `sw.js` e cache isolado — mudar
+o `VERSAO` de uma não afeta as outras.
 
 ## Medindo os acessos (opcional)
 
 Desligado por padrão. Serve para o projeto de pesquisa: sem isso não dá para dizer se o site foi
 *usado*, só que ele existe.
 
-Na **seção 8 do [`config.js`](config.js)** dá para ligar uma de duas opções gratuitas: `goatcounter`
+Na **seção 8 do `config.js`** de cada UBS dá para ligar uma de duas opções gratuitas: `goatcounter`
 (funciona em qualquer hospedagem) ou `vercel` (só se o site estiver na Vercel). Nenhuma das duas usa
 cookie nem guarda nada que identifique a pessoa — por isso o site não precisa de aviso de cookies, e é
 essa a resposta se o comitê de ética perguntar.
@@ -132,15 +169,18 @@ sábado ficariam misturadas com as dos moradores.
 
 Não tem nada a ver com o funcionamento do site: são os documentos para **avaliar** se ele funcionou —
 questionário de antes, questionário de depois com a escala de usabilidade, folha de contagem da
-recepção, roteiro de entrevista com a equipe e o plano que amarra tudo. Comece pelo
-[`pesquisa/README.md`](pesquisa/README.md).
+recepção, roteiro de entrevista com a equipe e o plano que amarra tudo. É específica da UBS Paquetá,
+o estudo de caso deste semestre — não faz parte do que se copia ao replicar para outra unidade. Comece
+pelo [`paqueta/pesquisa/README.md`](paqueta/pesquisa/README.md).
 
-O [`guia-da-planilha.md`](guia-da-planilha.md), na raiz, é o guia de uma página para imprimir e deixar
-do lado do computador de quem atualiza a planilha na unidade. É ele que decide se o site continua certo
-depois que o semestre acabar.
+O `guia-da-planilha.md`, dentro da pasta de cada UBS (ex:
+[`paqueta/guia-da-planilha.md`](paqueta/guia-da-planilha.md)), é o guia de uma página para
+imprimir e deixar do lado do computador de quem atualiza a planilha daquela unidade. É ele que decide
+se o site continua certo depois que o semestre acabar.
 
 ## Testando horários sem esperar o relógio
 
-Abrindo o site com `?teste` no final do endereço (ex: `seusite.vercel.app/?teste`) aparece uma barra
-escondida com data e hora para simular "como o site fica no sábado às 8h" sem precisar esperar o dia
-chegar. Só aparece com esse parâmetro — no site normal fica invisível.
+Abrindo o site de uma UBS com `?teste` no final do endereço (ex:
+`ubspaqueta.vercel.app/paqueta/?teste`) aparece uma barra escondida com data e hora para simular
+"como o site fica no sábado às 8h" sem precisar esperar o dia chegar. Só aparece com esse parâmetro — no
+site normal fica invisível.

@@ -37,23 +37,31 @@ const CONFIG = {
     mapa: 'https://www.google.com/maps/search/?api=1&query=UBS%20Paquet%C3%A1%2C%20Rua%20Waldemar%20Hoffmann%2C%20Brusque%20-%20SC&query_place_id=ChIJV2DuZfVG35QRRnPgxVVeE5M',
     instagram: 'https://www.instagram.com/ubspaqueta/',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app').
+    /* Endereço desta pasta depois de publicada (ex:
+       'https://ubspaqueta.vercel.app/paqueta'). Como este site vive numa
+       subpasta de um domínio compartilhado com outras UBS, o valor sempre
+       inclui a subpasta — sem barra no final.
        Só é usado pelo cartaz.html, para gerar o QR code impresso. Se deixar
        vazio, o cartaz deduz o endereço da própria janela do navegador — o que
        funciona, mas gera um QR apontando para "localhost" se você abrir o
        cartaz antes de publicar o site. Preencha assim que publicar. */
-    site: '',
+    site: 'https://ubspaqueta.vercel.app/paqueta',
 
-    /* Endereço da página que lista TODAS as unidades de saúde, no site da
-       Secretaria. Vira um link "Ver todas as unidades de saúde" no rodapé
-       do site, separado do resto (não misturado no meio dos telefones).
-       Serve principalmente quando este site é publicado sob o domínio da
-       Secretaria (ex: paqueta.smsbrusque.sc.gov.br): ali não existe o menu
-       do portal em volta, então quem chega direto (QR, link, favorito)
-       precisa de um caminho de volta para achar outra unidade. NÃO é
-       redirecionamento automático — é só um link visível. Deixe vazio ('')
-       para não mostrar nada. */
-    paginaUnidades: 'https://ubs-brusque-painel.vercel.app',
+    /* Endereço da página que lista TODAS as unidades de saúde de Brusque.
+       Vira um link "Ver todas as unidades de saúde" no rodapé do site,
+       separado do resto (não misturado no meio dos telefones). Serve
+       principalmente quando este site é publicado sob um domínio
+       compartilhado com outras UBS (ex: ubs.smsbrusque.sc.gov.br/paqueta/):
+       ali não existe o menu do portal em volta, então quem chega direto (QR,
+       link, favorito) precisa de um caminho de volta para achar outra
+       unidade. NÃO é redirecionamento automático — é só um link visível.
+       Deixe vazio ('') para não mostrar nada.
+
+       Este site vive na subpasta paqueta/ de um monorepo cuja raiz
+       ('../' a partir daqui) É essa página — o painel de todas as UBS de
+       Brusque (ver index.html e admin/index.html na raiz do repositório).
+       Por isso o valor é um caminho relativo, não um domínio separado. */
+    paginaUnidades: '../',
 
     /* Foto do prédio (fachada). Deixe vazio ('') para não mostrar nada.
        Mesma regra das fotos da equipe: coloque o arquivo na pasta "fotos"
