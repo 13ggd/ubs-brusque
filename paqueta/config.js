@@ -38,14 +38,14 @@ const CONFIG = {
     instagram: 'https://www.instagram.com/ubspaqueta/',
 
     /* Endereço desta pasta depois de publicada (ex:
-       'https://ubspaqueta.vercel.app/paqueta'). Como este site vive numa
+       'https://ubs-brusque.vercel.app/paqueta'). Como este site vive numa
        subpasta de um domínio compartilhado com outras UBS, o valor sempre
        inclui a subpasta — sem barra no final.
        Só é usado pelo cartaz.html, para gerar o QR code impresso. Se deixar
        vazio, o cartaz deduz o endereço da própria janela do navegador — o que
        funciona, mas gera um QR apontando para "localhost" se você abrir o
        cartaz antes de publicar o site. Preencha assim que publicar. */
-    site: 'https://ubspaqueta.vercel.app/paqueta',
+    site: 'https://ubs-brusque.vercel.app/paqueta',
 
     /* Endereço da página que lista TODAS as unidades de saúde de Brusque.
        Vira um link "Ver todas as unidades de saúde" no rodapé do site,

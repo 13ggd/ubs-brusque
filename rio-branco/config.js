@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Rio Branco, R. Marcio Haas, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/rio-branco').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/rio-branco').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/rio-branco',
+    site: 'https://ubs-brusque.vercel.app/rio-branco',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

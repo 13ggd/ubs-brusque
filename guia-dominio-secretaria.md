@@ -29,7 +29,7 @@ São duas partes:
 
 ### A1. Ter o repositório publicado na Vercel
 
-Se já está publicado (ex: `ubspaqueta.vercel.app/` abre e mostra a lista de
+Se já está publicado (ex: `ubs-brusque.vercel.app/` abre e mostra a lista de
 unidades), pule para A2.
 
 1. Conta em [vercel.com](https://vercel.com) — entre com o GitHub.

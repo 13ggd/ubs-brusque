@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Dom Joaquim, R. Armando Pedro Maestri, 300, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/dom-joaquim').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/dom-joaquim').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/dom-joaquim',
+    site: 'https://ubs-brusque.vercel.app/dom-joaquim',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

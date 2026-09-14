@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Guarani, R. Nicolau Hassman, 71, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/guarani').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/guarani').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/guarani',
+    site: 'https://ubs-brusque.vercel.app/guarani',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

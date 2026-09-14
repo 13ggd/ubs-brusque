@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Emma II, R. Juvenal Vechi, 06, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/emma-ii').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/emma-ii').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/emma-ii',
+    site: 'https://ubs-brusque.vercel.app/emma-ii',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

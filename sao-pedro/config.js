@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS São Pedro, R. Catarina Visconti Imhof, 121, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/sao-pedro').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/sao-pedro').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/sao-pedro',
+    site: 'https://ubs-brusque.vercel.app/sao-pedro',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

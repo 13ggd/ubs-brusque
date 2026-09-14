@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Volta Grande, Rua Alberto Michei, sn, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/volta-grande').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/volta-grande').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/volta-grande',
+    site: 'https://ubs-brusque.vercel.app/volta-grande',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

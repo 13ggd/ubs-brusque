@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Limeira Alta, R. Alberto Muller, 6640-7014, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/limeira-alta').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/limeira-alta').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/limeira-alta',
+    site: 'https://ubs-brusque.vercel.app/limeira-alta',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',
