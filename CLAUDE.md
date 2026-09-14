@@ -32,6 +32,15 @@ dynamic. Since all 27 units now live in this monorepo, every entry in both array
 UBS added here later that used to be a separate deploy should have its entry switched from an absolute
 link the same way; see `README.md`.
 
+`cartaz/` is a third brought-in tool, from [`13ggd/ubs-brusque-cartazes`](https://github.com/13ggd/ubs-brusque-cartazes):
+a standalone poster/slip generator for any UBS, driven by a form instead of a `config.js`, with its own
+`UBS_BRUSQUE` directory array in `cartaz/dados-ubs.js` (name, address, phone, **site**, sheet ID — no
+sheet-edit link, unlike `admin/`). Also `noindex`, linked only from `admin/`'s footer. Its `site` field
+is what pre-fills the QR/URL field, so it needs the same relative-vs-absolute update as the painel
+arrays when a UBS migrates in or the shared subdomain goes live — but keyed by `slug` (kept as
+`ubs-<nome>`, matching that file's own `<select>`/`localStorage` keys — do not "clean up" that prefix,
+it would silently orphan anyone's saved edits in their browser).
+
 This shape exists so all UBS can be published under **one shared domain/subdomain** (e.g.
 `ubs.smsbrusque.sc.gov.br/paqueta/`, `/<outra>/`) with a single one-time DNS request to the
 health secretariat's IT — see `guia-dominio-secretaria.md` — instead of one subdomain (and one IT

@@ -29,9 +29,19 @@ Ao migrar uma UBS nova para dentro deste monorepo (ver "Replicando para outra UB
 cadastrar uma UBS que nunca teve site —, atualize a entrada dela nesses dois arquivos (`index.html` e
 `admin/index.html` da raiz): as instruções de replicação já cobrem esse passo.
 
-> **Nota:** o repositório separado `13ggd/ubs-brusque-painel` continua no ar por enquanto. Desativá-lo
-> ou redirecioná-lo para este monorepo é um passo manual, a ser feito só depois de confirmar que esta
-> versão integrada está publicada e correta — não é automático.
+Há também [`cartaz/`](cartaz/) — um gerador de cartaz/bilhetes avulso, trazido do repositório irmão
+[`13ggd/ubs-brusque-cartazes`](https://github.com/13ggd/ubs-brusque-cartazes), que monta o cartaz A4 e
+os bilhetes com QR code de **qualquer** UBS a partir de um formulário (dados em `cartaz/dados-ubs.js`),
+sem precisar abrir a pasta de cada unidade — útil pra quem cuida da impressão sem mexer em código. É
+`noindex` e linkado só a partir do `admin/`. Diferente de `admin/`, ele guarda o endereço do **site**
+de cada UBS (usado para preencher o campo da URL/QR), não o link de edição da planilha — então, se o
+endereço de uma unidade mudar (ex: quando o domínio da Secretaria entrar no ar), atualize a linha dela
+também em `cartaz/dados-ubs.js`, além do `config.js` daquela pasta.
+
+> **Nota:** os repositórios separados `13ggd/ubs-brusque-painel` e `13ggd/ubs-brusque-cartazes`
+> continuam no ar por enquanto. Desativá-los/redirecioná-los para este monorepo é um passo manual, a
+> ser feito só depois de confirmar que esta versão integrada está publicada e correta — não é
+> automático.
 
 ## Como funciona (visão geral)
 
