@@ -12,11 +12,14 @@ the whole folder and edit only `config.js`. The step-by-step replication checkli
 
 ### Repository layout: one deploy, many UBS
 
-The repo root is **not** a single UBS — it's a monorepo publishing several UBS side by side from one
-deploy. Each UBS is a self-contained folder (currently only `paqueta/`) holding its own copy of every
-file described below (`index.html`, `app.js`, `config.js`, `estilo.css`, `sw.js`, `cartaz.html`, `qr.js`,
-plus that UBS's own `guia-da-planilha.md` and, for `paqueta/` specifically, its `pesquisa/` research
-material).
+The repo root is **not** a single UBS — it's a monorepo publishing **all 27 UBS of Brusque** side by
+side from one deploy, one self-contained folder per unit (`paqueta/`, `centro/`, `santa-rita/`, ...),
+each holding its own copy of every file described below (`index.html`, `app.js`, `config.js`,
+`estilo.css`, `sw.js`, `cartaz.html`, `qr.js`, plus that UBS's own `guia-da-planilha.md`). Each folder
+was brought in from that UBS's own repository (`13ggd/ubs-<nome>`) **as it was** — the code is not
+identical between units (they drifted independently over time), and this migration deliberately did not
+homogenize them. `pesquisa/` is the one exception that isn't per-UBS: it only exists in `paqueta/`,
+tied to the UBS Paquetá case study specifically.
 
 The root `index.html` and `admin/index.html` are **not** template/app files — they're the citywide
 **painel** (public list + internal admin page) for all 27 UBS of Brusque, brought in from the sibling
@@ -24,10 +27,10 @@ repository [`13ggd/ubs-brusque-painel`](https://github.com/13ggd/ubs-brusque-pai
 separately for now; retiring/redirecting it is a manual follow-up, not automatic). Each is a static,
 self-contained HTML file with an inline `UNIDADES` array (name, site link, and — in `admin/` only — the
 Google Sheet link) rendered client-side; no shared JS with the per-UBS folders, no routing, nothing
-dynamic. A UBS not yet migrated into this monorepo keeps an absolute link to its own separate deploy in
-both arrays; only `paqueta/` (the one folder migrated so far) uses a relative link (`paqueta/` in
-`index.html`, `../paqueta/` in `admin/index.html`, since `admin/` is one level deeper). When another
-UBS folder is added here, update its entry in both arrays the same way — see `README.md`.
+dynamic. Since all 27 units now live in this monorepo, every entry in both arrays uses a relative link
+(`centro/` in `index.html`, `../centro/` in `admin/index.html`, since `admin/` is one level deeper) — a
+UBS added here later that used to be a separate deploy should have its entry switched from an absolute
+link the same way; see `README.md`.
 
 This shape exists so all UBS can be published under **one shared domain/subdomain** (e.g.
 `ubs.smsbrusque.sc.gov.br/paqueta/`, `/<outra>/`) with a single one-time DNS request to the

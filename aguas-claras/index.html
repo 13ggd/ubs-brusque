@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UBS Águas Claras</title>
+<meta name="description" content="Horários, avisos e telefones da UBS Águas Claras, em Brusque, Santa Catarina.">
+<meta name="theme-color" content="#02301A">
+
+<!-- ===================== COMPARTILHAMENTO (Open Graph) ====================
+     A imagem + título que aparecem quando alguém cola o link no WhatsApp,
+     Facebook, Telegram etc. Precisa ficar aqui no HTML fixo: o robô dessas
+     redes NÃO lê o config.js (não roda JavaScript).
+
+     >>> TROQUE o endereço "https://ubspaqueta.vercel.app/aguas-claras" nas linhas
+         og:url e og:image (e nas twitter:image) pelo endereço REAL do
+         site publicado — o mesmo valor de CONFIG.unidade.site no
+         config.js, só que escrito por extenso e com https:// na frente.
+         Se ficar errado, o WhatsApp mostra o link sem imagem.
+
+     A imagem "fotos/compartilhamento.jpg" precisa ter no máximo ~300 KB
+     (senão o WhatsApp não mostra) e o tamanho declarado abaixo (800x524).
+     ====================================================================== -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="UBS Águas Claras">
+<meta property="og:title" content="UBS Águas Claras — está aberta agora?">
+<meta property="og:description" content="Horários de cada setor, avisos do dia, equipe e telefones de urgência da UBS Águas Claras, em Brusque/SC.">
+<meta property="og:url" content="https://ubspaqueta.vercel.app/aguas-claras/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UBS Águas Claras — está aberta agora?">
+<meta name="twitter:description" content="Horários de cada setor, avisos do dia, equipe e telefones de urgência da UBS Águas Claras, em Brusque/SC.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="UBS Águas Claras">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<a href="#conteudo" class="pular-link">Pular para o conteúdo</a>
+
+<!-- ============================ TOPO ============================ -->
+<header class="topo">
+  <div class="wrap">
+    <p class="orgao" id="orgao"></p>
+    <h1 id="nome-unidade">UBS Águas Claras</h1>
+    <p class="subtitulo" id="subtitulo"></p>
+  </div>
+</header>
+
+<!-- ==================== RESPOSTA PRINCIPAL ====================== -->
+<section class="resposta">
+  <div class="wrap">
+    <!-- Aviso de "sem internet". Fica escondido enquanto houver conexão.
+         Preenchido por atualizarAvisoDeInternet(), no app.js. Existe porque
+         o site abre offline (service worker) e mostrar horário guardado sem
+         avisar que é guardado faria a pessoa vir à toa confiando na tela. -->
+    <div id="sem-internet" class="sem-internet" role="status" hidden></div>
+
+    <img id="foto-unidade" class="foto-unidade" alt="" hidden
+         onerror="this.hidden=true;">
+    <div id="status" aria-live="polite"></div>
+
+    <div class="botoes">
+      <a class="botao cheio" id="bt-ligar" href="#">
+        <span class="icone" aria-hidden="true">☎</span> Ligar para a UBS
+      </a>
+      <a class="botao" id="bt-mapa" href="#" target="_blank" rel="noopener">
+        <span class="icone" aria-hidden="true">📍</span> Ver no mapa
+      </a>
+    </div>
+  </div>
+</section>
+
+<main class="wrap" id="conteudo">
+
+  <!-- ---------------------------- AVISOS ------------------------ -->
+  <section class="secao" id="avisos-secao">
+    <h2>Avisos de hoje</h2>
+    <p class="ajuda">Coisas que mudaram e você precisa saber antes de vir.</p>
+    <div id="avisos"></div>
+
+    <div id="avisos-futuros-bloco" class="futuros-bloco" hidden>
+      <h3 class="futuros-tit">Avisos futuros</h3>
+      <p class="ajuda">Ainda não vale hoje, mas já está programado.</p>
+      <div id="avisos-futuros"></div>
+    </div>
+  </section>
+
+  <!-- --------------------------- MINHA RUA ---------------------- -->
+  <!-- Responde "moro na rua X, que horas eu consulto?" cruzando a aba
+       "ruas" (rua → equipe) com a coluna "horario" da aba "equipe"
+       (equipe → turno). Fica escondida se a unidade não tiver ruas
+       cadastradas — quem mostra/esconde é desenharMinhaRua(), no app.js. -->
+  <section class="secao" id="minha-rua-secao" hidden>
+    <h2>Minha rua</h2>
+
+    <div id="rua-busca">
+      <p class="ajuda">Escreva o nome da sua rua para saber qual equipe atende você e em que horário.</p>
+      <label class="rua-rotulo" for="rua-campo">Nome da rua</label>
+      <input class="rua-campo" id="rua-campo" type="search" autocomplete="off"
+             autocorrect="off" spellcheck="false" placeholder="Ex.: Waldemar Hoffmann">
+      <div class="rua-sugestoes" id="rua-sugestoes" aria-live="polite"></div>
+    </div>
+
+    <div class="rua-resposta" id="rua-resposta" aria-live="polite"></div>
+  </section>
+
+  <!-- ---------------------------- SETORES ------------------------ -->
+  <section class="secao" id="setores-secao">
+    <h2>O que você precisa?</h2>
+    <p class="ajuda">Toque em “Ver os dias da semana” para saber quando cada setor atende.</p>
+    <div id="setores"></div>
+  </section>
+
+  <!-- ---------------------------- EQUIPE ------------------------ -->
+  <section class="secao" id="equipe-secao">
+    <h2>Quem trabalha aqui</h2>
+    <p class="ajuda">A equipe da unidade e o que cada pessoa faz.</p>
+
+    <div class="pessoas" id="equipe"></div>
+  </section>
+
+  <!-- --------------------------- URGÊNCIA ----------------------- -->
+  <section class="secao" id="urgencia-secao">
+    <h2>Passando mal? Precisa de ajuda agora?</h2>
+    <p class="ajuda">Se a UBS estiver aberta, procure o Acolhimento para avaliação. Se estiver fechada ou for muito grave, procure um destes lugares.</p>
+
+    <div class="urgencia">
+      <h2>Atendimento a qualquer hora</h2>
+      <p class="sub">Aberto de dia e de noite, inclusive sábado e domingo.</p>
+
+      <a class="samu" id="samu" href="#">
+        <span class="num" id="samu-num">192</span>
+        <span class="lab" id="samu-lab"></span>
+      </a>
+
+      <div id="lugares"></div>
+    </div>
+  </section>
+
+  <!-- -------------------------- ONDE FICA ----------------------- -->
+  <section class="secao" id="contato-secao">
+    <h2>Onde fica e telefones</h2>
+    <div class="cartao">
+      <div class="info">
+        <p class="info-rot">Endereço</p>
+        <p class="info-val" id="info-endereco"></p>
+      </div>
+      <div class="info">
+        <p class="info-rot">Telefone da UBS</p>
+        <div class="info-val" id="info-telefone"></div>
+      </div>
+      <div class="info">
+        <p class="info-rot">Secretaria de Saúde</p>
+        <p class="info-val" id="info-secretaria"></p>
+      </div>
+      <div class="info" id="info-mapa-linha">
+        <p class="info-rot">Localização</p>
+        <p class="info-val" id="info-mapa"></p>
+      </div>
+      <div class="info" id="info-instagram-linha" hidden>
+        <p class="info-rot">Instagram</p>
+        <p class="info-val" id="info-instagram"></p>
+      </div>
+
+      <details class="tel-uteis" id="tel-uteis-bloco" hidden>
+        <summary>Outros telefones úteis</summary>
+        <div class="tel-uteis-lista" id="tel-uteis-lista"></div>
+      </details>
+    </div>
+
+    <div class="fonte-dados" id="fonte-dados">Carregando horários…</div>
+  </section>
+
+  <footer class="rodape">
+    <p id="rodape"></p>
+    <p class="rodape-unidades" id="rodape-unidades" hidden></p>
+  </footer>
+</main>
+
+<!-- =================== BARRA DE TESTE ===========================
+     Fica escondida no site normal.
+     Para testar outros dias e horários, acesse o site com ?teste
+     no final do endereço. Exemplo:  meusite.vercel.app/?teste
+     ============================================================== -->
+<div class="teste">
+  <div class="teste-in">
+    <span class="teste-selo">Teste</span>
+    <div class="teste-ct">
+      <input type="date" id="data" aria-label="Data para testar">
+      <input type="range" id="hora" min="0" max="1425" step="15" value="600" aria-label="Hora para testar">
+      <span class="teste-h" id="lbl">10:00</span>
+      <button type="button" id="bt-agora">Agora</button>
+    </div>
+  </div>
+</div>
+
+<noscript>
+  <div class="wrap" style="padding-top:24px">
+    <div class="cartao">
+      <p class="info-val">UBS Águas Claras — Brusque/SC. Endereço a confirmar com a unidade.</p>
+      <p class="info-val" style="margin-top:12px">Telefone: (47) 3351-8863</p>
+      <p class="info-val" style="margin-top:12px">Horário de atendimento ainda não confirmado — ligue antes de vir.</p>
+      <p class="info-val" style="margin-top:12px">Emergência a qualquer hora: ligue 192.</p>
+    </div>
+  </div>
+</noscript>
+
+<!-- ================== ACESSIBILIDADE (botão flutuante) ==================
+     Substitui os botões A A A que ficavam no topo. Agora tudo isso mora
+     aqui dentro: tamanho da letra, alto contraste e ouvir a página.
+     ======================================================================= -->
+<button type="button" id="a11y-fab" class="a11y-fab"
+        aria-haspopup="dialog" aria-expanded="false" aria-controls="a11y-painel"
+        aria-label="Abrir opções de acessibilidade">
+  <span aria-hidden="true">Aa</span>
+</button>
+
+<div id="a11y-fundo" class="a11y-fundo" hidden></div>
+
+<div id="a11y-painel" class="a11y-painel" role="dialog" aria-modal="true"
+     aria-labelledby="a11y-titulo" hidden>
+  <div class="a11y-topo">
+    <h2 id="a11y-titulo">Acessibilidade</h2>
+    <button type="button" id="a11y-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="a11y-grupo">
+    <p class="a11y-grupo-tit">Tamanho da letra</p>
+    <div class="a11y-letra-btns" role="group" aria-label="Escolher o tamanho da letra">
+      <button type="button" class="a1" data-esc="1"    aria-pressed="true"  aria-label="Letra normal">A</button>
+      <button type="button" class="a2" data-esc="1.22" aria-pressed="false" aria-label="Letra grande">A</button>
+      <button type="button" class="a3" data-esc="1.45" aria-pressed="false" aria-label="Letra muito grande">A</button>
+    </div>
+  </div>
+
+  <div class="a11y-grupo">
+    <p class="a11y-grupo-tit">Contraste</p>
+    <button type="button" id="a11y-contraste" class="a11y-toggle" aria-pressed="false">
+      <span class="ic" aria-hidden="true">◐</span> Ativar alto contraste
+    </button>
+  </div>
+
+  <div class="a11y-grupo">
+    <p class="a11y-grupo-tit">Ouvir</p>
+    <button type="button" id="a11y-ouvir" class="a11y-toggle" aria-pressed="false">
+      <span class="ic" aria-hidden="true">🔊</span> Ouvir esta página
+    </button>
+  </div>
+
+  <div class="a11y-grupo">
+    <p class="a11y-grupo-tit">Idioma / Language</p>
+    <p class="a11y-idioma-ajuda">Abre a página traduzida em outra aba, pelo tradutor do Google.</p>
+    <div class="a11y-letra-btns">
+      <a class="idioma-bt" id="idioma-en" href="#" target="_blank" rel="noopener">English</a>
+      <a class="idioma-bt" id="idioma-es" href="#" target="_blank" rel="noopener">Español</a>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== MENU (ir para uma parte da página) ============
+     Botão flutuante no canto superior direito, em cima — o de
+     acessibilidade fica embaixo. Assim os dois não competem no mesmo canto.
+     Abre uma lista de atalhos; a página continua sendo uma rolagem só.
+     ======================================================================= -->
+<button type="button" id="nav-fab" class="nav-fab"
+        aria-haspopup="dialog" aria-expanded="false" aria-controls="nav-painel"
+        aria-label="Abrir menu para ir direto a uma parte da página">
+  <span aria-hidden="true">☰</span>
+</button>
+
+<div id="nav-fundo" class="a11y-fundo" hidden></div>
+
+<div id="nav-painel" class="a11y-painel" role="dialog" aria-modal="true"
+     aria-labelledby="nav-titulo" hidden>
+  <div class="a11y-topo">
+    <h2 id="nav-titulo">Ir para</h2>
+    <button type="button" id="nav-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
+  </div>
+
+  <ul class="nav-lista">
+    <li><a class="nav-item" href="#avisos-secao"><span class="ic" aria-hidden="true">📣</span> Avisos de hoje</a></li>
+    <li id="nav-minha-rua" hidden><a class="nav-item" href="#minha-rua-secao"><span class="ic" aria-hidden="true">🏠</span> Minha rua</a></li>
+    <li><a class="nav-item" href="#setores-secao"><span class="ic" aria-hidden="true">🕒</span> Horários dos setores</a></li>
+    <li><a class="nav-item" href="#equipe-secao"><span class="ic" aria-hidden="true">👥</span> Quem trabalha aqui</a></li>
+    <li><a class="nav-item" href="#urgencia-secao"><span class="ic" aria-hidden="true">🚑</span> Urgência</a></li>
+    <li><a class="nav-item" href="#contato-secao"><span class="ic" aria-hidden="true">📍</span> Onde fica e telefones</a></li>
+  </ul>
+</div>
+
+<!-- ================ DETALHE DA PESSOA (clique num card da equipe) =======
+     Painel único, reaproveitado pra qualquer pessoa clicada — o conteúdo
+     é preenchido na hora pelo JS (ver abrirPessoaPainel em app.js).
+     ======================================================================= -->
+<div id="pessoa-fundo" class="a11y-fundo" hidden></div>
+
+<div id="pessoa-painel" class="a11y-painel pessoa-painel" role="dialog" aria-modal="true"
+     aria-labelledby="pessoa-nome" hidden>
+  <div class="a11y-topo">
+    <h2 id="pessoa-nome"></h2>
+    <button type="button" id="pessoa-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
+  </div>
+  <div id="pessoa-detalhe"></div>
+</div>
+
+<!-- ================== LIBRAS (VLibras — widget oficial do Governo Federal)
+     Gratuito, mantido pelo governo. Se não quiser esse recurso, apague
+     este bloco inteiro (as 6 linhas abaixo) e o site funciona normalmente.
+     ======================================================================= -->
+<div vw class="enabled">
+  <div vw-access-button class="active"></div>
+  <div vw-plugin-wrapper>
+    <div class="vw-plugin-top-wrapper"></div>
+  </div>
+</div>
+<script async src="https://vlibras.gov.br/app/vlibras-plugin.js"
+  onload="if(window.VLibras){ new window.VLibras.Widget('https://vlibras.gov.br/app'); }"></script>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

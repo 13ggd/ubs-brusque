@@ -9,24 +9,25 @@ sua própria planilha do Google e um arquivo de configuração — sem escrever 
 
 ## Estrutura do repositório
 
-Este repositório publica **várias UBS ao mesmo tempo**, uma pasta por unidade — hoje só
-[`paqueta/`](paqueta/), a UBS Paquetá. Cada unidade é autocontida dentro da sua própria pasta
-(HTML, CSS, JS, service worker, cartaz, tudo). Isso permite publicar todas sob um único domínio/deploy —
-ver "Servindo no domínio da Secretaria de Saúde" abaixo para o porquê disso importar.
+Este repositório publica **todas as 27 UBS de Brusque ao mesmo tempo**, uma pasta por unidade
+(`paqueta/`, `centro/`, `santa-rita/`, ...). Cada unidade é autocontida dentro da sua própria pasta
+(HTML, CSS, JS, service worker, cartaz, tudo) — cada uma veio de um repositório próprio
+(`13ggd/ubs-<nome>`), trazida como estava, sem homogeneizar o código entre unidades. Isso permite
+publicar todas sob um único domínio/deploy — ver "Servindo no domínio da Secretaria de Saúde" abaixo
+para o porquê disso importar.
 
-O `index.html` da raiz **não** é uma lista simples desta UBS — é o **painel de todas as 27 UBS de
+O `index.html` da raiz **não** é uma lista simples de uma UBS — é o **painel de todas as 27 UBS de
 Brusque** (busca, painel de acessibilidade, avisos de urgência/fonte dos dados), trazido do repositório
 irmão [`13ggd/ubs-brusque-painel`](https://github.com/13ggd/ubs-brusque-painel), que segue publicado
-separadamente por enquanto (ver nota no fim desta seção). Cada UBS que **ainda não** faz parte deste
-monorepo continua listada com um link absoluto para o seu próprio deploy (ex:
-`https://ubs-centro.vercel.app`); só a UBS Paquetá, por já estar aqui dentro, tem um link relativo
-(`paqueta/`). Há também uma pasta [`admin/`](admin/) — página interna (`noindex`, sem link visível no
-painel público) com o site **e** a planilha do Google de cada uma das 27 unidades, para quem administra
-o projeto.
+separadamente por enquanto (ver nota no fim desta seção). Como as 27 unidades já estão todas aqui
+dentro, todas as entradas do painel usam link relativo (`centro/`, `santa-rita/`, ...) em vez de apontar
+para um deploy separado. Há também uma pasta [`admin/`](admin/) — página interna (`noindex`, sem link
+visível no painel público) com o site **e** a planilha do Google de cada uma das 27 unidades, para quem
+administra o projeto.
 
-Ao migrar uma UBS nova para dentro deste monorepo (ver "Replicando para outra UBS" abaixo), troque o
-link dela, nesses dois arquivos (`index.html` e `admin/index.html` da raiz), de absoluto para o caminho
-relativo da pasta nova — as instruções de replicação já cobrem esse passo.
+Ao migrar uma UBS nova para dentro deste monorepo (ver "Replicando para outra UBS" abaixo) — ou ao
+cadastrar uma UBS que nunca teve site —, atualize a entrada dela nesses dois arquivos (`index.html` e
+`admin/index.html` da raiz): as instruções de replicação já cobrem esse passo.
 
 > **Nota:** o repositório separado `13ggd/ubs-brusque-painel` continua no ar por enquanto. Desativá-lo
 > ou redirecioná-lo para este monorepo é um passo manual, a ser feito só depois de confirmar que esta
