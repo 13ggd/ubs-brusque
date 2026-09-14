@@ -52,7 +52,12 @@ already resolve every path relative to their own location (confirmed when this s
 introduced), so each UBS folder works identically whether it sits at the domain root or under a
 subpath — including the service worker, which gets a scope automatically limited to its own folder
 (`navigator.serviceWorker.register('sw.js')` uses a relative path), so one UBS's cache can never leak
-into another's. Every mention of `index.html`, `app.js`, `config.js`, `sw.js`, `cartaz.html`, `qr.js`,
+into another's. The part that mattered most here — that the offline path still works once a UBS lives
+under a subpath instead of at a domain root — was checked on a real phone after the migration, not just
+read: site loaded, connection cut, page reloaded, still opened. Automated checks only got as far as
+proving each folder's service worker registers with a scope of its own (Playwright, on `paqueta/`,
+`centro/` and `zantao/`); the cache-fallback half is the part that needs a real device, for the reason
+in "Commands" below. Every mention of `index.html`, `app.js`, `config.js`, `sw.js`, `cartaz.html`, `qr.js`,
 `fotos/`, `guia-da-planilha.md` and `pesquisa/` elsewhere in this file refers to that path **inside a
 UBS's own folder** (e.g. `paqueta/app.js`), not a root-level file.
 
