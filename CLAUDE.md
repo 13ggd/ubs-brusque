@@ -394,9 +394,20 @@ time-travel testing does not inflate the very number the project is trying to me
 
 `pesquisa/` holds the evaluation instruments — plan, baseline questionnaire, post questionnaire with the
 SUS usability scale, reception tally sheet, staff interview script. They are Markdown meant to be pasted
-into a document and **printed**, not read in a terminal. Two constraints run through all of them and are
-worth preserving on any edit: instructions to whoever administers the questionnaire are kept visually
-separate from text read aloud to a resident, and nothing is pre-filled with invented numbers,
+into a document and **printed**, not read in a terminal — with one deliberate exception,
+`contagem-digital.html`: a button-tap alternative to the reception tally sheet, self-contained like every
+other page in this repo (no build, no backend), that fires each tap at a Google Form (the classic
+hidden-iframe `<form>` POST — no CORS needed) so responses land in a spreadsheet with an automatic
+timestamp, no manual transcription. Every tap is written to `localStorage` *before* any send attempt, so
+the on-screen daily count is always correct even fully offline; the send queue is separate, best-effort,
+and never blocks or corrects what's on screen. It's opt-in, not a replacement: the paper sheet survives a
+power outage or a dead network — two of the very conditions its own Observação column asks staff to
+record — while the digital version needs a device sitting at the counter all day. Requires no
+code changes to use once configured: the `FORM_CONFIG` block at the top of the file is edited by hand
+with the Form's submit URL and its two field IDs, same pattern as `config.js`. Two constraints run
+through the Markdown instruments and are worth preserving on any edit: instructions to whoever
+administers the questionnaire are kept visually separate from text read aloud to a resident, and nothing
+is pre-filled with invented numbers,
 institutions, or ethics approvals — those are bracketed placeholders.
 
 The baseline and post questionnaires share a block of behaviour questions that **must stay identical in

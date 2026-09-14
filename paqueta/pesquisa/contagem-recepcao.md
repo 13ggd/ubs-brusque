@@ -9,6 +9,21 @@ Quanto tempo leva: 3 segundos por marca. Nada de escrever frases.
 
 ---
 
+## Alternativa digital (opcional)
+
+Existe uma versão em botões desta mesma folha, [`contagem-digital.html`](contagem-digital.html) —
+três toques em vez de três risquinhos, sem precisar digitar nada na sexta-feira (registra direto
+numa planilha do Google, com data/hora automática). Funciona só se já existir um tablet ou
+computador ligado e disponível o dia todo naquele balcão: ao contrário do papel, ela não sobrevive
+a "falta de energia" ou "sistema fora do ar" — que são justamente dois dos motivos que esta folha
+pede pra anotar na coluna Observação. Se não tiver certeza de que vai ter um aparelho sempre à mão
+ali, use o papel: é a opção que não depende de bateria nem de conexão. As **três regras que não
+podem mudar entre rodadas** (mesmas pessoas, mesmo formato, mesmo lugar/tempo) valem igual pras
+duas — e vale escolher uma só e manter a mesma nas duas rodadas, pra não misturar dois jeitos de
+contar na mesma comparação.
+
+---
+
 ## Como preencher (leia só isto antes de começar)
 
 1. Deixe esta folha e uma caneta no balcão, sempre no mesmo lugar.

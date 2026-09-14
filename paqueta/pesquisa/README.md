@@ -157,6 +157,7 @@ Observações que evitam erro na hora de tabular:
 | [`questionario-linha-de-base.md`](questionario-linha-de-base.md) | Questionário aplicado na sala de espera em T0: como a pessoa descobre o horário hoje, se já veio à toa, se tem celular com internet e se lê QR code. É a **redação de referência**: em qualquer divergência, é ele que vale |
 | [`questionario-pos-e-sus.md`](questionario-pos-e-sus.md) | Questionário de T1: a Parte A repete o T0 palavra por palavra; a Parte B pergunta se o site chegou até a pessoa e por onde; a Parte C, só para quem entrou no site, mede utilidade e usabilidade. **Antes de mandar imprimir, confira a Parte A contra o T0** (ver item 4) |
 | [`contagem-recepcao.md`](contagem-recepcao.md) | Folha de papel que fica no balcão, com três contadores: A — ligou pra perguntar horário; B — veio e o setor estava fechado; C — perguntou no balcão. A recepção só faz um risquinho na coluna certa |
+| [`contagem-digital.html`](contagem-digital.html) | Mesma coisa que a folha acima, em botões — opcional, só se houver um aparelho sempre ligado no balcão (ver nota na própria folha de papel sobre quando cada versão é mais robusta) |
 | [`roteiro-entrevista-equipe.md`](roteiro-entrevista-equipe.md) | Roteiro curto de entrevista com quem trabalha na unidade, sobre manutenção da planilha e sustentabilidade |
 | [`../guia-da-planilha.md`](../guia-da-planilha.md) | Guia de uso da planilha do Google, entregue à equipe no treinamento da semana 4 — é material da intervenção, não instrumento de coleta |
 
