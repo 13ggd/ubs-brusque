@@ -53,6 +53,12 @@
     background:#F7C948; color:#241a00;
   }
   .barra button.secundario{ background:rgba(255,255,255,.16); color:#fff; }
+  .barra a.voltar{
+    font:inherit; font-size:14px; font-weight:700; text-decoration:none;
+    padding:9px 16px; border-radius:6px;
+    background:rgba(255,255,255,.16); color:#fff;
+  }
+  .barra a.voltar:hover{ background:rgba(255,255,255,.26); }
   .barra .dica{ font-size:13px; opacity:.85; flex-basis:100%; margin:0; }
 
   /* ---------------- painel de edição (só na tela) ---------------- */
@@ -183,6 +189,7 @@
 <body>
 
 <div class="barra">
+  <a href="../" class="voltar">← Painel</a>
   <label>Selecionar UBS:
     <select id="lista"><option value="">— nova unidade (em branco) —</option></select>
   </label>
