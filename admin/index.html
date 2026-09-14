@@ -183,6 +183,13 @@
     border-color:color-mix(in srgb, var(--sheet) 30%, transparent);
   }
   .botao svg{width:14px;height:14px;flex:none;}
+  .botao.botao-cartaz{
+    align-self:flex-start;
+    flex:0 0 auto;
+    font-size:.9rem;
+    padding:.55rem .9rem;
+  }
+  .botao-cartaz svg{width:16px;height:16px;}
 
   .vazio{
     padding:2.5rem 1rem;
@@ -219,6 +226,10 @@
     <span class="eyebrow">Uso interno · Secretaria de Saúde · Brusque/SC</span>
     <h1>Painel administrativo das UBS de Brusque</h1>
     <p class="sub">Site publicado e planilha de dados (horários, equipe, avisos) de cada Unidade Básica de Saúde de Brusque. Esta página não é destinada aos usuários do site — veja a <a href="../">lista pública</a>.</p>
+    <a class="botao site botao-cartaz" href="../cartaz/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Gerador de cartaz (qualquer UBS)
+    </a>
   </header>
 
   <div class="barra">

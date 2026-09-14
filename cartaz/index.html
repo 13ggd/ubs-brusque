@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gerador de cartaz — UBS Brusque</title>
+<meta name="robots" content="noindex">
+<!--
+  ===========================================================================
+  GERADOR DE CARTAZ (sem repo por UBS)
+  ---------------------------------------------------------------------------
+  Ferramenta única para montar o cartaz A4 + bilhetes de QUALQUER uma das UBS
+  de Brusque, preenchendo os dados na hora em vez de precisar abrir o repo/
+  config.js de cada unidade. É a mesma peça que existe em cartaz.html do
+  repo-modelo (ubspaqueta), só que os dados vêm de um formulário em vez de
+  config.js — o resto (layout do cartaz, QR, bilhetes) é idêntico de propósito,
+  pra manter o material impresso igual em todas as unidades.
+
+  Cada unidade que você preencher fica salva neste navegador (localStorage),
+  então da próxima vez é só escolher o nome no menu — nada é enviado a
+  servidor nenhum.
+  ===========================================================================
+-->
+<style>
+  :root{
+    --tinta:#111;
+    --fraco:#555;
+    --linha:#c9d2cb;
+    --verde:#02301A;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family:'Atkinson Hyperlegible', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color:var(--tinta);
+    background:#e8ebe8;
+  }
+
+  /* ---------------- barra de controle (só na tela) ---------------- */
+  .barra{
+    position:sticky; top:0; z-index:5;
+    background:var(--verde); color:#fff;
+    padding:14px 16px;
+    display:flex; flex-wrap:wrap; gap:12px; align-items:center;
+  }
+  .barra label{ font-size:14px; display:flex; align-items:center; gap:6px; }
+  .barra select, .barra input[type=text]{
+    font:inherit; font-size:14px; padding:8px 10px; border:0; border-radius:6px;
+  }
+  .barra button{
+    font:inherit; font-size:14px; font-weight:700; cursor:pointer;
+    padding:9px 16px; border:0; border-radius:6px;
+    background:#F7C948; color:#241a00;
+  }
+  .barra button.secundario{ background:rgba(255,255,255,.16); color:#fff; }
+  .barra .dica{ font-size:13px; opacity:.85; flex-basis:100%; margin:0; }
+
+  /* ---------------- painel de edição (só na tela) ---------------- */
+  .painel{
+    max-width:900px; margin:18px auto; padding:16px 18px;
+    background:#fff; border-radius:8px; box-shadow:0 2px 14px rgba(0,0,0,.1);
+  }
+  .painel h2{ margin:0 0 12px; font-size:16px; }
+  .campos{ display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; }
+  .campos .larga{ grid-column:1 / -1; }
+  .campos label{ display:block; font-size:12.5px; color:var(--fraco); margin-bottom:3px; }
+  .campos input{
+    width:100%; font:inherit; font-size:14px; padding:7px 9px;
+    border:1px solid var(--linha); border-radius:5px;
+  }
+  .setores-lista{ margin-top:14px; }
+  .setor-linha{
+    display:flex; gap:8px; align-items:center; margin-bottom:6px;
+  }
+  .setor-linha input{
+    font:inherit; font-size:14px; padding:7px 9px;
+    border:1px solid var(--linha); border-radius:5px;
+  }
+  .setor-linha .nome-setor{ flex:0 0 34%; }
+  .setor-linha .horario-setor{ flex:1; }
+  .setor-linha button{
+    flex:0 0 auto; font-size:13px; cursor:pointer;
+    border:1px solid var(--linha); background:#fff; border-radius:5px; padding:6px 9px;
+  }
+  .painel .acoes{ margin-top:12px; display:flex; gap:8px; }
+  .painel .acoes button{
+    font:inherit; font-size:13.5px; cursor:pointer;
+    padding:8px 14px; border:1px solid var(--linha); border-radius:5px; background:#f3f5f3;
+  }
+
+  /* ---------------- folha ---------------- */
+  .folha{
+    width:210mm; min-height:297mm;
+    margin:18px auto; padding:14mm 13mm;
+    background:#fff;
+    box-shadow:0 2px 14px rgba(0,0,0,.18);
+    display:flex; flex-direction:column;
+  }
+
+  /* ---------------- cartaz A4 ---------------- */
+  .orgao{ margin:0; font-size:12pt; color:var(--fraco); text-transform:uppercase; letter-spacing:.04em; }
+  .nome{ margin:2mm 0 0; font-size:30pt; line-height:1.05; font-weight:700; }
+  .chamada{
+    margin:6mm 0 0; font-size:21pt; line-height:1.2; font-weight:700; color:var(--verde);
+  }
+  .sub-chamada{ margin:2mm 0 0; font-size:13pt; color:var(--fraco); }
+
+  .qr-area{
+    margin:7mm 0 0;
+    display:flex; gap:9mm; align-items:center;
+  }
+  .qr-caixa{ flex:0 0 auto; width:72mm; }
+  .qr-caixa svg{ width:100%; height:auto; display:block; border:1px solid var(--linha); }
+  .qr-lado{ flex:1; }
+  .qr-passo{ margin:0 0 4mm; font-size:14pt; line-height:1.35; }
+  .qr-passo b{ font-size:15pt; }
+  .endereco-site{
+    margin:0; padding:3mm 4mm;
+    border:2px dashed var(--linha); border-radius:4px;
+    font-size:13pt; font-weight:700; word-break:break-all; line-height:1.3;
+  }
+
+  .horarios{ margin:8mm 0 0; }
+  .horarios h2{
+    margin:0 0 3mm; font-size:15pt;
+    border-bottom:2px solid var(--verde); padding-bottom:1.5mm;
+  }
+  .horarios table{ width:100%; border-collapse:collapse; font-size:11pt; }
+  .horarios td{ padding:1.6mm 0; vertical-align:top; border-bottom:1px solid var(--linha); }
+  .horarios td:first-child{ font-weight:700; width:44%; padding-right:4mm; }
+
+  .rodape-cartaz{
+    margin-top:auto; padding-top:6mm;
+    border-top:3px solid var(--verde);
+    display:flex; gap:6mm; justify-content:space-between; align-items:flex-end;
+  }
+  .rodape-cartaz p{ margin:0; font-size:11.5pt; line-height:1.4; }
+  .rodape-cartaz .rot{ color:var(--fraco); font-size:10pt; text-transform:uppercase; letter-spacing:.03em; }
+  .emergencia{
+    text-align:center; border:3px solid #B3261E; border-radius:6px;
+    padding:3mm 6mm; flex:0 0 auto;
+  }
+  .emergencia .num{ display:block; font-size:24pt; font-weight:700; color:#B3261E; line-height:1; }
+  .emergencia .lab{ display:block; font-size:9.5pt; color:var(--fraco); margin-top:1mm; }
+
+  /* ---------------- bilhetes (8 por folha) ---------------- */
+  .bilhetes{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-auto-rows:1fr;
+    gap:0;
+    flex:1;
+  }
+  .bilhete{
+    border:1px dashed #9aa79c;
+    padding:5mm;
+    display:flex; gap:4mm; align-items:center;
+  }
+  .bilhete .b-qr{ flex:0 0 auto; width:27mm; }
+  .bilhete .b-qr svg{ width:100%; height:auto; display:block; }
+  .bilhete .b-txt{ flex:1; min-width:0; }
+  .bilhete .b-nome{ margin:0; font-size:11pt; font-weight:700; line-height:1.15; }
+  .bilhete .b-frase{ margin:1.5mm 0 0; font-size:8.5pt; line-height:1.3; color:var(--fraco); }
+  .bilhete .b-url{ margin:1.5mm 0 0; font-size:8pt; font-weight:700; word-break:break-all; line-height:1.25; }
+  .bilhete .b-tel{ margin:1.5mm 0 0; font-size:9pt; }
+
+  [hidden]{ display:none !important; }
+
+  /* ---------------- impressão ---------------- */
+  @page{ size:A4; margin:0; }
+  @media print{
+    body{ background:#fff; }
+    .barra, .painel{ display:none; }
+    .folha{
+      width:auto; min-height:auto; height:100vh;
+      margin:0; padding:12mm 11mm;
+      box-shadow:none;
+      page-break-after:avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="barra">
+  <label>Selecionar UBS:
+    <select id="lista"><option value="">— nova unidade (em branco) —</option></select>
+  </label>
+  <button type="button" id="recarregar" class="secundario">↻ Recarregar horários</button>
+  <button type="button" id="excluir" class="secundario">Apagar edição salva</button>
+  <label><input type="radio" name="formato" value="cartaz" checked> Cartaz A4</label>
+  <label><input type="radio" name="formato" value="bilhetes"> Bilhetes (8 por folha)</label>
+  <label><input type="checkbox" id="marcar" checked> Marcar como vindo do cartaz</label>
+  <button type="button" id="imprimir">Imprimir</button>
+  <p class="dica">
+    Escolha uma UBS na lista: nome, endereço, telefone e site já vêm preenchidos (dados confirmados
+    no site da Secretaria em 11/09/2026), e os horários são buscados na hora direto da planilha
+    daquela unidade — igual ao que o site dela mostra. Corrija o que precisar e clique em
+    "Salvar esta unidade" pra guardar sua edição neste navegador (não é enviada a lugar nenhum).
+    "Marcar como vindo do cartaz" acrescenta <code>?de=cartaz</code> ao endereço do cartaz e
+    <code>?de=bilhete</code> ao dos bilhetes, pra medição de acessos do site distinguir os dois.
+    Esta barra e o painel não saem na impressão.
+  </p>
+</div>
+
+<div class="painel">
+  <h2>Dados da unidade</h2>
+  <div class="campos">
+    <div>
+      <label for="f-nome">Nome da UBS</label>
+      <input type="text" id="f-nome" placeholder="UBS Centro">
+    </div>
+    <div>
+      <label for="f-orgao">Órgão</label>
+      <input type="text" id="f-orgao" value="Prefeitura de Brusque · Secretaria de Saúde">
+    </div>
+    <div>
+      <label for="f-endereco">Endereço</label>
+      <input type="text" id="f-endereco" placeholder="R. Exemplo, 123">
+    </div>
+    <div>
+      <label for="f-bairro">Bairro</label>
+      <input type="text" id="f-bairro" placeholder="Centro">
+    </div>
+    <div>
+      <label for="f-telefone">Telefone da UBS</label>
+      <input type="text" id="f-telefone" placeholder="(47) 0000-0000">
+    </div>
+    <div>
+      <label for="f-samu">Emergência (número no cartaz)</label>
+      <input type="text" id="f-samu" value="192">
+    </div>
+    <div class="larga">
+      <label for="f-url">Endereço do site desta UBS (o que vira QR code)</label>
+      <input type="text" id="f-url" placeholder="https://ubs-centro.vercel.app" spellcheck="false">
+    </div>
+  </div>
+
+  <div class="setores-lista">
+    <label style="display:block;font-size:12.5px;color:var(--fraco);margin-bottom:2px">
+      Horários por setor (o texto do horário vai exatamente como escrito, ex.: "Seg a Sex, 7h às 19h")
+    </label>
+    <p id="status-horarios" style="margin:0 0 6px;font-size:12px;color:var(--fraco)"></p>
+    <div id="setores"></div>
+    <button type="button" id="add-setor" style="font:inherit;font-size:13px;cursor:pointer;border:1px solid var(--linha);background:#f3f5f3;border-radius:5px;padding:6px 10px">
+      + Adicionar setor
+    </button>
+  </div>
+
+  <div class="acoes">
+    <button type="button" id="salvar">Salvar esta unidade</button>
+    <button type="button" id="nova">Começar unidade em branco</button>
+  </div>
+</div>
+
+<!-- ======================= CARTAZ A4 ======================= -->
+<div class="folha" id="folha-cartaz">
+  <p class="orgao" id="c-orgao"></p>
+  <h1 class="nome" id="c-nome"></h1>
+
+  <p class="chamada">Antes de sair de casa,<br>veja se está aberto.</p>
+  <p class="sub-chamada">Horários de cada setor, avisos do dia e telefones — sempre atualizados.</p>
+
+  <div class="qr-area">
+    <div class="qr-caixa" id="c-qr"></div>
+    <div class="qr-lado">
+      <p class="qr-passo"><b>1.</b> Abra a câmera do celular.</p>
+      <p class="qr-passo"><b>2.</b> Aponte para o quadrado ao lado.</p>
+      <p class="qr-passo"><b>3.</b> Toque no aviso que aparecer na tela.</p>
+      <p class="endereco-site" id="c-url"></p>
+    </div>
+  </div>
+
+  <div class="horarios">
+    <h2>Horários de atendimento</h2>
+    <table id="c-horarios"></table>
+  </div>
+
+  <div class="rodape-cartaz">
+    <div>
+      <p class="rot">Onde fica</p>
+      <p id="c-endereco"></p>
+      <p class="rot" style="margin-top:3mm">Telefone da UBS</p>
+      <p id="c-telefone"></p>
+    </div>
+    <div class="emergencia">
+      <span class="num" id="c-samu">192</span>
+      <span class="lab">Emergência<br>a qualquer hora</span>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= BILHETES ======================= -->
+<div class="folha" id="folha-bilhetes" hidden>
+  <div class="bilhetes" id="b-lista"></div>
+</div>
+
+<script src="dados-ubs.js"></script>
+<script src="qr.js"></script>
+<script>
+(function(){
+'use strict';
+
+var CHAVE_LISTA = 'cartazes-ubs-brusque';
+
+function limpo(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function slugify(s){
+  return String(s || '').trim().toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'unidade';
+}
+
+function unidadeEmBranco(){
+  return {
+    orgao:ORGAO_PADRAO,
+    nome:'', endereco:'', bairro:'', telefone:'', samu:'192', site:'',
+    setores:[ {nome:'', horario:''} ]
+  };
+}
+
+function presetPorSlug(slug){
+  return UBS_BRUSQUE.filter(function(u){ return u.slug === slug; })[0];
+}
+
+function presetParaUnidade(p){
+  return {
+    orgao:ORGAO_PADRAO, nome:p.nome, endereco:p.endereco, bairro:p.bairro,
+    telefone:p.telefone, samu:'192', site:p.site,
+    setores:[ {nome:'', horario:'Buscando na planilha…'} ]
+  };
+}
+
+/* ------------------------------------------------- planilha ao vivo -- */
+var ORD   = ['seg','ter','qua','qui','sex','sab','dom'];
+var CURTO = {seg:'Seg', ter:'Ter', qua:'Qua', qui:'Qui', sex:'Sex', sab:'Sáb', dom:'Dom'};
+
+function lerCSV(txt){
+  var linhas = [], campo = '', linha = [], aspas = false, i, c;
+  for(i = 0; i < txt.length; i++){
+    c = txt[i];
+    if(aspas){
+      if(c === '"'){ if(txt[i+1] === '"'){ campo += '"'; i++; } else { aspas = false; } }
+      else { campo += c; }
+    } else {
+      if(c === '"'){ aspas = true; }
+      else if(c === ','){ linha.push(campo); campo = ''; }
+      else if(c === '\n'){ linha.push(campo); linhas.push(linha); linha = []; campo = ''; }
+      else if(c !== '\r'){ campo += c; }
+    }
+  }
+  if(campo !== '' || linha.length){ linha.push(campo); linhas.push(linha); }
+  return linhas;
+}
+
+function paraObjetos(txt){
+  var l = lerCSV(txt).filter(function(x){ return x.some(function(c){ return c.trim() !== ''; }); });
+  if(l.length < 2) return [];
+  var cab = l[0].map(function(c){ return c.trim().toLowerCase(); });
+  return l.slice(1).map(function(linha){
+    var o = {};
+    cab.forEach(function(nome, i){ o[nome] = (linha[i] || '').trim(); });
+    return o;
+  });
+}
+
+function normalizaHorario(s){
+  s = (s || '').trim();
+  if(!s) return '';
+  if(/^fechado|^n[aã]o|^-$/i.test(s)) return '';
+  function arruma(t){
+    var q = t.split(':');
+    var h = Number(q[0]);
+    var mTexto = q[1];
+    if(mTexto !== undefined && mTexto.length !== 2) return null;
+    var m = Number(mTexto || 0);
+    if(isNaN(h) || h > 23 || isNaN(m) || m > 59) return null;
+    return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+  }
+  var l = s.replace(/h(?!\s*\d)/gi, ':00').replace(/h/gi, ':')
+    .replace(/\s*(às|as|até|ate|–|—|a)\s*/gi, '-').replace(/,/g, ' ').replace(/[^\d: \-]/g, '');
+  var blocos = l.match(/\d{1,2}(?::\d{1,2})?-\d{1,2}(?::\d{1,2})?/g) || [];
+  return blocos.map(function(bloco){
+    var p = bloco.split('-');
+    var a = arruma(p[0]), b = arruma(p[1]);
+    return (a && b) ? a + '-' + b : '';
+  }).filter(Boolean).join(',');
+}
+
+/* "07:00" vira "7h"; "08:30" vira "8h30" */
+function hf(t){ var p = t.split(':'); return p[1] === '00' ? Number(p[0]) + 'h' : Number(p[0]) + 'h' + p[1]; }
+function fala(f){
+  return f.split(',').map(function(bloco){
+    var p = bloco.split('-');
+    return hf(p[0]) + ' às ' + hf(p[1]);
+  }).join(' e ');
+}
+function rotuloDias(dias){
+  var nomes = dias.map(function(d){ return CURTO[d]; });
+  if(nomes.length === 1) return nomes[0];
+  var seguidos = dias.every(function(d, i){
+    return i === 0 || ORD.indexOf(d) === ORD.indexOf(dias[i - 1]) + 1;
+  });
+  if(seguidos && nomes.length >= 3) return nomes[0] + ' a ' + nomes[nomes.length - 1];
+  return nomes.slice(0, -1).join(', ') + ' e ' + nomes[nomes.length - 1];
+}
+function resumoSemana(h){
+  var grupos = [];
+  ORD.forEach(function(dia){
+    var valor = (h && h[dia]) ? h[dia] : '';
+    if(!valor) return;
+    var achado = null;
+    for(var i = 0; i < grupos.length; i++){ if(grupos[i].hora === valor){ achado = grupos[i]; break; } }
+    if(!achado){ achado = { hora:valor, dias:[] }; grupos.push(achado); }
+    achado.dias.push(dia);
+  });
+  if(!grupos.length) return '';
+  return grupos.map(function(g){ return rotuloDias(g.dias) + ', ' + fala(g.hora); }).join(' · ');
+}
+
+function urlPlanilhaCSV(planilhaId, aba){
+  return 'https://docs.google.com/spreadsheets/d/' + planilhaId +
+    '/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent(aba) + '&t=' + Date.now();
+}
+
+function buscarComLimite(url, segundos){
+  var controle = ('AbortController' in window) ? new AbortController() : null;
+  var timer = controle ? setTimeout(function(){ controle.abort(); }, (segundos || 8) * 1000) : null;
+  return fetch(url, controle ? {signal:controle.signal} : undefined).finally(function(){ if(timer) clearTimeout(timer); });
+}
+
+/* Busca a aba "setores" da planilha da unidade e substitui as linhas do
+   painel por horários reais — o mesmo dado que o site dela já mostra.
+   Falha (sem planilha configurada, sem internet, aba vazia) não trava
+   nada: o painel continua editável à mão, só com um aviso de status. */
+function buscarHorariosDaPlanilha(planilhaId){
+  var statusEl = document.getElementById('status-horarios');
+  statusEl.textContent = 'Buscando horários da planilha desta unidade…';
+  buscarComLimite(urlPlanilhaCSV(planilhaId, 'setores')).then(function(r){
+    if(!r.ok) throw new Error('planilha não respondeu');
+    return r.text();
+  }).then(function(txt){
+    var linhas = paraObjetos(txt).map(function(r){
+      var h = {
+        seg:normalizaHorario(r.seg), ter:normalizaHorario(r.ter), qua:normalizaHorario(r.qua),
+        qui:normalizaHorario(r.qui), sex:normalizaHorario(r.sex), sab:normalizaHorario(r.sab),
+        dom:normalizaHorario(r.dom)
+      };
+      var resumo = resumoSemana(h);
+      return { nome: r.nome || '', horario: resumo || 'Ligue para confirmar o horário.' };
+    }).filter(function(s){ return s.nome; });
+
+    if(!linhas.length){
+      statusEl.textContent = 'A planilha desta unidade ainda não tem setores cadastrados — preencha o horário à mão.';
+      return;
+    }
+    desenharSetores(linhas);
+    desenhar();
+    statusEl.textContent = 'Horários buscados agora da planilha da unidade (' + new Date().toLocaleTimeString('pt-BR') + ').';
+  }).catch(function(){
+    statusEl.textContent = 'Não consegui buscar a planilha desta unidade agora — preencha o horário à mão.';
+  });
+}
+
+/* -------------------------------------------------- guardar/carregar -- */
+function carregarLista(){
+  try{ return JSON.parse(localStorage.getItem(CHAVE_LISTA) || '{}'); }
+  catch(e){ return {}; }
+}
+function salvarLista(lista){
+  try{ localStorage.setItem(CHAVE_LISTA, JSON.stringify(lista)); } catch(e){}
+}
+
+function atualizarSelect(chaveSelecionada){
+  var lista = carregarLista();
+  var sel = document.getElementById('lista');
+  var atual = sel.value;
+  sel.innerHTML = '<option value="">— nova unidade (em branco) —</option>';
+  UBS_BRUSQUE.forEach(function(u){
+    var opt = document.createElement('option');
+    opt.value = u.slug;
+    opt.textContent = u.nome + (lista[u.slug] ? ' (editado)' : '');
+    sel.appendChild(opt);
+  });
+  Object.keys(lista).sort().forEach(function(k){
+    if(presetPorSlug(k)) return;
+    var opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = (lista[k].nome || k) + ' (salvo)';
+    sel.appendChild(opt);
+  });
+  sel.value = (chaveSelecionada != null) ? chaveSelecionada : atual;
+}
+
+/* --------------------------------------------------------- formulário -- */
+function linhaSetor(s){
+  var div = document.createElement('div');
+  div.className = 'setor-linha';
+  div.innerHTML =
+    '<input class="nome-setor" type="text" placeholder="Setor (ex.: Dentista)" value="' + limpo(s.nome) + '">' +
+    '<input class="horario-setor" type="text" placeholder="Horário (ex.: Seg a Sex, 7h às 19h)" value="' + limpo(s.horario) + '">' +
+    '<button type="button" title="Remover setor">✕</button>';
+  div.querySelector('button').addEventListener('click', function(){
+    div.remove();
+    desenhar();
+  });
+  div.querySelectorAll('input').forEach(function(i){
+    i.addEventListener('input', desenhar);
+  });
+  return div;
+}
+
+function desenharSetores(setores){
+  var cont = document.getElementById('setores');
+  cont.innerHTML = '';
+  (setores && setores.length ? setores : [{nome:'', horario:''}]).forEach(function(s){
+    cont.appendChild(linhaSetor(s));
+  });
+}
+
+function lerFormulario(){
+  var setores = Array.prototype.map.call(document.querySelectorAll('.setor-linha'), function(l){
+    return {
+      nome: l.querySelector('.nome-setor').value,
+      horario: l.querySelector('.horario-setor').value
+    };
+  }).filter(function(s){ return s.nome.trim() || s.horario.trim(); });
+
+  return {
+    orgao: document.getElementById('f-orgao').value,
+    nome: document.getElementById('f-nome').value,
+    endereco: document.getElementById('f-endereco').value,
+    bairro: document.getElementById('f-bairro').value,
+    telefone: document.getElementById('f-telefone').value,
+    samu: document.getElementById('f-samu').value || '192',
+    site: document.getElementById('f-url').value,
+    setores: setores
+  };
+}
+
+function preencherFormulario(u){
+  document.getElementById('f-orgao').value = u.orgao || '';
+  document.getElementById('f-nome').value = u.nome || '';
+  document.getElementById('f-endereco').value = u.endereco || '';
+  document.getElementById('f-bairro').value = u.bairro || '';
+  document.getElementById('f-telefone').value = u.telefone || '';
+  document.getElementById('f-samu').value = u.samu || '192';
+  document.getElementById('f-url').value = u.site || '';
+  desenharSetores(u.setores);
+}
+
+/* ------------------------------------------------------------ cartaz -- */
+function enderecoFinal(marca){
+  var base = document.getElementById('f-url').value.trim();
+  if(!base) return '';
+  if(!document.getElementById('marcar').checked) return base;
+  return base + (base.indexOf('?') === -1 ? '?' : '&') + 'de=' + marca;
+}
+
+function montarBilhetes(u, endereco){
+  var qr = QR.svg(endereco, {nivel:'M', margem:2, descricao:'QR code do site da ' + u.nome});
+  var um =
+    '<div class="bilhete">' +
+      '<div class="b-qr">' + qr + '</div>' +
+      '<div class="b-txt">' +
+        '<p class="b-nome">' + limpo(u.nome) + '</p>' +
+        '<p class="b-frase">Veja se está aberto, o horário de cada setor e os avisos do dia.</p>' +
+        '<p class="b-url">' + limpo(endereco) + '</p>' +
+        '<p class="b-tel">☎ ' + limpo(u.telefone) + '</p>' +
+      '</div>' +
+    '</div>';
+  var todos = '';
+  for(var i = 0; i < 8; i++) todos += um;
+  document.getElementById('b-lista').innerHTML = todos;
+}
+
+function desenhar(){
+  var u = lerFormulario();
+  document.title = u.nome ? ('Cartaz — ' + u.nome) : 'Gerador de cartaz — UBS Brusque';
+
+  document.getElementById('c-orgao').textContent = u.orgao;
+  document.getElementById('c-nome').textContent = u.nome || '(preencha o nome da unidade)';
+  document.getElementById('c-endereco').innerHTML = limpo(u.endereco) + '<br>' + limpo(u.bairro);
+  document.getElementById('c-telefone').textContent = u.telefone;
+  document.getElementById('c-samu').textContent = u.samu;
+
+  var linhas = u.setores.map(function(s){
+    if(!s.nome.trim() && !s.horario.trim()) return '';
+    return '<tr><td>' + limpo(s.nome) + '</td><td>' + limpo(s.horario) + '</td></tr>';
+  }).filter(Boolean).join('');
+  document.getElementById('c-horarios').innerHTML = linhas ||
+    '<tr><td colspan="2">Consulte os horários no site ou pelo telefone.</td></tr>';
+
+  var doCartaz = enderecoFinal('cartaz');
+  var doBilhete = enderecoFinal('bilhete');
+  document.getElementById('c-url').textContent = doCartaz;
+
+  if(!doCartaz){
+    document.getElementById('c-qr').innerHTML =
+      '<p style="font-size:11pt;color:#B3261E">Escreva o endereço do site da unidade no campo acima.</p>';
+    document.getElementById('b-lista').innerHTML = '';
+    return;
+  }
+
+  try{
+    document.getElementById('c-qr').innerHTML =
+      QR.svg(doCartaz, {nivel:'M', margem:2, descricao:'QR code do site da ' + u.nome});
+    montarBilhetes(u, doBilhete);
+  } catch(e){
+    document.getElementById('c-qr').innerHTML =
+      '<p style="font-size:11pt;color:#B3261E">Endereço comprido demais para virar QR code. ' +
+      'Use um endereço mais curto.</p>';
+  }
+}
+
+function trocarFormato(){
+  var escolhido = document.querySelector('input[name=formato]:checked').value;
+  document.getElementById('folha-cartaz').hidden   = (escolhido !== 'cartaz');
+  document.getElementById('folha-bilhetes').hidden = (escolhido !== 'bilhetes');
+}
+
+/* --------------------------------------------------------------- ir -- */
+preencherFormulario(unidadeEmBranco());
+atualizarSelect('');
+desenhar();
+
+function carregarUnidade(k){
+  document.getElementById('status-horarios').textContent = '';
+  if(!k){
+    preencherFormulario(unidadeEmBranco());
+    desenhar();
+    return;
+  }
+  var lista = carregarLista();
+  var preset = presetPorSlug(k);
+  var override = lista[k];
+  preencherFormulario(override || (preset ? presetParaUnidade(preset) : unidadeEmBranco()));
+  desenhar();
+  if(preset) buscarHorariosDaPlanilha(preset.planilhaId);
+}
+
+document.getElementById('lista').addEventListener('change', function(){
+  carregarUnidade(this.value);
+});
+
+document.getElementById('recarregar').addEventListener('click', function(){
+  var preset = presetPorSlug(document.getElementById('lista').value);
+  if(!preset){
+    alert('Selecione uma das UBS da lista pra buscar a planilha dela.');
+    return;
+  }
+  buscarHorariosDaPlanilha(preset.planilhaId);
+});
+
+document.getElementById('salvar').addEventListener('click', function(){
+  var u = lerFormulario();
+  if(!u.nome.trim()){
+    alert('Escreva o nome da unidade antes de salvar.');
+    return;
+  }
+  var k = document.getElementById('lista').value || slugify(u.nome);
+  var lista = carregarLista();
+  lista[k] = u;
+  salvarLista(lista);
+  atualizarSelect(k);
+});
+
+document.getElementById('nova').addEventListener('click', function(){
+  document.getElementById('lista').value = '';
+  carregarUnidade('');
+});
+
+document.getElementById('excluir').addEventListener('click', function(){
+  var k = document.getElementById('lista').value;
+  var lista = carregarLista();
+  if(!k || !lista[k]){
+    alert('Esta unidade ainda não tem nenhuma edição salva neste navegador.');
+    return;
+  }
+  if(!confirm('Apagar a edição salva de "' + (lista[k].nome || k) + '" neste navegador?')) return;
+  delete lista[k];
+  salvarLista(lista);
+  atualizarSelect(k);
+  carregarUnidade(k);
+});
+
+document.getElementById('add-setor').addEventListener('click', function(){
+  document.getElementById('setores').appendChild(linhaSetor({nome:'', horario:''}));
+  desenhar();
+});
+
+['f-nome','f-orgao','f-endereco','f-bairro','f-telefone','f-samu','f-url'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', desenhar);
+});
+document.getElementById('marcar').addEventListener('change', desenhar);
+Array.prototype.forEach.call(document.querySelectorAll('input[name=formato]'), function(r){
+  r.addEventListener('change', trocarFormato);
+});
+document.getElementById('imprimir').addEventListener('click', function(){ window.print(); });
+
+})();
+</script>
+</body>
+</html>
