@@ -37,12 +37,15 @@ const CONFIG = {
     mapa: 'https://www.google.com/maps/search/?api=1&query=UBS%20Paquet%C3%A1%2C%20Rua%20Waldemar%20Hoffmann%2C%20Brusque%20-%20SC&query_place_id=ChIJV2DuZfVG35QRRnPgxVVeE5M',
     instagram: 'https://www.instagram.com/ubspaqueta/',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app').
+    /* Endereço desta pasta depois de publicada (ex:
+       'https://ubspaqueta.vercel.app/ubs-paqueta'). Como este site vive numa
+       subpasta de um domínio compartilhado com outras UBS, o valor sempre
+       inclui a subpasta — sem barra no final.
        Só é usado pelo cartaz.html, para gerar o QR code impresso. Se deixar
        vazio, o cartaz deduz o endereço da própria janela do navegador — o que
        funciona, mas gera um QR apontando para "localhost" se você abrir o
        cartaz antes de publicar o site. Preencha assim que publicar. */
-    site: '',
+    site: 'https://ubspaqueta.vercel.app/ubs-paqueta',
 
     /* Endereço da página que lista TODAS as unidades de saúde, no site da
        Secretaria. Vira um link "Ver todas as unidades de saúde" no rodapé
