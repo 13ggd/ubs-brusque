@@ -195,7 +195,8 @@ const CONFIG = {
     { nome:'CAPS Álcool e Drogas',                              telefone:'(47) 3306-9305', telefoneLink:'+554733069305' },
     { nome:'CAPS 2 (Centro de Atenção Psicossocial)',          telefone:'(47) 3304-4710', telefoneLink:'+554733044710' },
     { nome:'CAPS Infanto-Juvenil',                              telefone:'(47) 3396-8182', telefoneLink:'+554733968182' },
-    { nome:'Delegacia da Criança, Mulher, Adolescente e Idoso', telefone:'(47) 3251-8303', telefoneLink:'+554732518303' }
+    { nome:'Delegacia da Criança, Mulher, Adolescente e Idoso', telefone:'(47) 3251-8303', telefoneLink:'+554732518303' },
+    { nome:'CVV (Centro de Valorização da Vida) — prevenção ao suicídio, 24h', telefone:'188', telefoneLink:'188' }
   ],
 
   /* ---- 3c-2. RUAS ATENDIDAS POR EQUIPE (RESERVA) ------------------------ */
