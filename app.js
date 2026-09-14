@@ -1038,7 +1038,7 @@ function montarFixos(){
 
   var bt = document.getElementById('bt-ligar');
   bt.href = 'tel:' + u.telefoneLink;
-  document.getElementById('bt-mapa').href = u.mapa;
+  document.getElementById('bt-mapa').href = linkDoMapa(u.mapa);
 
   /* Foto do prédio — só aparece se CONFIG.unidade.foto estiver preenchido.
      Igual às fotos da equipe: nome de arquivo (na pasta fotos/) ou link
@@ -1063,7 +1063,7 @@ function montarFixos(){
   document.getElementById('info-secretaria').innerHTML =
     '<a href="tel:' + limpo(u.secretariaLink) + '">' + limpo(u.secretaria) + '</a>';
   document.getElementById('info-mapa').innerHTML =
-    '<a href="' + limpo(u.mapa) + '" target="_blank" rel="noopener">Abrir o mapa no celular</a>';
+    '<a href="' + limpo(linkDoMapa(u.mapa)) + '" target="_blank" rel="noopener">Abrir o mapa no celular</a>';
 
   /* Instagram — só aparece se CONFIG.unidade.instagram estiver preenchido.
      Vai com o glifo da câmera do Instagram (SVG inline, sem imagem externa,
