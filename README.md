@@ -10,7 +10,7 @@ sua própria planilha do Google e um arquivo de configuração — sem escrever 
 ## Estrutura do repositório
 
 Este repositório publica **várias UBS ao mesmo tempo**, uma pasta por unidade — hoje só
-[`ubs-paqueta/`](ubs-paqueta/), a UBS Paquetá. Cada unidade é autocontida dentro da sua própria pasta
+[`paqueta/`](paqueta/), a UBS Paquetá. Cada unidade é autocontida dentro da sua própria pasta
 (HTML, CSS, JS, service worker, cartaz, tudo). Isso permite publicar todas sob um único domínio/deploy —
 ver "Servindo no domínio da Secretaria de Saúde" abaixo para o porquê disso importar.
 
@@ -20,7 +20,7 @@ irmão [`13ggd/ubs-brusque-painel`](https://github.com/13ggd/ubs-brusque-painel)
 separadamente por enquanto (ver nota no fim desta seção). Cada UBS que **ainda não** faz parte deste
 monorepo continua listada com um link absoluto para o seu próprio deploy (ex:
 `https://ubs-centro.vercel.app`); só a UBS Paquetá, por já estar aqui dentro, tem um link relativo
-(`ubs-paqueta/`). Há também uma pasta [`admin/`](admin/) — página interna (`noindex`, sem link visível no
+(`paqueta/`). Há também uma pasta [`admin/`](admin/) — página interna (`noindex`, sem link visível no
 painel público) com o site **e** a planilha do Google de cada uma das 27 unidades, para quem administra
 o projeto.
 
@@ -70,8 +70,8 @@ Nenhuma etapa abaixo exige mexer em `app.js` ou `estilo.css` — só copiar, cri
 um arquivo. E como o repositório já publica várias UBS lado a lado, a nova unidade entra **na mesma
 publicação**, sem repositório nem deploy novo.
 
-1. **Copie a pasta [`ubs-paqueta/`](ubs-paqueta/) inteira** dentro deste mesmo repositório, com um novo
-   nome (ex: `ubs-<bairro-da-nova-unidade>/`).
+1. **Copie a pasta [`paqueta/`](paqueta/) inteira** dentro deste mesmo repositório, com um novo
+   nome (ex: `<bairro-da-nova-unidade>/`).
 2. **Crie uma planilha do Google nova** para a unidade, com a aba `setores` (obrigatória) e as que
    fizerem sentido entre `mudancas-horario`, `recados`, `equipe`, `faltas`, `ruas` e `reunioes` (veja a
    tabela acima), e compartilhe como "Qualquer pessoa com o link → Leitor".
@@ -84,18 +84,18 @@ publicação**, sem repositório nem deploy novo.
 4. **Atualize a entrada dessa UBS** no array `UNIDADES`, tanto no [`index.html`](index.html) quanto no
    [`admin/index.html`](admin/index.html) da raiz do repositório: se ela já estava listada (com link
    absoluto para o deploy separado), troque o link pelo caminho relativo da pasta nova (ex:
-   `ubs-<nome>/`, e `../ubs-<nome>/` no `admin/index.html`, que está uma pasta abaixo). Se for uma UBS
+   `<nome>/`, e `../<nome>/` no `admin/index.html`, que está uma pasta abaixo). Se for uma UBS
    nova que nunca teve site, acrescente a linha no array.
 5. **Publique** (`git commit` + `git push` — a Vercel republica o repositório inteiro sozinha).
 6. **Volte no `config.js` da pasta nova e preencha `unidade.site`** com o endereço publicado, incluindo a
-   subpasta (ex: `https://ubspaqueta.vercel.app/ubs-<nova-unidade>`, sem barra no final). É desse campo
+   subpasta (ex: `https://ubspaqueta.vercel.app/<nova-unidade>`, sem barra no final). É desse campo
    que sai o QR code do cartaz impresso. Ajuste também o bloco Open Graph no topo do `index.html` da
    pasta nova (mesmo endereço, com barra no final).
 
 ## Servindo no domínio da Secretaria de Saúde
 
 Para todas as UBS abrirem num subdomínio da própria Secretaria (ex:
-`ubs.smsbrusque.sc.gov.br/ubs-paqueta/`) em vez de `...vercel.app` — mantendo
+`ubs.smsbrusque.sc.gov.br/paqueta/`) em vez de `...vercel.app` — mantendo
 o cadeado e o domínio oficial —, o passo a passo está em
 [`guia-dominio-secretaria.md`](guia-dominio-secretaria.md). Ele tem uma parte
 para a equipe do projeto e uma parte pronta para enviar ao setor de TI da
@@ -106,7 +106,7 @@ para todas as UBS atuais e futuras — não um pedido por unidade).
 
 O site pode estar perfeito e ninguém descobrir que ele existe. O cartaz é o que liga um ao outro.
 
-Abra **`cartaz.html`** (dentro da pasta da UBS, ex: [`ubs-paqueta/cartaz.html`](ubs-paqueta/cartaz.html))
+Abra **`cartaz.html`** (dentro da pasta da UBS, ex: [`paqueta/cartaz.html`](paqueta/cartaz.html))
 no navegador (é só dar dois cliques no arquivo). Aparece uma barra
 no topo com o endereço do site, a escolha entre dois formatos e um botão de imprimir:
 
@@ -142,7 +142,7 @@ cinza no fim da página diz de quando eles são ("guardados no aparelho ontem à
 nunca tiver conseguido abrir o site com internet é que ele cai nos dados de reserva do `config.js` —
 e a mesma linha avisa isso também, com todas as letras.
 
-Quem cuida disso é o arquivo `sw.js` de cada UBS (ex: [`ubs-paqueta/sw.js`](ubs-paqueta/sw.js)). **Se
+Quem cuida disso é o arquivo `sw.js` de cada UBS (ex: [`paqueta/sw.js`](paqueta/sw.js)). **Se
 você mexer em qualquer arquivo daquela UBS, troque o número em `VERSAO`, na primeira linha dele**
 (`'ubs-v9'` → `'ubs-v10'`) — é isso que faz o celular das pessoas jogar fora a versão antiga. Sem trocar,
 quem já visitou pode continuar vendo o site velho. Cada UBS tem seu próprio `sw.js` e cache isolado — mudar
@@ -170,16 +170,16 @@ Não tem nada a ver com o funcionamento do site: são os documentos para **avali
 questionário de antes, questionário de depois com a escala de usabilidade, folha de contagem da
 recepção, roteiro de entrevista com a equipe e o plano que amarra tudo. É específica da UBS Paquetá,
 o estudo de caso deste semestre — não faz parte do que se copia ao replicar para outra unidade. Comece
-pelo [`ubs-paqueta/pesquisa/README.md`](ubs-paqueta/pesquisa/README.md).
+pelo [`paqueta/pesquisa/README.md`](paqueta/pesquisa/README.md).
 
 O `guia-da-planilha.md`, dentro da pasta de cada UBS (ex:
-[`ubs-paqueta/guia-da-planilha.md`](ubs-paqueta/guia-da-planilha.md)), é o guia de uma página para
+[`paqueta/guia-da-planilha.md`](paqueta/guia-da-planilha.md)), é o guia de uma página para
 imprimir e deixar do lado do computador de quem atualiza a planilha daquela unidade. É ele que decide
 se o site continua certo depois que o semestre acabar.
 
 ## Testando horários sem esperar o relógio
 
 Abrindo o site de uma UBS com `?teste` no final do endereço (ex:
-`ubspaqueta.vercel.app/ubs-paqueta/?teste`) aparece uma barra escondida com data e hora para simular
+`ubspaqueta.vercel.app/paqueta/?teste`) aparece uma barra escondida com data e hora para simular
 "como o site fica no sábado às 8h" sem precisar esperar o dia chegar. Só aparece com esse parâmetro — no
 site normal fica invisível.

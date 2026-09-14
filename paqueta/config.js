@@ -38,26 +38,26 @@ const CONFIG = {
     instagram: 'https://www.instagram.com/ubspaqueta/',
 
     /* Endereço desta pasta depois de publicada (ex:
-       'https://ubspaqueta.vercel.app/ubs-paqueta'). Como este site vive numa
+       'https://ubspaqueta.vercel.app/paqueta'). Como este site vive numa
        subpasta de um domínio compartilhado com outras UBS, o valor sempre
        inclui a subpasta — sem barra no final.
        Só é usado pelo cartaz.html, para gerar o QR code impresso. Se deixar
        vazio, o cartaz deduz o endereço da própria janela do navegador — o que
        funciona, mas gera um QR apontando para "localhost" se você abrir o
        cartaz antes de publicar o site. Preencha assim que publicar. */
-    site: 'https://ubspaqueta.vercel.app/ubs-paqueta',
+    site: 'https://ubspaqueta.vercel.app/paqueta',
 
     /* Endereço da página que lista TODAS as unidades de saúde de Brusque.
        Vira um link "Ver todas as unidades de saúde" no rodapé do site,
        separado do resto (não misturado no meio dos telefones). Serve
        principalmente quando este site é publicado sob um domínio
-       compartilhado com outras UBS (ex: ubs.smsbrusque.sc.gov.br/ubs-paqueta/):
+       compartilhado com outras UBS (ex: ubs.smsbrusque.sc.gov.br/paqueta/):
        ali não existe o menu do portal em volta, então quem chega direto (QR,
        link, favorito) precisa de um caminho de volta para achar outra
        unidade. NÃO é redirecionamento automático — é só um link visível.
        Deixe vazio ('') para não mostrar nada.
 
-       Este site vive na subpasta ubs-paqueta/ de um monorepo cuja raiz
+       Este site vive na subpasta paqueta/ de um monorepo cuja raiz
        ('../' a partir daqui) É essa página — o painel de todas as UBS de
        Brusque (ver index.html e admin/index.html na raiz do repositório).
        Por isso o valor é um caminho relativo, não um domínio separado. */

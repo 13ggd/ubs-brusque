@@ -13,9 +13,9 @@ the whole folder and edit only `config.js`. The step-by-step replication checkli
 ### Repository layout: one deploy, many UBS
 
 The repo root is **not** a single UBS — it's a monorepo publishing several UBS side by side from one
-deploy. Each UBS is a self-contained folder (currently only `ubs-paqueta/`) holding its own copy of every
+deploy. Each UBS is a self-contained folder (currently only `paqueta/`) holding its own copy of every
 file described below (`index.html`, `app.js`, `config.js`, `estilo.css`, `sw.js`, `cartaz.html`, `qr.js`,
-plus that UBS's own `guia-da-planilha.md` and, for `ubs-paqueta/` specifically, its `pesquisa/` research
+plus that UBS's own `guia-da-planilha.md` and, for `paqueta/` specifically, its `pesquisa/` research
 material).
 
 The root `index.html` and `admin/index.html` are **not** template/app files — they're the citywide
@@ -25,12 +25,12 @@ separately for now; retiring/redirecting it is a manual follow-up, not automatic
 self-contained HTML file with an inline `UNIDADES` array (name, site link, and — in `admin/` only — the
 Google Sheet link) rendered client-side; no shared JS with the per-UBS folders, no routing, nothing
 dynamic. A UBS not yet migrated into this monorepo keeps an absolute link to its own separate deploy in
-both arrays; only `ubs-paqueta/` (the one folder migrated so far) uses a relative link (`ubs-paqueta/` in
-`index.html`, `../ubs-paqueta/` in `admin/index.html`, since `admin/` is one level deeper). When another
+both arrays; only `paqueta/` (the one folder migrated so far) uses a relative link (`paqueta/` in
+`index.html`, `../paqueta/` in `admin/index.html`, since `admin/` is one level deeper). When another
 UBS folder is added here, update its entry in both arrays the same way — see `README.md`.
 
 This shape exists so all UBS can be published under **one shared domain/subdomain** (e.g.
-`ubs.smsbrusque.sc.gov.br/ubs-paqueta/`, `/ubs-<outra>/`) with a single one-time DNS request to the
+`ubs.smsbrusque.sc.gov.br/paqueta/`, `/<outra>/`) with a single one-time DNS request to the
 health secretariat's IT — see `guia-dominio-secretaria.md` — instead of one subdomain (and one IT
 request) per clinic. Nothing about the app's own logic changes because of this: `app.js`/`sw.js`/`qr.js`
 already resolve every path relative to their own location (confirmed when this structure was
@@ -39,7 +39,7 @@ subpath — including the service worker, which gets a scope automatically limit
 (`navigator.serviceWorker.register('sw.js')` uses a relative path), so one UBS's cache can never leak
 into another's. Every mention of `index.html`, `app.js`, `config.js`, `sw.js`, `cartaz.html`, `qr.js`,
 `fotos/`, `guia-da-planilha.md` and `pesquisa/` elsewhere in this file refers to that path **inside a
-UBS's own folder** (e.g. `ubs-paqueta/app.js`), not a root-level file.
+UBS's own folder** (e.g. `paqueta/app.js`), not a root-level file.
 
 Around that per-UBS core sit four things that exist because the site is also a **first-semester
 intervention research project**, not just a website — and a website nobody finds, nobody maintains, and
@@ -70,9 +70,9 @@ python -m http.server 8000
 ```
 
 then open `http://localhost:8000/` for the list of UBS, or go straight to a UBS with
-`http://localhost:8000/ubs-paqueta/?teste` (see "Manual time-travel testing" below). Serving the repo
+`http://localhost:8000/paqueta/?teste` (see "Manual time-travel testing" below). Serving the repo
 root rather than a single UBS folder matters here specifically because each UBS's service worker scope
-depends on the path it's registered from — serving `ubs-paqueta/` in isolation would still work, but
+depends on the path it's registered from — serving `paqueta/` in isolation would still work, but
 would hide the very path-under-a-shared-domain behaviour ("Repository layout" above) that this structure
 exists to support.
 

@@ -3,7 +3,7 @@
 Objetivo: quando alguém clicar em **UBS Paquetá** (ou em qualquer outra
 unidade) no site da Secretaria, abrir o site desta unidade **continuando no
 domínio da Secretaria** — o endereço na barra fica algo como
-`ubs.smsbrusque.sc.gov.br/ubs-paqueta/`, com cadeado (HTTPS).
+`ubs.smsbrusque.sc.gov.br/paqueta/`, com cadeado (HTTPS).
 
 Como isso é feito: **um único subdomínio** (ex: `ubs.smsbrusque.sc.gov.br`)
 apontado, via **um único** registro de DNS (CNAME), para a Vercel, onde este
@@ -11,9 +11,9 @@ repositório está hospedado. Não é redirecionamento para outro endereço, nã
 `<iframe>`, não é cópia do código para o servidor da Secretaria.
 
 **Isso é feito uma vez só, para sempre.** O repositório é um monorepo — uma
-pasta por UBS (`ubs-paqueta/`, e as que forem entrando depois) — publicado
+pasta por UBS (`paqueta/`, e as que forem entrando depois) — publicado
 como um único projeto na Vercel. Cada UBS nova vira só uma pasta a mais dentro
-do mesmo subdomínio (`ubs.smsbrusque.sc.gov.br/ubs-<nova-unidade>/`): não gera
+do mesmo subdomínio (`ubs.smsbrusque.sc.gov.br/<nova-unidade>/`): não gera
 novo pedido de DNS, nem novo contato com o TI da Secretaria. O CNAME abaixo
 não é "da UBS Paquetá" — é do projeto como um todo.
 
@@ -38,7 +38,7 @@ unidades), pule para A2.
    *Output Directory* — é site estático, não tem build.
 4. **Deploy**. Ao terminar, confira que `https://<algum-nome>.vercel.app/`
    abre e mostra a lista de unidades, e que
-   `https://<algum-nome>.vercel.app/ubs-paqueta/` abre o site da unidade.
+   `https://<algum-nome>.vercel.app/paqueta/` abre o site da unidade.
 
 ### A2. Adicionar o subdomínio único da Secretaria na Vercel
 
@@ -69,20 +69,20 @@ Depois que o TI criar o registro (pode levar de alguns minutos a algumas horas):
 - A Vercel emite sozinha o certificado HTTPS (Let's Encrypt) — sem ninguém pedir.
 - Teste, para cada UBS já publicada:
   - `https://ubs.smsbrusque.sc.gov.br/` mostra a lista de unidades;
-  - `https://ubs.smsbrusque.sc.gov.br/ubs-paqueta/` abre o site da UBS Paquetá,
+  - `https://ubs.smsbrusque.sc.gov.br/paqueta/` abre o site da UBS Paquetá,
     com o cadeado e sem aviso de segurança;
-  - `https://ubs.smsbrusque.sc.gov.br/ubs-paqueta/?teste` abre a barra de teste;
+  - `https://ubs.smsbrusque.sc.gov.br/paqueta/?teste` abre a barra de teste;
   - desligue a internet e recarregue — o site ainda abre (modo offline).
 
 ### A5. Ajustar o código de cada UBS para o endereço definitivo
 
 Com `ubs.smsbrusque.sc.gov.br` funcionando, edite **dentro da pasta de cada
-UBS** (ex: `ubs-paqueta/`):
+UBS** (ex: `paqueta/`):
 
 | Arquivo | O que mudar |
 |---|---|
-| `config.js` | Em `unidade.site`, escreva `'https://ubs.smsbrusque.sc.gov.br/ubs-paqueta'` (sem barra no final). É de onde sai o QR code do cartaz impresso. |
-| `index.html` | No bloco *Open Graph* (topo do arquivo), troque o endereço atual por `https://ubs.smsbrusque.sc.gov.br/ubs-paqueta/` nas linhas `og:url`, `og:image` e `twitter:image`. É o que aparece quando colam o link no WhatsApp. |
+| `config.js` | Em `unidade.site`, escreva `'https://ubs.smsbrusque.sc.gov.br/paqueta'` (sem barra no final). É de onde sai o QR code do cartaz impresso. |
+| `index.html` | No bloco *Open Graph* (topo do arquivo), troque o endereço atual por `https://ubs.smsbrusque.sc.gov.br/paqueta/` nas linhas `og:url`, `og:image` e `twitter:image`. É o que aparece quando colam o link no WhatsApp. |
 | `sw.js` | Troque o número em `VERSAO` (ex: `ubs-v10` → `ubs-v11`). É o que faz o navegador de quem já visitou baixar a versão nova. |
 
 Isso é feito **uma vez por UBS** (é parte do trabalho normal de publicar uma
@@ -92,12 +92,12 @@ Depois: `git commit` + `git push`. A Vercel republica sozinha.
 
 ### A6. Fechar o ciclo (por UBS)
 
-- **Reimprima o cartaz** (`ubs-paqueta/cartaz.html`) — o QR agora aponta para
+- **Reimprima o cartaz** (`paqueta/cartaz.html`) — o QR agora aponta para
   o endereço definitivo. Jogue fora os cartazes antigos com o endereço
   `.vercel.app`.
 - **Peça ao pessoal da Secretaria** que, no link do site deles para esta
   unidade, deixe o endereço assim:
-  `https://ubs.smsbrusque.sc.gov.br/ubs-paqueta/?de=sms`
+  `https://ubs.smsbrusque.sc.gov.br/paqueta/?de=sms`
   O `?de=sms` faz a medição de acessos contar quantas pessoas chegaram por ali,
   separado de quem chegou pelo cartaz (`?de=cartaz`) ou pelo bilhete (`?de=bilhete`).
 
@@ -106,12 +106,12 @@ Depois: `git commit` + `git push`. A Vercel republica sozinha.
 Nenhuma etapa abaixo passa pelo TI da Secretaria de novo — o CNAME já está
 resolvido desde a Parte B.
 
-1. Copie a pasta de uma UBS existente (ex: `ubs-paqueta/`) para
-   `ubs-<nova-unidade>/`, dentro do mesmo repositório.
+1. Copie a pasta de uma UBS existente (ex: `paqueta/`) para
+   `<nova-unidade>/`, dentro do mesmo repositório.
 2. Edite o `config.js` da cópia (ver `README.md` — seção "Replicando para
    outra UBS").
 3. Já preencha `unidade.site` com
-   `'https://ubs.smsbrusque.sc.gov.br/ubs-<nova-unidade>'` e o bloco Open
+   `'https://ubs.smsbrusque.sc.gov.br/<nova-unidade>'` e o bloco Open
    Graph do `index.html` da pasta nova com o mesmo endereço — não precisa
    passar pelo endereço `.vercel.app` provisório, já que o subdomínio já
    existe.
@@ -144,8 +144,8 @@ básicas de saúde do município, hospedado na **Vercel**, mantido pela equipe
 do projeto. O código-fonte é público: `https://github.com/13ggd/ubspaqueta`
 
 Cada UBS participante ganha seu próprio endereço dentro de um único
-subdomínio (ex: `ubs.smsbrusque.sc.gov.br/ubs-paqueta/`,
-`ubs.smsbrusque.sc.gov.br/ubs-<outra-unidade>/`) — **isso é o motivo de o
+subdomínio (ex: `ubs.smsbrusque.sc.gov.br/paqueta/`,
+`ubs.smsbrusque.sc.gov.br/<outra-unidade>/`) — **isso é o motivo de o
 pedido abaixo ser feito só uma vez**: novas unidades que entrarem no projeto
 depois não vão exigir um novo registro de DNS, só ganham um caminho novo
 dentro do mesmo subdomínio.
@@ -208,6 +208,6 @@ por UBS. Código aberto para auditoria no GitHub acima.
 subdomínio (`ubs.smsbrusque.sc.gov.br`) no painel.
 **TI da Secretaria:** cria **um** registro `CNAME` `ubs` → `cname.vercel-dns.com`
 — uma única vez, para todas as UBS atuais e futuras.
-**Resultado:** cada UBS abre em `ubs.smsbrusque.sc.gov.br/ubs-<nome>/`, com
+**Resultado:** cada UBS abre em `ubs.smsbrusque.sc.gov.br/<nome>/`, com
 HTTPS, no domínio da Secretaria — e adicionar uma UBS nova não depende mais
 do TI.
