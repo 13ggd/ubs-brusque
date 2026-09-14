@@ -5,10 +5,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 A static, no-build, no-dependency website (`index.html` + `app.js` + `estilo.css`) that shows opening
-hours, notices, staff and emergency contacts for a Brazilian public health clinic (UBS Paquetá, in
-Brusque/SC). It is written as a **reusable template**: to stand up the site for a different clinic, copy
-the whole folder and edit only `config.js`. The step-by-step replication checklist for a new UBS lives in
-[`README.md`](README.md), not here.
+hours, notices, staff and emergency contacts for a Brazilian public health clinic. It started as a
+single-clinic site for UBS Paquetá (Brusque/SC), written from day one as a **reusable template**: to
+stand up the site for a different clinic, copy the whole folder and edit only `config.js`. That template
+shape is why this repo now hosts **all 27 UBS of Brusque** side by side — see "Repository layout" right
+below, which is the accurate picture of what's actually in this repo today; treat the rest of this
+section as the per-UBS template this repo is built out of, not a description of the repo root. The
+step-by-step replication checklist for a new UBS lives in [`README.md`](README.md), not here.
 
 ### Repository layout: one deploy, many UBS
 
