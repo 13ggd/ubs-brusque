@@ -33,7 +33,7 @@ Se já está publicado (ex: `ubs-brusque.vercel.app/` abre e mostra a lista de
 unidades), pule para A2.
 
 1. Conta em [vercel.com](https://vercel.com) — entre com o GitHub.
-2. **Add New → Project** e importe o repositório `13ggd/ubspaqueta`.
+2. **Add New → Project** e importe o repositório `13ggd/ubs-brusque`.
 3. Em *Framework Preset* escolha **Other**. Não preencha *Build Command* nem
    *Output Directory* — é site estático, não tem build.
 4. **Deploy**. Ao terminar, confira que `https://<algum-nome>.vercel.app/`
@@ -83,7 +83,7 @@ UBS** (ex: `paqueta/`):
 |---|---|
 | `config.js` | Em `unidade.site`, escreva `'https://ubs.smsbrusque.sc.gov.br/paqueta'` (sem barra no final). É de onde sai o QR code do cartaz impresso. |
 | `index.html` | No bloco *Open Graph* (topo do arquivo), troque o endereço atual por `https://ubs.smsbrusque.sc.gov.br/paqueta/` nas linhas `og:url`, `og:image` e `twitter:image`. É o que aparece quando colam o link no WhatsApp. |
-| `sw.js` | Troque o número em `VERSAO` (ex: `ubs-v10` → `ubs-v11`). É o que faz o navegador de quem já visitou baixar a versão nova. |
+| `sw.js` | Aumente o número em `VERSAO` (sempre o próximo, o que estiver lá no momento — ex: `ubs-v11` → `ubs-v12`). É o que faz o navegador de quem já visitou baixar a versão nova. |
 
 Isso é feito **uma vez por UBS** (é parte do trabalho normal de publicar uma
 UBS nova, junto com o `config.js` — não é um passo extra ligado ao domínio).
@@ -125,7 +125,7 @@ O site fica no ar de graça na Vercel enquanto a conta existir e o repositório
 no GitHub existir. Se o projeto for entregue para a Secretaria manter, o TI pode:
 
 - criar uma conta própria na Vercel e importar o mesmo repositório
-  (`13ggd/ubspaqueta`), ou um *fork* dele; e
+  (`13ggd/ubs-brusque`), ou um *fork* dele; e
 - refazer o passo A2 nessa conta nova.
 
 O registro de DNS da Parte B continua valendo — só troca para qual conta da
@@ -141,7 +141,7 @@ Vercel ele aponta, se o `Value` do CNAME mudar.
 
 Um site estático (só HTML/CSS/JavaScript) de horários e avisos das unidades
 básicas de saúde do município, hospedado na **Vercel**, mantido pela equipe
-do projeto. O código-fonte é público: `https://github.com/13ggd/ubspaqueta`
+do projeto. O código-fonte é público: `https://github.com/13ggd/ubs-brusque`
 
 Cada UBS participante ganha seu próprio endereço dentro de um único
 subdomínio (ex: `ubs.smsbrusque.sc.gov.br/paqueta/`,

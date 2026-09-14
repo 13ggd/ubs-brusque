@@ -1,11 +1,14 @@
-# UBS Paquetá — site de horários e avisos
+# UBS de Brusque — site de horários e avisos
 
 Site simples que mostra se a UBS está aberta agora, os horários de cada setor, avisos do dia,
 a equipe e telefones de urgência — pensado para quem só quer saber "posso ir agora?" no celular.
+Este repositório publica as **27 UBS de Brusque de uma vez**, num monorepo — ver "Estrutura do
+repositório" abaixo.
 
-Feito como projeto de intervenção do 1º semestre (grupo de UBS), com o objetivo de ser **reutilizável
-por qualquer UBS de Brusque**: o mesmo código serve para todas, e cada unidade só precisa preencher
-sua própria planilha do Google e um arquivo de configuração — sem escrever código.
+Nasceu como projeto de intervenção do 1º semestre (grupo da UBS Paquetá), escrito desde o início como
+**template reutilizável por qualquer UBS**: o mesmo código serve para todas, e cada unidade só precisa
+da sua própria planilha do Google e um arquivo de configuração — sem escrever código. Foi assim que as
+outras 26 UBS entraram aqui depois.
 
 ## Estrutura do repositório
 
@@ -154,10 +157,11 @@ nunca tiver conseguido abrir o site com internet é que ele cai nos dados de res
 e a mesma linha avisa isso também, com todas as letras.
 
 Quem cuida disso é o arquivo `sw.js` de cada UBS (ex: [`paqueta/sw.js`](paqueta/sw.js)). **Se
-você mexer em qualquer arquivo daquela UBS, troque o número em `VERSAO`, na primeira linha dele**
-(`'ubs-v9'` → `'ubs-v10'`) — é isso que faz o celular das pessoas jogar fora a versão antiga. Sem trocar,
-quem já visitou pode continuar vendo o site velho. Cada UBS tem seu próprio `sw.js` e cache isolado — mudar
-o `VERSAO` de uma não afeta as outras.
+você mexer em qualquer arquivo daquela UBS, aumente o número em `VERSAO`, na primeira linha dele**
+(ex: `'ubs-v11'` → `'ubs-v12'` — sempre o próximo número, o que estiver lá no momento) — é isso que faz
+o celular das pessoas jogar fora a versão antiga. Sem trocar, quem já visitou pode continuar vendo o
+site velho. Cada UBS tem seu próprio `sw.js` e cache isolado — mudar o `VERSAO` de uma não afeta as
+outras.
 
 ## Medindo os acessos (opcional)
 
