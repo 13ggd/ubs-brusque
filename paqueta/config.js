@@ -67,7 +67,19 @@ const CONFIG = {
        Mesma regra das fotos da equipe: coloque o arquivo na pasta "fotos"
        do repositório e escreva só o nome aqui — ex: 'fachada.jpg' —
        ou cole um link completo (https://...). */
-    foto: 'https://www.diplomatafm.com.br/wp-content/uploads/2025/02/002d20b5-8586-415f-bbdc-37c70fcf6c35-UNII.png'
+    foto: 'https://www.diplomatafm.com.br/wp-content/uploads/2025/02/002d20b5-8586-415f-bbdc-37c70fcf6c35-UNII.png',
+
+    /* Link do Google Forms usado pela equipe para avisar fechamento/mudança
+       de horário de um setor, sem precisar editar a planilha na mão (o
+       formulário escreve na aba "mudancas-horario" através de um Apps
+       Script configurado à parte, direto no Google). Cole aqui o link
+       normal de responder o formulário (o "?embedded=true" é adicionado
+       sozinho por formulario.html). Deixe vazio ('') se a equipe ainda não
+       usa isso — formulario.html mostra um aviso em vez de uma tela em
+       branco. Este link não é secreto por si só: quem tem acesso deve
+       receber diretamente (ver a pergunta de código de acesso, dentro do
+       próprio formulário), não publicado no site público. */
+    formularioMudancas: ''
   },
 
   /* ---- 2. PLANILHA DO GOOGLE ------------------------------------------- */
