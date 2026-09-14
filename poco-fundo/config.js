@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Poço Fundo, R. Poço Fundo, s/n, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/poco-fundo').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/poco-fundo').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/poco-fundo',
+    site: 'https://ubs-brusque.vercel.app/poco-fundo',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Centro, R. Pref. Germano Schaeffer, 66, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/centro').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/centro').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/centro',
+    site: 'https://ubs-brusque.vercel.app/centro',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

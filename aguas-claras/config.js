@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Águas Claras, R. Adelina Debatin, 124, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/aguas-claras').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/aguas-claras').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/aguas-claras',
+    site: 'https://ubs-brusque.vercel.app/aguas-claras',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

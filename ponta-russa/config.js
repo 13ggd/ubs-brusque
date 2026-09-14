@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Ponta Russa, R. Ponta Russa, 1328, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/ponta-russa').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/ponta-russa').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/ponta-russa',
+    site: 'https://ubs-brusque.vercel.app/ponta-russa',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

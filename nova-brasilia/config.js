@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Nova Brasília, R. Osvaldo Niebuhr, 425, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/nova-brasilia').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/nova-brasilia').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/nova-brasilia',
+    site: 'https://ubs-brusque.vercel.app/nova-brasilia',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',

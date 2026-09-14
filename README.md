@@ -99,7 +99,7 @@ publicação**, sem repositório nem deploy novo.
    nova que nunca teve site, acrescente a linha no array.
 5. **Publique** (`git commit` + `git push` — a Vercel republica o repositório inteiro sozinha).
 6. **Volte no `config.js` da pasta nova e preencha `unidade.site`** com o endereço publicado, incluindo a
-   subpasta (ex: `https://ubspaqueta.vercel.app/<nova-unidade>`, sem barra no final). É desse campo
+   subpasta (ex: `https://ubs-brusque.vercel.app/<nova-unidade>`, sem barra no final). É desse campo
    que sai o QR code do cartaz impresso. Ajuste também o bloco Open Graph no topo do `index.html` da
    pasta nova (mesmo endereço, com barra no final).
 
@@ -191,6 +191,6 @@ se o site continua certo depois que o semestre acabar.
 ## Testando horários sem esperar o relógio
 
 Abrindo o site de uma UBS com `?teste` no final do endereço (ex:
-`ubspaqueta.vercel.app/paqueta/?teste`) aparece uma barra escondida com data e hora para simular
+`ubs-brusque.vercel.app/paqueta/?teste`) aparece uma barra escondida com data e hora para simular
 "como o site fica no sábado às 8h" sem precisar esperar o dia chegar. Só aparece com esse parâmetro — no
 site normal fica invisível.

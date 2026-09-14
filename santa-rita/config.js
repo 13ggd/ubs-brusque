@@ -38,10 +38,10 @@ const CONFIG = {
     mapa: 'UBS Santa Rita, R. Olibio Barbi, 177, Brusque - SC',
     instagram: '',
 
-    /* Endereço do site depois de publicado (ex: 'https://ubspaqueta.vercel.app/santa-rita').
+    /* Endereço do site depois de publicado (ex: 'https://ubs-brusque.vercel.app/santa-rita').
        Preenchido no passo final da publicação; usado só pelo cartaz.html
        para gerar o QR code impresso. */
-    site: 'https://ubspaqueta.vercel.app/santa-rita',
+    site: 'https://ubs-brusque.vercel.app/santa-rita',
 
     /* Página que lista TODAS as unidades de saúde, no site da Secretaria. */
     paginaUnidades: '../',
