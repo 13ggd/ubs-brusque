@@ -27,7 +27,7 @@
    faz o navegador de todo mundo descartar o cache antigo.
    =========================================================================== */
 
-var VERSAO       = 'ubs-v12';
+var VERSAO       = 'ubs-v13';
 var CACHE_SITE   = VERSAO + '-site';
 var CACHE_DADOS  = VERSAO + '-dados';
 var CACHE_FONTES = VERSAO + '-fontes';
@@ -39,7 +39,10 @@ var ESSENCIAIS = [
   './index.html',
   './estilo.css',
   './app.js',
-  './config.js'
+  './config.js',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', function(evento){
