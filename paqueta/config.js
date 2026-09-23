@@ -219,9 +219,10 @@ const CONFIG = {
      aparecem no painel "Informações de saúde" (botão flutuante 🩺); em
      telas largas de computador o mesmo conteúdo fica sempre visível,
      dividido ao meio nas margens em branco dos dois lados do conteúdo
-     central, de propósito sem parecer um cartão de informação (sem caixa,
-     borda ou fundo próprio) — ver saude-fab/saude-painel/saude-esquerda/
-     saude-direita no index.html e montarSaude() no app.js.
+     central. Cada bloco é uma caixa colorida com a cara de um "recado"
+     (mesmo fundo/borda verde-claro, mesma etiqueta com selo — ver
+     .saude-bloco no estilo.css) — ver saude-fab/saude-painel/
+     saude-esquerda/saude-direita no index.html e montarSaude() no app.js.
      Cada bloco vira um título + lista de pontos (itens). São as mesmas
      orientações em qualquer unidade, então normalmente não precisam ser
      editadas ao replicar o template — mas dá pra ajustar ou completar com
