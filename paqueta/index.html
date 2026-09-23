@@ -91,11 +91,21 @@
 </section>
 
 <!-- ".pagina-larga" só faz diferença em telas largas de computador (ver
-     @media "COMPUTADOR" no estilo.css): vira um flex que põe o painel de
-     "Informações de saúde" ao lado do conteúdo central, no espaço em
-     branco que já sobra ali, em vez de flutuar em cima da tela. No
-     celular é só uma div comum, sem nenhum efeito. -->
+     @media "COMPUTADOR" no estilo.css): vira um flex que põe metade das
+     "Informações de saúde" (ver CONFIG.informacoesSaude) de cada lado do
+     conteúdo central, soltas no espaço em branco que já sobra ali — sem
+     caixa, borda ou fundo próprio, pra parecer parte do fundo da página
+     mesmo, não mais um cartão de informação igual ao resto do site. No
+     celular essas duas colunas ficam escondidas (não tem lugar pra elas);
+     quem mostra o conteúdo lá é o painel de baixo (#saude-painel),
+     aberto pelo botão flutuante 🩺, com a lista inteira. Preenchidas por
+     montarSaude(), no app.js. -->
 <div class="pagina-larga">
+  <aside id="saude-esquerda" class="saude-lateral">
+    <p class="saude-coluna-tit">Informações de saúde</p>
+    <div id="saude-esquerda-conteudo"></div>
+  </aside>
+
 <main class="wrap" id="conteudo">
 
   <!-- ---------------------------- AVISOS ------------------------ -->
@@ -203,15 +213,10 @@
   </footer>
 </main>
 
-<div id="saude-painel" class="a11y-painel saude-painel" role="dialog" aria-modal="true"
-     aria-labelledby="saude-titulo" hidden>
-  <div class="a11y-topo">
-    <h2 id="saude-titulo">Informações de saúde</h2>
-    <button type="button" id="saude-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
-  </div>
-  <p class="saude-intro">Orientações gerais — quando medir, quando tomar, quando procurar a UBS.</p>
-  <div id="saude-conteudo"></div>
-</div>
+  <aside id="saude-direita" class="saude-lateral">
+    <p class="saude-coluna-tit">Informações de saúde</p>
+    <div id="saude-direita-conteudo"></div>
+  </aside>
 </div><!-- /.pagina-larga -->
 
 <!-- =================== BARRA DE TESTE ===========================
@@ -296,17 +301,14 @@
 
 <!-- ================ INFORMAÇÕES DE SAÚDE (botão flutuante) ==============
      Orientações gerais (glicemia, pressão, vacina, preventivo...) — ver
-     CONFIG.informacoesSaude no config.js. O painel em si (#saude-painel)
-     não está aqui do lado do botão — foi colocado dentro de
-     ".pagina-larga", logo depois de "main#conteudo" (ver mais abaixo),
-     porque em telas largas de computador ele deixa de ser um diálogo
-     flutuante e passa a ocupar o espaço em branco do lado do conteúdo
-     central (ver @media "COMPUTADOR" no estilo.css) — precisa estar ao
-     lado do main no HTML pra isso funcionar com CSS simples (flexbox),
-     em vez de posicionamento fixo cobrindo a tela toda. No celular nada
-     disso importa: o painel é fixed e abre por cima, então a posição dele
-     no HTML não muda nada visualmente — só o botão/fundo, que continuam
-     aqui, precisam ficar de fora de ".pagina-larga". -->
+     CONFIG.informacoesSaude no config.js. Só existe no CELULAR: abre este
+     painel por cima da tela, com a lista inteira, igual aos painéis de
+     acessibilidade e menu. Em telas largas de computador este botão (e o
+     painel) ficam escondidos — lá o mesmo conteúdo já aparece sempre
+     visível, dividido nas colunas #saude-esquerda/#saude-direita ao lado
+     de main#conteudo (ver ".pagina-larga" mais acima e o @media
+     "COMPUTADOR" no estilo.css). Preenchido por montarSaude(), no app.js,
+     junto com as duas colunas. -->
 <button type="button" id="saude-fab" class="saude-fab"
         aria-haspopup="dialog" aria-expanded="false" aria-controls="saude-painel"
         aria-label="Abrir informações de saúde: glicemia, pressão, vacina, preventivo">
@@ -314,6 +316,16 @@
 </button>
 
 <div id="saude-fundo" class="a11y-fundo" hidden></div>
+
+<div id="saude-painel" class="a11y-painel saude-painel" role="dialog" aria-modal="true"
+     aria-labelledby="saude-titulo" hidden>
+  <div class="a11y-topo">
+    <h2 id="saude-titulo">Informações de saúde</h2>
+    <button type="button" id="saude-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
+  </div>
+  <p class="saude-intro">Orientações gerais — quando medir, quando tomar, quando procurar a UBS.</p>
+  <div id="saude-conteudo"></div>
+</div>
 
 <!-- ====================== MENU (ir para uma parte da página) ============
      Botão flutuante no canto superior direito, em cima — o de

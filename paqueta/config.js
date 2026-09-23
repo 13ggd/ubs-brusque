@@ -215,14 +215,17 @@ const CONFIG = {
   /* Orientações gerais (glicemia, pressão, vacina, preventivo...) — não são
      sobre a UBS em si, por isso ficam fora do cartão principal, mas também
      não podem ficar escondidas atrás de um "▾" como telefonesUteis: aqui é
-     justamente o conteúdo que a população precisa achar fácil. Por isso são
-     mostradas no painel próprio "Informações de saúde" (botão flutuante 🩺),
-     que no computador vira uma faixa fixa ao lado do conteúdo — ver saude-fab/
-     saude-painel no index.html e montarSaude() no app.js.
-     Cada bloco vira um cartão com título + lista de pontos (itens). São as
-     mesmas orientações em qualquer unidade, então normalmente não precisam
-     ser editadas ao replicar o template — mas dá pra ajustar ou completar
-     com informações específicas da sua UBS se fizer sentido. */
+     justamente o conteúdo que a população precisa achar fácil. No celular
+     aparecem no painel "Informações de saúde" (botão flutuante 🩺); em
+     telas largas de computador o mesmo conteúdo fica sempre visível,
+     dividido ao meio nas margens em branco dos dois lados do conteúdo
+     central, de propósito sem parecer um cartão de informação (sem caixa,
+     borda ou fundo próprio) — ver saude-fab/saude-painel/saude-esquerda/
+     saude-direita no index.html e montarSaude() no app.js.
+     Cada bloco vira um título + lista de pontos (itens). São as mesmas
+     orientações em qualquer unidade, então normalmente não precisam ser
+     editadas ao replicar o template — mas dá pra ajustar ou completar com
+     informações específicas da sua UBS se fizer sentido. */
   informacoesSaude: [
     {
       titulo: 'Glicemia (açúcar no sangue)',

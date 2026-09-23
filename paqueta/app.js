@@ -1130,18 +1130,11 @@ function montarFixos(){
   }
 }
 
-/* Conteúdo do painel "Informações de saúde" (glicemia, pressão, vacina,
-   preventivo — ver CONFIG.informacoesSaude no config.js). É estático,
-   não depende do dia/hora testado, então é montado uma vez só, junto com
-   montarFixos(), e não em desenhar(). */
-function montarSaude(){
-  var blocos = CONFIG.informacoesSaude || [];
-  var fab = document.getElementById('saude-fab');
-  if(!blocos.length){
-    if(fab) fab.hidden = true;
-    return;
-  }
-  document.getElementById('saude-conteudo').innerHTML = blocos.map(function(b){
+/* Monta o HTML de uma lista de blocos de CONFIG.informacoesSaude (título +
+   itens) — usado tanto para a lista inteira (painel do celular) quanto
+   para cada metade (colunas do computador). */
+function blocosDeSaude(lista){
+  return lista.map(function(b){
     return '<div class="saude-bloco">' +
       '<h3 class="saude-tit">' + limpo(b.titulo) + '</h3>' +
       '<ul class="saude-lista">' +
@@ -1151,24 +1144,28 @@ function montarSaude(){
   }).join('');
 }
 
-/* Em telas largas de computador (ver @media "COMPUTADOR" no estilo.css) o
-   painel de saúde deixa de ser um diálogo que abre/fecha e vira uma faixa
-   sempre visível ao lado do conteúdo central. O CSS sozinho já faz ele
-   aparecer; esta função só ajusta os atributos de acessibilidade
-   condizentes — sem isso, um leitor de tela trataria a faixa sempre
-   visível como um diálogo modal fechado, mesmo estando de fato aberta e
-   visível na tela. */
-function ajustarSaudeParaTela(mq){
-  var painel = document.getElementById('saude-painel');
-  if(mq.matches){
-    painel.hidden = false;
-    painel.removeAttribute('aria-modal');
-    painel.removeAttribute('role');
-  } else {
-    painel.hidden = true;
-    painel.setAttribute('role', 'dialog');
-    painel.setAttribute('aria-modal', 'true');
+/* Conteúdo de "Informações de saúde" (glicemia, pressão, vacina, preventivo
+   — ver CONFIG.informacoesSaude no config.js). É estático, não depende do
+   dia/hora testado, então é montado uma vez só, junto com montarFixos(), e
+   não em desenhar(). No celular é uma lista só, dentro do painel aberto
+   pelo botão flutuante 🩺; no computador (ver @media "COMPUTADOR" no
+   estilo.css) esse painel fica escondido e o mesmo conteúdo aparece
+   sempre visível, dividido ao meio entre as colunas #saude-esquerda e
+   #saude-direita, uma de cada lado do conteúdo central — por isso é
+   preenchido nos três lugares de uma vez. */
+function montarSaude(){
+  var blocos = CONFIG.informacoesSaude || [];
+  var fab = document.getElementById('saude-fab');
+  if(!blocos.length){
+    if(fab) fab.hidden = true;
+    return;
   }
+
+  document.getElementById('saude-conteudo').innerHTML = blocosDeSaude(blocos);
+
+  var meio = Math.ceil(blocos.length / 2);
+  document.getElementById('saude-esquerda-conteudo').innerHTML = blocosDeSaude(blocos.slice(0, meio));
+  document.getElementById('saude-direita-conteudo').innerHTML  = blocosDeSaude(blocos.slice(meio));
 }
 
 /* --------------------------------------------------- desenhar a página -- */
@@ -2097,18 +2094,6 @@ function iniciar(){
   var painelNav = criarPainel('nav-fab', 'nav-painel', 'nav-fundo', 'nav-fechar');
   painelPessoa  = criarPainel(null, 'pessoa-painel', 'pessoa-fundo', 'pessoa-fechar');
   criarPainel('saude-fab', 'saude-painel', 'saude-fundo', 'saude-fechar');
-
-  /* liga o painel de saúde ao tamanho da tela (ver ajustarSaudeParaTela) e
-     mantém ajustado se a pessoa redimensionar/girar a janela no computador */
-  try {
-    var telaDeComputador = window.matchMedia('(min-width:1180px)');
-    ajustarSaudeParaTela(telaDeComputador);
-    if(telaDeComputador.addEventListener){
-      telaDeComputador.addEventListener('change', ajustarSaudeParaTela);
-    } else if(telaDeComputador.addListener){
-      telaDeComputador.addListener(ajustarSaudeParaTela);
-    }
-  } catch(e){ /* matchMedia indisponível: fica no comportamento de celular */ }
 
   /* cada link do menu fecha o painel ao ser clicado — a rolagem suave até
      a seção acontece sozinha, via CSS (scroll-behavior), sem precisar de JS */
