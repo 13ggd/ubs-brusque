@@ -1135,16 +1135,22 @@ function montarFixos(){
    para cada metade (colunas do computador). Cada bloco vira uma caixa
    colorida com a mesma cara de um "recado" (ver .aviso.recado e
    cartaoAviso(), mais abaixo) — fundo/borda verde-claro e uma etiqueta
-   "🩺 Saúde" no topo, igual à etiqueta "ⓘ Recado". */
+   "🩺 Saúde" no topo, igual à etiqueta "ⓘ Recado". É um <details>, fechado
+   por padrão: só o título aparece de cara, e os itens (o texto mais
+   longo) só aparecem se a pessoa tocar pra abrir — mesmo padrão de
+   "Ver os dias da semana ▾" usado no card de cada setor, em vez de jogar
+   tudo corrido na tela de uma vez. */
 function blocosDeSaude(lista){
   return lista.map(function(b){
-    return '<div class="saude-bloco">' +
-      '<span class="saude-tarja">🩺 Saúde</span>' +
-      '<h3 class="saude-tit">' + limpo(b.titulo) + '</h3>' +
+    return '<details class="saude-bloco">' +
+      '<summary class="saude-resumo">' +
+        '<span class="saude-tarja">🩺 Saúde</span>' +
+        '<span class="saude-tit">' + limpo(b.titulo) + '</span>' +
+      '</summary>' +
       '<ul class="saude-lista">' +
         (b.itens || []).map(function(i){ return '<li>' + limpo(i) + '</li>'; }).join('') +
       '</ul>' +
-    '</div>';
+    '</details>';
   }).join('');
 }
 
