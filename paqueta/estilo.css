@@ -255,8 +255,21 @@ body.alto-contraste .saude-fab{background:#00E676;color:#000;border-color:#fff}
   font-size:calc(16px * var(--esc));color:var(--tinta2);
   line-height:1.4;margin-bottom:14px;
 }
-.saude-bloco{margin-bottom:20px}
+/* Cada bloco é uma caixa colorida, igual à cara de um "recado" (ver
+   .aviso.recado, mais abaixo, em AVISOS) — mesmo fundo/borda verde-claro,
+   mesma etiqueta com selo, só que sempre visível em vez de aparecer só
+   quando alguém cria um recado na planilha. */
+.saude-bloco{
+  background:var(--verde-claro);border:3px solid var(--verde);
+  border-radius:var(--raio);padding:16px;margin-bottom:14px;
+}
 .saude-bloco:last-child{margin-bottom:0}
+.saude-tarja{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--verde);color:#fff;border-radius:8px;padding:6px 11px;
+  font-size:calc(13px * var(--esc));font-weight:700;
+  text-transform:uppercase;letter-spacing:.04em;margin-bottom:11px;
+}
 .saude-tit{
   font-size:calc(18px * var(--esc));font-weight:700;color:var(--verde-escuro);
   margin-bottom:8px;line-height:1.3;
@@ -271,10 +284,13 @@ body.alto-contraste .saude-tit{color:var(--tinta)}
 .saude-lista li::before{content:"•";position:absolute;left:2px;color:var(--verde);font-weight:700}
 
 /* Colunas do computador (#saude-esquerda/#saude-direita) — mesmo conteúdo
-   do painel do celular, metade de cada lado, sem caixa/borda/fundo
-   próprio: o objetivo é parecer parte do fundo da página, não mais um
-   cartão de informação igual ao resto do site. Escondidas por padrão
-   (regra mobile-first); só aparecem no @media "COMPUTADOR" lá embaixo. */
+   do painel do celular (as caixas ".saude-bloco" de cima), metade de cada
+   lado. Escondidas por padrão (regra mobile-first); só aparecem no
+   @media "COMPUTADOR" lá embaixo, que também ajusta a largura de cada
+   caixa pra caber na coluna, sem depender de pixel fixo — é isso que
+   deixa responsivo à resolução do navegador: no celular vira o painel
+   modal (ver #saude-painel), e a partir de min-width:1320px vira estas
+   duas colunas mais estreitas. */
 .saude-lateral{display:none}
 .saude-coluna-tit{
   font-size:calc(13px * var(--esc));font-weight:700;letter-spacing:.04em;
@@ -772,14 +788,12 @@ body.com-teste .teste{display:block}
 }
 
 /* ============================================= COMPUTADOR (tela larga) ==
-   Só nessa largura o conteúdo de "Informações de saúde" (mesmo texto do
-   painel do celular, ver montarSaude() no app.js) fica sempre visível,
-   dividido ao meio entre duas colunas soltas nas margens da página —
-   #saude-esquerda e #saude-direita, dentro de ".pagina-larga", uma de
-   cada lado de #conteudo. De propósito SEM caixa, borda ou fundo próprio:
-   o objetivo é parecer parte do fundo da página (que já fica vazio dos
-   dois lados do conteúdo central em telas largas), não mais um cartão de
-   informação igual ao resto do site. .pagina-larga só existe abaixo do
+   Só nessa largura o conteúdo de "Informações de saúde" (as caixas
+   ".saude-bloco", coloridas que nem um "recado" — ver montarSaude() no
+   app.js) fica sempre visível, dividido ao meio entre duas colunas soltas
+   nas margens da página — #saude-esquerda e #saude-direita, dentro de
+   ".pagina-larga", uma de cada lado de #conteudo, no espaço em branco que
+   já fica vazio ali em telas largas. .pagina-larga só existe abaixo do
    cabeçalho/resposta principal, então as colunas nunca aparecem por cima
    deles. O botão flutuante 🩺 e o painel do celular ficam escondidos
    aqui — não tem mais o que abrir, o conteúdo já está todo à vista. */

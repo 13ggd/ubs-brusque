@@ -93,13 +93,13 @@
 <!-- ".pagina-larga" só faz diferença em telas largas de computador (ver
      @media "COMPUTADOR" no estilo.css): vira um flex que põe metade das
      "Informações de saúde" (ver CONFIG.informacoesSaude) de cada lado do
-     conteúdo central, soltas no espaço em branco que já sobra ali — sem
-     caixa, borda ou fundo próprio, pra parecer parte do fundo da página
-     mesmo, não mais um cartão de informação igual ao resto do site. No
-     celular essas duas colunas ficam escondidas (não tem lugar pra elas);
-     quem mostra o conteúdo lá é o painel de baixo (#saude-painel),
-     aberto pelo botão flutuante 🩺, com a lista inteira. Preenchidas por
-     montarSaude(), no app.js. -->
+     conteúdo central, no espaço em branco que já sobra ali — cada bloco é
+     uma caixa colorida com a cara de um "recado" (ver .saude-bloco no
+     estilo.css). No celular essas duas colunas ficam escondidas (não tem
+     lugar pra elas); quem mostra o conteúdo lá é o painel de baixo
+     (#saude-painel), aberto pelo botão flutuante 🩺, com a lista inteira
+     — mesmas caixas coloridas, só que dentro de um painel em vez de
+     soltas na margem. Preenchidas por montarSaude(), no app.js. -->
 <div class="pagina-larga">
   <aside id="saude-esquerda" class="saude-lateral">
     <p class="saude-coluna-tit">Informações de saúde</p>

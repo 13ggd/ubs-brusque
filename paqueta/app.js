@@ -1132,10 +1132,14 @@ function montarFixos(){
 
 /* Monta o HTML de uma lista de blocos de CONFIG.informacoesSaude (título +
    itens) — usado tanto para a lista inteira (painel do celular) quanto
-   para cada metade (colunas do computador). */
+   para cada metade (colunas do computador). Cada bloco vira uma caixa
+   colorida com a mesma cara de um "recado" (ver .aviso.recado e
+   cartaoAviso(), mais abaixo) — fundo/borda verde-claro e uma etiqueta
+   "🩺 Saúde" no topo, igual à etiqueta "ⓘ Recado". */
 function blocosDeSaude(lista){
   return lista.map(function(b){
     return '<div class="saude-bloco">' +
+      '<span class="saude-tarja">🩺 Saúde</span>' +
       '<h3 class="saude-tit">' + limpo(b.titulo) + '</h3>' +
       '<ul class="saude-lista">' +
         (b.itens || []).map(function(i){ return '<li>' + limpo(i) + '</li>'; }).join('') +
