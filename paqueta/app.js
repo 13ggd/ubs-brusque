@@ -261,6 +261,7 @@ function ligarMedicaoDeCliques(){
     else if(alvo.id === 'a11y-contraste')     registrarEvento('alto-contraste');
     else if(alvo.id === 'a11y-fab')           registrarEvento('acessibilidade');
     else if(alvo.id === 'nav-fab')            registrarEvento('menu');
+    else if(alvo.id === 'saude-fab')          registrarEvento('info-saude');
   }, true);
 }
 
@@ -1129,6 +1130,46 @@ function montarFixos(){
   }
 }
 
+/* Conteúdo do painel "Informações de saúde" (glicemia, pressão, vacina,
+   preventivo — ver CONFIG.informacoesSaude no config.js). É estático,
+   não depende do dia/hora testado, então é montado uma vez só, junto com
+   montarFixos(), e não em desenhar(). */
+function montarSaude(){
+  var blocos = CONFIG.informacoesSaude || [];
+  var fab = document.getElementById('saude-fab');
+  if(!blocos.length){
+    if(fab) fab.hidden = true;
+    return;
+  }
+  document.getElementById('saude-conteudo').innerHTML = blocos.map(function(b){
+    return '<div class="saude-bloco">' +
+      '<h3 class="saude-tit">' + limpo(b.titulo) + '</h3>' +
+      '<ul class="saude-lista">' +
+        (b.itens || []).map(function(i){ return '<li>' + limpo(i) + '</li>'; }).join('') +
+      '</ul>' +
+    '</div>';
+  }).join('');
+}
+
+/* Em telas largas de computador (ver @media "COMPUTADOR" no estilo.css) o
+   painel de saúde deixa de ser um diálogo que abre/fecha e vira uma faixa
+   sempre visível do lado da tela. O CSS sozinho já faz ele aparecer; esta
+   função só ajusta os atributos de acessibilidade condizentes — sem isso,
+   um leitor de tela trataria a faixa sempre visível como um diálogo modal
+   fechado, mesmo estando de fato aberta e visível na tela. */
+function ajustarSaudeParaTela(mq){
+  var painel = document.getElementById('saude-painel');
+  if(mq.matches){
+    painel.hidden = false;
+    painel.removeAttribute('aria-modal');
+    painel.removeAttribute('role');
+  } else {
+    painel.hidden = true;
+    painel.setAttribute('role', 'dialog');
+    painel.setAttribute('aria-modal', 'true');
+  }
+}
+
 /* --------------------------------------------------- desenhar a página -- */
 var ULTIMA_DATA = null, ULTIMA_AGORA = null;
 
@@ -1950,6 +1991,7 @@ function textoContadorMudanca(){
 
 function iniciar(){
   montarFixos();
+  montarSaude();
   montarBuscaDeRua();
   prepararInstalacao();
   registrarServiceWorker();
@@ -2053,6 +2095,19 @@ function iniciar(){
   criarPainel('a11y-fab', 'a11y-painel', 'a11y-fundo', 'a11y-fechar');
   var painelNav = criarPainel('nav-fab', 'nav-painel', 'nav-fundo', 'nav-fechar');
   painelPessoa  = criarPainel(null, 'pessoa-painel', 'pessoa-fundo', 'pessoa-fechar');
+  criarPainel('saude-fab', 'saude-painel', 'saude-fundo', 'saude-fechar');
+
+  /* liga o painel de saúde ao tamanho da tela (ver ajustarSaudeParaTela) e
+     mantém ajustado se a pessoa redimensionar/girar a janela no computador */
+  try {
+    var telaDeComputador = window.matchMedia('(min-width:1180px)');
+    ajustarSaudeParaTela(telaDeComputador);
+    if(telaDeComputador.addEventListener){
+      telaDeComputador.addEventListener('change', ajustarSaudeParaTela);
+    } else if(telaDeComputador.addListener){
+      telaDeComputador.addListener(ajustarSaudeParaTela);
+    }
+  } catch(e){ /* matchMedia indisponível: fica no comportamento de celular */ }
 
   /* cada link do menu fecha o painel ao ser clicado — a rolagem suave até
      a seção acontece sozinha, via CSS (scroll-behavior), sem precisar de JS */

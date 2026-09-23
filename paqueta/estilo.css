@@ -233,6 +233,42 @@ body.alto-contraste .a11y-topo h2{color:var(--tinta)}
 }
 body.alto-contraste .nav-fab{background:#00E676;color:#000;border-color:#fff}
 
+/* -------------------------------------------------- INFORMAÇÕES DE SAÚDE -- */
+/* Botão flutuante no canto inferior ESQUERDO — oposto ao de acessibilidade
+   (inferior direito) e abaixo do menu (superior direito), pra não competir
+   com nenhum dos dois. No celular abre um painel por cima da tela, igual
+   aos outros dois; no computador (telas largas) o painel some daqui e vira
+   uma faixa fixa do lado da tela — ver o @media lá embaixo, em "COMPUTADOR". */
+.saude-fab{
+  position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom));
+  z-index:50;width:60px;height:60px;border-radius:50%;
+  background:var(--verde);color:#fff;border:3px solid #fff;
+  box-shadow:0 4px 14px rgba(0,0,0,.28);
+  font-size:26px;line-height:1;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+}
+body.com-teste .saude-fab{bottom:calc(94px + env(safe-area-inset-bottom))}
+body.alto-contraste .saude-fab{background:#00E676;color:#000;border-color:#fff}
+
+.saude-intro{
+  font-size:calc(16px * var(--esc));color:var(--tinta2);
+  line-height:1.4;margin-bottom:14px;
+}
+.saude-bloco{margin-bottom:20px}
+.saude-bloco:last-child{margin-bottom:0}
+.saude-tit{
+  font-size:calc(18px * var(--esc));font-weight:700;color:var(--verde-escuro);
+  margin-bottom:8px;line-height:1.3;
+}
+body.alto-contraste .saude-tit{color:var(--tinta)}
+.saude-lista{list-style:none}
+.saude-lista li{
+  position:relative;padding-left:20px;margin-bottom:9px;
+  font-size:calc(16px * var(--esc));line-height:1.5;
+}
+.saude-lista li:last-child{margin-bottom:0}
+.saude-lista li::before{content:"•";position:absolute;left:2px;color:var(--verde);font-weight:700}
+
 .nav-lista{list-style:none}
 .nav-lista li{margin-bottom:10px}
 .nav-lista li:last-child{margin-bottom:0}
@@ -723,11 +759,35 @@ body.com-teste .teste{display:block}
   .marca{display:none}
 }
 
+/* ============================================= COMPUTADOR (tela larga) ==
+   Só nessa largura o painel "Informações de saúde" deixa de ser um diálogo
+   que abre/fecha (como no celular) e vira uma faixa fixa do lado direito
+   da tela, sempre visível — o botão flutuante e o fundo escurecido somem,
+   porque não tem mais o que abrir. body ganha um respiro à direita do
+   tamanho da faixa, pra o conteúdo (.wrap, centralizado) não ficar embaixo
+   dela. quem liga/desliga o "modo diálogo" nos atributos aria é o
+   ajustarSaudeParaTela() no app.js — sem isso, um leitor de tela ainda
+   trataria a faixa sempre visível como um diálogo modal fechado. */
+@media (min-width:1180px){
+  body{padding-right:360px}
+  .saude-fab,#saude-fundo{display:none}
+  .saude-painel{
+    left:auto;right:0;top:0;bottom:0;
+    width:360px;max-width:360px;max-height:none;height:100vh;
+    margin:0;border-radius:0;
+    border-top:none;border-left:3px solid var(--linha);
+    box-shadow:-6px 0 20px rgba(0,0,0,.12);
+  }
+  #saude-painel[hidden]{display:block}
+  #saude-fechar{display:none}
+}
+
 /* ====================================================== IMPRESSÃO ===== */
 /* Para a equipe imprimir e colar na porta da unidade. */
 @media print{
   body{background:#fff;padding:0;font-size:14px}
-  .teste,.a11y-fab,.a11y-painel,.a11y-fundo,.nav-fab,.nav-painel,.pular-link,.botoes,details.semana,.fonte-dados,.sem-internet{display:none!important}
+  .teste,.a11y-fab,.a11y-painel,.a11y-fundo,.nav-fab,.nav-painel,.saude-fab,.saude-painel,#saude-fundo,.pular-link,.botoes,details.semana,.fonte-dados,.sem-internet{display:none!important}
+  body{padding-right:0!important}
   .topo,.urgencia{background:#fff;color:#000;border:2px solid #000}
   .cartao-status{border:3px solid #000;color:#000!important;background:#fff!important}
   .secao{page-break-inside:avoid}

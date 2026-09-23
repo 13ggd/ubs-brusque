@@ -277,6 +277,32 @@
   </div>
 </div>
 
+<!-- ================ INFORMAÇÕES DE SAÚDE (botão flutuante) ==============
+     Orientações gerais (glicemia, pressão, vacina, preventivo...) — ver
+     CONFIG.informacoesSaude no config.js. Diferente do painel de
+     acessibilidade e do menu (que fecham em cima da tela em qualquer
+     tamanho), este vira uma faixa fixa do lado direito da tela em telas
+     largas de computador (ver @media no estilo.css) — quem abre e fecha
+     nesse caso é só o CSS, o HTML/JS não muda. No celular continua sendo
+     um painel que abre por cima, como os outros dois. ======================================================================= -->
+<button type="button" id="saude-fab" class="saude-fab"
+        aria-haspopup="dialog" aria-expanded="false" aria-controls="saude-painel"
+        aria-label="Abrir informações de saúde: glicemia, pressão, vacina, preventivo">
+  <span aria-hidden="true">🩺</span>
+</button>
+
+<div id="saude-fundo" class="a11y-fundo" hidden></div>
+
+<div id="saude-painel" class="a11y-painel saude-painel" role="dialog" aria-modal="true"
+     aria-labelledby="saude-titulo" hidden>
+  <div class="a11y-topo">
+    <h2 id="saude-titulo">Informações de saúde</h2>
+    <button type="button" id="saude-fechar" class="a11y-fechar" aria-label="Fechar">✕</button>
+  </div>
+  <p class="saude-intro">Orientações gerais — quando medir, quando tomar, quando procurar a UBS.</p>
+  <div id="saude-conteudo"></div>
+</div>
+
 <!-- ====================== MENU (ir para uma parte da página) ============
      Botão flutuante no canto superior direito, em cima — o de
      acessibilidade fica embaixo. Assim os dois não competem no mesmo canto.
