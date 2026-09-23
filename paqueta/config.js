@@ -211,6 +211,57 @@ const CONFIG = {
     { nome:'CVV (Centro de Valorização da Vida) — prevenção ao suicídio, 24h', telefone:'188', telefoneLink:'188' }
   ],
 
+  /* ---- 3b-2. INFORMAÇÕES DE SAÚDE --------------------------------------- */
+  /* Orientações gerais (glicemia, pressão, vacina, preventivo...) — não são
+     sobre a UBS em si, por isso ficam fora do cartão principal, mas também
+     não podem ficar escondidas atrás de um "▾" como telefonesUteis: aqui é
+     justamente o conteúdo que a população precisa achar fácil. Por isso são
+     mostradas no painel próprio "Informações de saúde" (botão flutuante 🩺),
+     que no computador vira uma faixa fixa do lado da tela — ver saude-fab/
+     saude-painel no index.html e montarSaude() no app.js.
+     Cada bloco vira um cartão com título + lista de pontos (itens). São as
+     mesmas orientações em qualquer unidade, então normalmente não precisam
+     ser editadas ao replicar o template — mas dá pra ajustar ou completar
+     com informações específicas da sua UBS se fizer sentido. */
+  informacoesSaude: [
+    {
+      titulo: 'Glicemia (açúcar no sangue)',
+      itens: [
+        'Quando medir: em jejum de 8 a 12 horas, ou do jeito que a equipe da UBS orientar se você já tem diabetes.',
+        'Como se preparar: nada de comida ou bebida (só água) nas horas antes do exame de jejum.',
+        'Valores de referência em jejum: até 99 é normal; de 100 a 125 pede atenção (pré-diabetes); 126 ou mais, repetido em duas medidas, indica diabetes.',
+        'Procure a UBS se sentir muita sede, urinar bem mais que o normal, emagrecer sem motivo ou tiver feridas que demoram para cicatrizar.'
+      ]
+    },
+    {
+      titulo: 'Pressão arterial (hipertensão)',
+      itens: [
+        'Quando medir: em repouso, sentado, sem ter fumado ou tomado café na meia hora anterior — e sem falar durante a medição.',
+        'Frequência: quem não tem diagnóstico pode medir 1x por ano na consulta; quem já é hipertenso deve medir com a frequência que a equipe indicar.',
+        'Valores de referência: até 12 por 8 (120/80) é considerado normal; 14 por 9 (140/90) ou mais, de forma repetida, é hora de procurar a UBS.',
+        'Procure atendimento na hora se tiver dor de cabeça muito forte, visão embaçada ou dor no peito.'
+      ]
+    },
+    {
+      titulo: 'Vacinação',
+      itens: [
+        'Quando: siga o calendário nacional de vacinação — a caderneta de vacinação mostra quais doses já estão em dia, para cada idade.',
+        'Onde: na sala de vacina da UBS, no horário desse setor (veja "O que você precisa?" mais acima nesta página).',
+        'O que levar: caderneta de vacinação (ou documento com foto, se perdeu a caderneta) e cartão do SUS.',
+        'Campanhas (como a da gripe) têm data própria — fique de olho nos Avisos desta página.'
+      ]
+    },
+    {
+      titulo: 'Preventivo (exame da mulher)',
+      itens: [
+        'Quem deve fazer: mulheres de 25 a 64 anos que já tiveram relação sexual, mesmo sem nenhum sintoma.',
+        'Frequência: dois exames seguidos com resultado normal (1 por ano); depois disso, a cada 3 anos.',
+        'Como se preparar: evitar relação sexual, duchas e cremes vaginais nas 48 horas antes, e não estar menstruada.',
+        'Onde marcar: na recepção da UBS, sem precisar de encaminhamento.'
+      ]
+    }
+  ],
+
   /* ---- 3c-2. RUAS ATENDIDAS POR EQUIPE (RESERVA) ------------------------ */
   /* Igual a equipeReserva/faltasReserva: só usado enquanto a aba "ruas" da
      planilha não existir (ou estiver fora do ar) — assim que ela existir,
