@@ -217,7 +217,7 @@ const CONFIG = {
      não podem ficar escondidas atrás de um "▾" como telefonesUteis: aqui é
      justamente o conteúdo que a população precisa achar fácil. Por isso são
      mostradas no painel próprio "Informações de saúde" (botão flutuante 🩺),
-     que no computador vira uma faixa fixa do lado da tela — ver saude-fab/
+     que no computador vira uma faixa fixa ao lado do conteúdo — ver saude-fab/
      saude-painel no index.html e montarSaude() no app.js.
      Cada bloco vira um cartão com título + lista de pontos (itens). São as
      mesmas orientações em qualquer unidade, então normalmente não precisam

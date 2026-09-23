@@ -1153,10 +1153,11 @@ function montarSaude(){
 
 /* Em telas largas de computador (ver @media "COMPUTADOR" no estilo.css) o
    painel de saúde deixa de ser um diálogo que abre/fecha e vira uma faixa
-   sempre visível do lado da tela. O CSS sozinho já faz ele aparecer; esta
-   função só ajusta os atributos de acessibilidade condizentes — sem isso,
-   um leitor de tela trataria a faixa sempre visível como um diálogo modal
-   fechado, mesmo estando de fato aberta e visível na tela. */
+   sempre visível ao lado do conteúdo central. O CSS sozinho já faz ele
+   aparecer; esta função só ajusta os atributos de acessibilidade
+   condizentes — sem isso, um leitor de tela trataria a faixa sempre
+   visível como um diálogo modal fechado, mesmo estando de fato aberta e
+   visível na tela. */
 function ajustarSaudeParaTela(mq){
   var painel = document.getElementById('saude-painel');
   if(mq.matches){
