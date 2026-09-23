@@ -90,6 +90,22 @@
   </div>
 </section>
 
+<!-- ".pagina-larga" só faz diferença em telas largas de computador (ver
+     @media "COMPUTADOR" no estilo.css): vira um flex que põe metade das
+     "Informações de saúde" (ver CONFIG.informacoesSaude) de cada lado do
+     conteúdo central, soltas no espaço em branco que já sobra ali — sem
+     caixa, borda ou fundo próprio, pra parecer parte do fundo da página
+     mesmo, não mais um cartão de informação igual ao resto do site. No
+     celular essas duas colunas ficam escondidas (não tem lugar pra elas);
+     quem mostra o conteúdo lá é o painel de baixo (#saude-painel),
+     aberto pelo botão flutuante 🩺, com a lista inteira. Preenchidas por
+     montarSaude(), no app.js. -->
+<div class="pagina-larga">
+  <aside id="saude-esquerda" class="saude-lateral">
+    <p class="saude-coluna-tit">Informações de saúde</p>
+    <div id="saude-esquerda-conteudo"></div>
+  </aside>
+
 <main class="wrap" id="conteudo">
 
   <!-- ---------------------------- AVISOS ------------------------ -->
@@ -197,6 +213,12 @@
   </footer>
 </main>
 
+  <aside id="saude-direita" class="saude-lateral">
+    <p class="saude-coluna-tit">Informações de saúde</p>
+    <div id="saude-direita-conteudo"></div>
+  </aside>
+</div><!-- /.pagina-larga -->
+
 <!-- =================== BARRA DE TESTE ===========================
      Fica escondida no site normal.
      Para testar outros dias e horários, acesse o site com ?teste
@@ -279,12 +301,14 @@
 
 <!-- ================ INFORMAÇÕES DE SAÚDE (botão flutuante) ==============
      Orientações gerais (glicemia, pressão, vacina, preventivo...) — ver
-     CONFIG.informacoesSaude no config.js. Diferente do painel de
-     acessibilidade e do menu (que fecham em cima da tela em qualquer
-     tamanho), este vira uma faixa fixa do lado direito da tela em telas
-     largas de computador (ver @media no estilo.css) — quem abre e fecha
-     nesse caso é só o CSS, o HTML/JS não muda. No celular continua sendo
-     um painel que abre por cima, como os outros dois. ======================================================================= -->
+     CONFIG.informacoesSaude no config.js. Só existe no CELULAR: abre este
+     painel por cima da tela, com a lista inteira, igual aos painéis de
+     acessibilidade e menu. Em telas largas de computador este botão (e o
+     painel) ficam escondidos — lá o mesmo conteúdo já aparece sempre
+     visível, dividido nas colunas #saude-esquerda/#saude-direita ao lado
+     de main#conteudo (ver ".pagina-larga" mais acima e o @media
+     "COMPUTADOR" no estilo.css). Preenchido por montarSaude(), no app.js,
+     junto com as duas colunas. -->
 <button type="button" id="saude-fab" class="saude-fab"
         aria-haspopup="dialog" aria-expanded="false" aria-controls="saude-painel"
         aria-label="Abrir informações de saúde: glicemia, pressão, vacina, preventivo">

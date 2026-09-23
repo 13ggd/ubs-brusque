@@ -237,8 +237,9 @@ body.alto-contraste .nav-fab{background:#00E676;color:#000;border-color:#fff}
 /* Botão flutuante no canto inferior ESQUERDO — oposto ao de acessibilidade
    (inferior direito) e abaixo do menu (superior direito), pra não competir
    com nenhum dos dois. No celular abre um painel por cima da tela, igual
-   aos outros dois; no computador (telas largas) o painel some daqui e vira
-   uma faixa fixa do lado da tela — ver o @media lá embaixo, em "COMPUTADOR". */
+   aos outros dois; no computador (telas largas) esse botão some, porque o
+   painel deixa de precisar ser aberto — passa a ficar sempre visível ao
+   lado do conteúdo — ver o @media lá embaixo, em "COMPUTADOR". */
 .saude-fab{
   position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom));
   z-index:50;width:60px;height:60px;border-radius:50%;
@@ -268,6 +269,17 @@ body.alto-contraste .saude-tit{color:var(--tinta)}
 }
 .saude-lista li:last-child{margin-bottom:0}
 .saude-lista li::before{content:"•";position:absolute;left:2px;color:var(--verde);font-weight:700}
+
+/* Colunas do computador (#saude-esquerda/#saude-direita) — mesmo conteúdo
+   do painel do celular, metade de cada lado, sem caixa/borda/fundo
+   próprio: o objetivo é parecer parte do fundo da página, não mais um
+   cartão de informação igual ao resto do site. Escondidas por padrão
+   (regra mobile-first); só aparecem no @media "COMPUTADOR" lá embaixo. */
+.saude-lateral{display:none}
+.saude-coluna-tit{
+  font-size:calc(13px * var(--esc));font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--tinta2);margin-bottom:16px;
+}
 
 .nav-lista{list-style:none}
 .nav-lista li{margin-bottom:10px}
@@ -760,34 +772,32 @@ body.com-teste .teste{display:block}
 }
 
 /* ============================================= COMPUTADOR (tela larga) ==
-   Só nessa largura o painel "Informações de saúde" deixa de ser um diálogo
-   que abre/fecha (como no celular) e vira uma faixa fixa do lado direito
-   da tela, sempre visível — o botão flutuante e o fundo escurecido somem,
-   porque não tem mais o que abrir. body ganha um respiro à direita do
-   tamanho da faixa, pra o conteúdo (.wrap, centralizado) não ficar embaixo
-   dela. quem liga/desliga o "modo diálogo" nos atributos aria é o
-   ajustarSaudeParaTela() no app.js — sem isso, um leitor de tela ainda
-   trataria a faixa sempre visível como um diálogo modal fechado. */
-@media (min-width:1180px){
-  body{padding-right:360px}
-  .saude-fab,#saude-fundo{display:none}
-  .saude-painel{
-    left:auto;right:0;top:0;bottom:0;
-    width:360px;max-width:360px;max-height:none;height:100vh;
-    margin:0;border-radius:0;
-    border-top:none;border-left:3px solid var(--linha);
-    box-shadow:-6px 0 20px rgba(0,0,0,.12);
+   Só nessa largura o conteúdo de "Informações de saúde" (mesmo texto do
+   painel do celular, ver montarSaude() no app.js) fica sempre visível,
+   dividido ao meio entre duas colunas soltas nas margens da página —
+   #saude-esquerda e #saude-direita, dentro de ".pagina-larga", uma de
+   cada lado de #conteudo. De propósito SEM caixa, borda ou fundo próprio:
+   o objetivo é parecer parte do fundo da página (que já fica vazio dos
+   dois lados do conteúdo central em telas largas), não mais um cartão de
+   informação igual ao resto do site. .pagina-larga só existe abaixo do
+   cabeçalho/resposta principal, então as colunas nunca aparecem por cima
+   deles. O botão flutuante 🩺 e o painel do celular ficam escondidos
+   aqui — não tem mais o que abrir, o conteúdo já está todo à vista. */
+@media (min-width:1320px){
+  .pagina-larga{
+    display:flex;align-items:flex-start;justify-content:center;
+    gap:32px;padding:0 20px;
   }
-  #saude-painel[hidden]{display:block}
-  #saude-fechar{display:none}
+  #conteudo.wrap{margin:0}
+  .saude-fab,#saude-fundo,#saude-painel{display:none}
+  .saude-lateral{display:block;flex:0 0 240px;width:240px;margin-top:30px}
 }
 
 /* ====================================================== IMPRESSÃO ===== */
 /* Para a equipe imprimir e colar na porta da unidade. */
 @media print{
   body{background:#fff;padding:0;font-size:14px}
-  .teste,.a11y-fab,.a11y-painel,.a11y-fundo,.nav-fab,.nav-painel,.saude-fab,.saude-painel,#saude-fundo,.pular-link,.botoes,details.semana,.fonte-dados,.sem-internet{display:none!important}
-  body{padding-right:0!important}
+  .teste,.a11y-fab,.a11y-painel,.a11y-fundo,.nav-fab,.nav-painel,.saude-fab,.saude-painel,#saude-fundo,.saude-lateral,.pular-link,.botoes,details.semana,.fonte-dados,.sem-internet{display:none!important}
   .topo,.urgencia{background:#fff;color:#000;border:2px solid #000}
   .cartao-status{border:3px solid #000;color:#000!important;background:#fff!important}
   .secao{page-break-inside:avoid}
