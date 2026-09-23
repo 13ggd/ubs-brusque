@@ -388,7 +388,12 @@ function paraObjetos(txt){
   });
 }
 
-/* Aceita 19/08/2026, 19-08-2026 ou 2026-08-19 e devolve sempre 2026-08-19 */
+/* Aceita 19/08/2026, 19-08-2026, 19/08/26 ou 2026-08-19 e devolve sempre 2026-08-19.
+   Ano com 2 dígitos vira 20XX — quem digita na planilha escreve "26" por hábito
+   de calendário/agenda de papel, e antes disso caía no fallback genérico
+   `new Date(s)`, que para "23/09/26" dá Invalid Date: a falta/aviso sumia sem
+   nenhum aviso no console, porque `dataIlegivel()` só dispara quando o campo
+   não estava em branco — que era exatamente o caso. */
 /* Confere se a data existe mesmo no calendário. Sem isso, um dedo trocado na
    planilha ("32/13/2026", ou o mês e o dia invertidos) virava uma data que
    nunca chega: o aviso ou ficava preso para sempre em "Avisos futuros", ou
@@ -409,10 +414,11 @@ function normalizaData(s){
     m = s.split('-').map(Number);
     return dataExiste(m[0], m[1], m[2]) ? s : null;
   }
-  m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2}|\d{4})$/);
   if(m){
-    if(!dataExiste(Number(m[3]), Number(m[2]), Number(m[1]))) return null;
-    return m[3] + '-' + m[2].padStart(2,'0') + '-' + m[1].padStart(2,'0');
+    var ano = m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3]);
+    if(!dataExiste(ano, Number(m[2]), Number(m[1]))) return null;
+    return ano + '-' + m[2].padStart(2,'0') + '-' + m[1].padStart(2,'0');
   }
   var d = new Date(s);
   return isNaN(d.getTime()) ? null : iso(d);
