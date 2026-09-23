@@ -336,6 +336,10 @@ body.alto-contraste .saude-tit{color:var(--tinta)}
   line-height:1.2;margin-bottom:5px;letter-spacing:-.015em;
 }
 .secao .ajuda{font-size:calc(16px * var(--esc));color:var(--tinta2);margin-bottom:13px;line-height:1.4}
+/* Só o texto de ajuda de "O que você precisa?" — lembra que urgência e
+   emergência são atendidas a qualquer horário, então usa a mesma cor de
+   alerta do resto do site (fechado/aviso), não a cinza padrão de ajuda. */
+#setores-secao .ajuda{color:var(--alerta)}
 
 .futuros-bloco{margin-top:22px;padding-top:18px;border-top:2px solid var(--linha)}
 .futuros-tit{
