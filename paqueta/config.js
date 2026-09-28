@@ -544,11 +544,11 @@ const CONFIG = {
      misturadas com as dos moradores e inflariam o número medido.
      ---------------------------------------------------------------------- */
   medicao: {
-    tipo:    '',
+    tipo:    'vercel',
     codigo:  '',
     /* Registrar também os cliques nos botões principais (ligar, mapa,
        Instagram, abrir os horários de um setor, recursos de acessibilidade). */
-    cliques: true
+    cliques: false
   }
 };
 
