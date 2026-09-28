@@ -186,8 +186,8 @@ const CONFIG = {
      Igual em toda UBS de Brusque — desligado por padrão.
   */
   medicao: {
-    tipo:    '',
+    tipo:    'vercel',
     codigo:  '',
-    cliques: true
+    cliques: false
   }
 };
