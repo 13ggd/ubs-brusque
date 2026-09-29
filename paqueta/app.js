@@ -1045,7 +1045,9 @@ function montarFixos(){
 
   var bt = document.getElementById('bt-ligar');
   bt.href = 'tel:' + u.telefoneLink;
-  document.getElementById('bt-mapa').href = linkDoMapa(u.mapa);
+  var btMapa = document.getElementById('bt-mapa');
+  if(u.mapa){ btMapa.href = linkDoMapa(u.mapa); btMapa.hidden = false; }
+  else { btMapa.hidden = true; }
 
   /* Foto do prédio — só aparece se CONFIG.unidade.foto estiver preenchido.
      Igual às fotos da equipe: nome de arquivo (na pasta fotos/) ou link
@@ -1069,8 +1071,14 @@ function montarFixos(){
     (u.avisoLigacao ? '<p class="tel-aviso">' + limpo(u.avisoLigacao) + '</p>' : '');
   document.getElementById('info-secretaria').innerHTML =
     '<a href="tel:' + limpo(u.secretariaLink) + '">' + limpo(u.secretaria) + '</a>';
-  document.getElementById('info-mapa').innerHTML =
-    '<a href="' + limpo(linkDoMapa(u.mapa)) + '" target="_blank" rel="noopener">Abrir o mapa no celular</a>';
+  var linhaMapa = document.getElementById('info-mapa-linha');
+  if(u.mapa){
+    if(linhaMapa) linhaMapa.hidden = false;
+    document.getElementById('info-mapa').innerHTML =
+      '<a href="' + limpo(linkDoMapa(u.mapa)) + '" target="_blank" rel="noopener">Abrir o mapa no celular</a>';
+  } else if(linhaMapa){
+    linhaMapa.hidden = true;
+  }
 
   /* Instagram — só aparece se CONFIG.unidade.instagram estiver preenchido.
      Vai com o glifo da câmera do Instagram (SVG inline, sem imagem externa,
