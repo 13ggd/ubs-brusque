@@ -261,6 +261,7 @@ function ligarMedicaoDeCliques(){
     else if(alvo.id === 'a11y-contraste')     registrarEvento('alto-contraste');
     else if(alvo.id === 'a11y-fab')           registrarEvento('acessibilidade');
     else if(alvo.id === 'nav-fab')            registrarEvento('menu');
+    else if(alvo.id === 'saude-fab')          registrarEvento('info-saude');
   }, true);
 }
 
@@ -1137,6 +1138,54 @@ function montarFixos(){
   }
 }
 
+/* Monta o HTML de uma lista de blocos de CONFIG.informacoesSaude (título +
+   itens) — usado tanto para a lista inteira (painel do celular) quanto
+   para cada metade (colunas do computador). Cada bloco vira uma caixa
+   colorida com a mesma cara de um "recado" (ver .aviso.recado e
+   cartaoAviso(), mais abaixo) — fundo/borda verde-claro e uma etiqueta
+   "🩺 Saúde" no topo, igual à etiqueta "ⓘ Recado". É um <details>, fechado
+   por padrão: só o título aparece de cara, e os itens (o texto mais
+   longo) só aparecem se a pessoa tocar pra abrir — mesmo padrão de
+   "Ver os dias da semana ▾" usado no card de cada setor, em vez de jogar
+   tudo corrido na tela de uma vez. */
+function blocosDeSaude(lista){
+  return lista.map(function(b){
+    return '<details class="saude-bloco">' +
+      '<summary class="saude-resumo">' +
+        '<span class="saude-tarja">🩺 Saúde</span>' +
+        '<span class="saude-tit">' + limpo(b.titulo) + '</span>' +
+      '</summary>' +
+      '<ul class="saude-lista">' +
+        (b.itens || []).map(function(i){ return '<li>' + limpo(i) + '</li>'; }).join('') +
+      '</ul>' +
+    '</details>';
+  }).join('');
+}
+
+/* Conteúdo de "Informações de saúde" (glicemia, pressão, vacina, preventivo
+   — ver CONFIG.informacoesSaude no config.js). É estático, não depende do
+   dia/hora testado, então é montado uma vez só, junto com montarFixos(), e
+   não em desenhar(). No celular é uma lista só, dentro do painel aberto
+   pelo botão flutuante 🩺; no computador (ver @media "COMPUTADOR" no
+   estilo.css) esse painel fica escondido e o mesmo conteúdo aparece
+   sempre visível, dividido ao meio entre as colunas #saude-esquerda e
+   #saude-direita, uma de cada lado do conteúdo central — por isso é
+   preenchido nos três lugares de uma vez. */
+function montarSaude(){
+  var blocos = CONFIG.informacoesSaude || [];
+  var fab = document.getElementById('saude-fab');
+  if(!blocos.length){
+    if(fab) fab.hidden = true;
+    return;
+  }
+
+  document.getElementById('saude-conteudo').innerHTML = blocosDeSaude(blocos);
+
+  var meio = Math.ceil(blocos.length / 2);
+  document.getElementById('saude-esquerda-conteudo').innerHTML = blocosDeSaude(blocos.slice(0, meio));
+  document.getElementById('saude-direita-conteudo').innerHTML  = blocosDeSaude(blocos.slice(meio));
+}
+
 /* --------------------------------------------------- desenhar a página -- */
 var ULTIMA_DATA = null, ULTIMA_AGORA = null;
 
@@ -1958,6 +2007,7 @@ function textoContadorMudanca(){
 
 function iniciar(){
   montarFixos();
+  montarSaude();
   montarBuscaDeRua();
   prepararInstalacao();
   registrarServiceWorker();
@@ -2061,6 +2111,7 @@ function iniciar(){
   criarPainel('a11y-fab', 'a11y-painel', 'a11y-fundo', 'a11y-fechar');
   var painelNav = criarPainel('nav-fab', 'nav-painel', 'nav-fundo', 'nav-fechar');
   painelPessoa  = criarPainel(null, 'pessoa-painel', 'pessoa-fundo', 'pessoa-fechar');
+  criarPainel('saude-fab', 'saude-painel', 'saude-fundo', 'saude-fechar');
 
   /* cada link do menu fecha o painel ao ser clicado — a rolagem suave até
      a seção acontece sozinha, via CSS (scroll-behavior), sem precisar de JS */
