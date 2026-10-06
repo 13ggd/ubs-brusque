@@ -551,7 +551,10 @@ details.semana[open] summary::after{transform:rotate(180deg)}
 }
 .semana-l:last-child{border-bottom:none}
 .semana-l .dia{color:var(--tinta2)}
-.semana-l .val{font-weight:700;text-align:right;flex:0 0 auto}
+.semana-l .val{font-weight:700;text-align:right;flex:0 1 auto;min-width:0;overflow-wrap:anywhere}
+/* horário padrão riscado (quando há aviso naquele dia): sem negrito e em linha própria,
+   senão a faixa longa estoura a largura do cartão no celular */
+.semana-l .val s{display:block;font-weight:400;color:var(--tinta2)}
 .semana-l.hoje{
   background:var(--verde-claro);margin:0 -8px;
   padding-left:8px;padding-right:8px;border-radius:8px;
