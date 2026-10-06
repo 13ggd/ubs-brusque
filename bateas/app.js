@@ -1725,6 +1725,12 @@ function desenhar(data, agora){
      em si fica de fora, ligado uma vez só em montarBuscaDeRua(). */
   desenharMinhaRua(data, agora);
 
+  /* datas (AAAA-MM-DD) de seg a dom da semana de `data` — iguais para todos
+     os setores, então saem do map abaixo */
+  var segunda = new Date(data.getTime());
+  segunda.setDate(segunda.getDate() - ((data.getDay() + 6) % 7));
+  var datasDaSemana = ORD.map(function(k, i){ return iso(somaDias(segunda, i)); });
+
   /* setores */
   document.getElementById('setores').innerHTML = SETORES.map(function(s){
     var t = situacao(s, diaKey, dataISO, agora);
@@ -1742,8 +1748,19 @@ function desenhar(data, agora){
         limpo(t.av.texto) + '</div>'
       : '';
 
-    var semana = ORD.map(function(k){
-      var v = s.h[k] ? fala(s.h[k]) : 'Não atende';
+    /* A lista mostra a semana corrente (seg a dom) e consulta os avisos de
+       cada data — não só o horário padrão —, senão uma mudança ou fechamento
+       cadastrado aparecia no card mas sumia daqui ("horários normais"). */
+    var semana = ORD.map(function(k, i){
+      var padrao = s.h[k];
+      var a = avisoDe(s.id, datasDaSemana[i]);
+      var v;
+      if(a && a.tipo === 'fechado')
+        v = (padrao ? '<s>' + fala(padrao) + '</s> ' : '') + '<strong>Fechado</strong>';
+      else if(a && a.tipo === 'atencao' && a.novo)
+        v = (padrao ? '<s>' + fala(padrao) + '</s> → ' : '') + '<strong>' + fala(a.novo) + '</strong>';
+      else
+        v = padrao ? fala(padrao) : 'Não atende';
       return '<div class="semana-l ' + (k === diaKey ? 'hoje' : '') + '">' +
         '<span class="dia">' + NOME[k] + (k === diaKey ? ' — hoje' : '') + '</span>' +
         '<span class="val">' + v + '</span></div>';
