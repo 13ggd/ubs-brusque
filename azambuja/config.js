@@ -32,8 +32,8 @@ const CONFIG = {
     telefoneEncaminhamentos: '',
     telefoneEncaminhamentosLink: '',
     avisoLigacao: '',
-    secretaria:     '(47) 3255-6800',
-    secretariaLink: '+554732556800',
+    secretaria:     '(47) 2017-0620',
+    secretariaLink: '+554720170620',
     /* Link "Abrir o mapa no celular" — só depois de confirmar o endereço. */
     mapa: 'UBS Azambuja, R. Atílio Battistoti, 61, Brusque - SC',
     instagram: '',
