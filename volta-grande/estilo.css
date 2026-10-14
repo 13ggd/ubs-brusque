@@ -750,7 +750,8 @@ body.alto-contraste .urgencia{background:var(--verde-escuro);box-shadow:none}
 /* o nome é o que o olho deve pegar primeiro (caixa branca, igual à do SAMU); o botão é só o atalho */
 .lugar-nome{
   background:#fff;color:var(--verde-escuro);border-radius:var(--raio);
-  padding:10px 14px;font-size:calc(21px * var(--esc));font-weight:800;line-height:1.2;
+  display:block;width:fit-content;max-width:100%;margin:0 auto;
+  padding:8px 20px;font-size:calc(21px * var(--esc));font-weight:800;line-height:1.2;
   box-shadow:0 2px 6px rgba(0,0,0,.2);
 }
 .lugar-det{font-size:calc(16px * var(--esc));opacity:.85;margin-top:10px;line-height:1.4}
