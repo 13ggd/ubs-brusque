@@ -17,7 +17,8 @@
 
    Estratégias, por tipo de pedido:
    - páginas e arquivos do próprio site: cache primeiro, atualizando por trás
-     (abre instantâneo; a versão nova entra na visita seguinte)
+     (abre instantâneo; a versão nova entra na visita seguinte — e o app.js
+     recarrega a página sozinho quando ela chega, ver registrarServiceWorker)
    - planilha do Google (os horários de verdade): rede primeiro, cache só como
      rede de segurança quando a rede falhar
    - fontes do Google: cache primeiro, atualizando por trás
@@ -27,7 +28,7 @@
    faz o navegador de todo mundo descartar o cache antigo.
    =========================================================================== */
 
-var VERSAO       = 'ubs-v20';
+var VERSAO       = 'ubs-v21';
 var CACHE_SITE   = VERSAO + '-site';
 var CACHE_DADOS  = VERSAO + '-dados';
 var CACHE_FONTES = VERSAO + '-fontes';
