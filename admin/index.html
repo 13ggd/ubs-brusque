@@ -221,6 +221,79 @@
     .acoes{width:100%;}
     .botao{flex:1;justify-content:center;}
   }
+
+  /* =========================================================== POLIMENTO ==
+     Camada de acabamento por cima do que já existe: só usa as variáveis de
+     cor da página (claro, escuro e alto contraste continuam funcionando) e
+     nenhum movimento roda para quem pediu menos animação no aparelho. */
+  ::selection{background:color-mix(in srgb, var(--accent) 28%, transparent);}
+  body{
+    background:
+      radial-gradient(900px 340px at 50% -140px, color-mix(in srgb, var(--accent) 10%, transparent), transparent 72%),
+      var(--bg);
+    background-repeat:no-repeat;
+  }
+  body.alto-contraste{background:var(--bg);}
+
+  .eyebrow::before{
+    content:"";display:inline-block;width:8px;height:8px;border-radius:50%;
+    background:var(--accent);margin-right:.6rem;vertical-align:.05em;
+    box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+  h1{text-wrap:balance;}
+  .sub{text-wrap:pretty;}
+
+  .barra{
+    border-radius:14px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .barra:focus-within{
+    border-color:var(--accent);
+    box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent);
+  }
+  .busca input:focus-visible{outline:none;}   /* o anel já aparece na barra toda */
+  .busca svg{transition:color .15s ease;}
+  .barra:focus-within .busca svg{color:var(--accent);}
+
+  .lista{border-radius:14px;}
+  .linha{transition:background-color .15s ease, box-shadow .15s ease;}
+  .linha:hover{box-shadow:inset 4px 0 0 var(--accent);}
+  .nome{text-wrap:balance;}
+
+  .vazio{font-size:1.02rem;}
+  footer, .rodape-base{border-top-color:var(--line);}
+  .rodape-base{padding-top:1rem;}
+
+  @media (prefers-reduced-motion: no-preference){
+    .barra, .linha, .botao, .ir svg, .a11y-fab{transition-duration:.18s;}
+    .a11y-fundo:not([hidden]){animation:ubs-aparece .2s ease-out;}
+    .a11y-painel:not([hidden]){animation:ubs-sobe .28s cubic-bezier(.2,.7,.2,1);}
+    @keyframes ubs-aparece{from{opacity:0;}to{opacity:1;}}
+    @keyframes ubs-sobe{from{transform:translateY(24px);opacity:0;}to{transform:none;opacity:1;}}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .barra, .linha, .botao, .ir svg, .busca svg{transition:none;}
+  }
+
+  .linha{transition:background-color .15s ease, box-shadow .15s ease;}
+  .botao{box-shadow:0 1px 2px rgba(27,35,31,.08);}
+  .botao:hover{transform:translateY(-1px);box-shadow:0 4px 10px -4px rgba(27,35,31,.28);}
+  .botao:active{transform:translateY(1px);box-shadow:none;}
+  .botao.planilha:hover{filter:brightness(0.96);}
+  @media (prefers-color-scheme: dark){
+    .botao.planilha:hover{filter:brightness(1.15);}
+    .botao{box-shadow:none;}
+    .botao:hover{box-shadow:0 4px 10px -4px rgba(0,0,0,.6);}
+  }
+  .botoes-topo .botao-topo{padding:.6rem 1rem;border-radius:9px;}
+  .acoes{transition:opacity .15s ease;}
+  @media (min-width:621px){
+    .acoes{opacity:.9;}
+    .linha:hover .acoes{opacity:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .botao:hover, .botao:active{transform:none;}
+  }
 </style>
 </head>
 <body>

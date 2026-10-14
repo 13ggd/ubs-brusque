@@ -336,6 +336,89 @@
   }
   .a11y-toggle[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
   .a11y-toggle .ic{font-size:1.1rem;flex:0 0 auto;}
+
+  /* =========================================================== POLIMENTO ==
+     Camada de acabamento por cima do que já existe: só usa as variáveis de
+     cor da página (claro, escuro e alto contraste continuam funcionando) e
+     nenhum movimento roda para quem pediu menos animação no aparelho. */
+  ::selection{background:color-mix(in srgb, var(--accent) 28%, transparent);}
+  body{
+    background:
+      radial-gradient(900px 340px at 50% -140px, color-mix(in srgb, var(--accent) 10%, transparent), transparent 72%),
+      var(--bg);
+    background-repeat:no-repeat;
+  }
+  body.alto-contraste{background:var(--bg);}
+
+  .eyebrow::before{
+    content:"";display:inline-block;width:8px;height:8px;border-radius:50%;
+    background:var(--accent);margin-right:.6rem;vertical-align:.05em;
+    box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+  h1{text-wrap:balance;}
+  .sub{text-wrap:pretty;}
+
+  .barra{
+    border-radius:14px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .barra:focus-within{
+    border-color:var(--accent);
+    box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent);
+  }
+  .busca input:focus-visible{outline:none;}   /* o anel já aparece na barra toda */
+  .busca svg{transition:color .15s ease;}
+  .barra:focus-within .busca svg{color:var(--accent);}
+
+  .lista{border-radius:14px;}
+  .linha{transition:background-color .15s ease, box-shadow .15s ease;}
+  .linha:hover{box-shadow:inset 4px 0 0 var(--accent);}
+  .nome{text-wrap:balance;}
+
+  .vazio{font-size:1.02rem;}
+  footer, .rodape-base{border-top-color:var(--line);}
+  .rodape-base{padding-top:1rem;}
+
+  @media (prefers-reduced-motion: no-preference){
+    .barra, .linha, .botao, .ir svg, .a11y-fab{transition-duration:.18s;}
+    .a11y-fundo:not([hidden]){animation:ubs-aparece .2s ease-out;}
+    .a11y-painel:not([hidden]){animation:ubs-sobe .28s cubic-bezier(.2,.7,.2,1);}
+    @keyframes ubs-aparece{from{opacity:0;}to{opacity:1;}}
+    @keyframes ubs-sobe{from{transform:translateY(24px);opacity:0;}to{transform:none;opacity:1;}}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .barra, .linha, .botao, .ir svg, .busca svg{transition:none;}
+  }
+
+  .linha:active{background:color-mix(in srgb, var(--accent-soft) 70%, var(--line));}
+  .ir svg{transition:transform .15s ease;}
+  .linha:hover .ir svg{transform:translate(2px,-2px);}
+  .linha .nome{letter-spacing:-.005em;}
+
+  .aviso-painel{
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    border-left-width:6px;
+  }
+  .aviso-tarja{border-radius:6px;padding:.18rem .55rem;}
+  .rodape-tit{text-wrap:balance;}
+
+  .a11y-fab{box-shadow:0 2px 6px rgba(0,0,0,.22), 0 8px 18px -6px rgba(0,0,0,.34);transition:transform .15s ease;}
+  .a11y-fab:active{transform:scale(.93);}
+  .a11y-fundo{background:rgba(2,24,13,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
+  .a11y-painel{
+    border-radius:22px 22px 0 0;
+    padding-top:.75rem;
+    box-shadow:0 -10px 30px rgba(0,0,0,.26);
+  }
+  .a11y-painel::before{
+    content:"";display:block;width:44px;height:5px;border-radius:99px;
+    background:var(--line);margin:0 auto .8rem;
+  }
+  .a11y-letra-btns button, .idioma-bt, .a11y-toggle{transition:background-color .15s ease, border-color .15s ease;}
+  .a11y-letra-btns button:hover, .a11y-toggle:hover{border-color:var(--accent);}
+  body.alto-contraste .aviso-painel, body.alto-contraste .a11y-fab{box-shadow:none;}
+  body.alto-contraste .aviso-painel{border:2px solid var(--line);border-left-width:6px;}
 </style>
 </head>
 <body>
