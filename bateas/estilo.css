@@ -396,9 +396,24 @@ body.alto-contraste .saude-tit{color:var(--tinta)}
 }
 .secao .ajuda{font-size:calc(16px * var(--esc));color:var(--tinta2);margin-bottom:13px;line-height:1.4}
 /* Só o texto de ajuda de "O que você precisa?" — lembra que urgência e
-   emergência são atendidas a qualquer horário, então usa a mesma cor de
-   alerta do resto do site (fechado/aviso), não a cinza padrão de ajuda. */
-#setores-secao .ajuda{color:var(--alerta)}
+   emergência são atendidas a qualquer horário. Texto corrido não chamava
+   atenção, então vira um balão vermelho (mesma família visual dos avisos:
+   fundo claro, borda e tarja lateral em --alerta) com um ícone de alerta. */
+#setores-secao .ajuda{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--alerta-claro);
+  border:2px solid var(--alerta);border-left-width:8px;
+  border-radius:12px;
+  padding:13px 15px;margin-bottom:16px;
+  color:var(--alerta);font-weight:700;line-height:1.45;
+}
+#setores-secao .ajuda::before{
+  content:"!";flex:none;
+  width:1.7em;height:1.7em;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--alerta);color:var(--papel);
+  font-weight:800;font-size:.95em;line-height:1;
+}
 
 .futuros-bloco{margin-top:22px;padding-top:18px;border-top:2px solid var(--linha)}
 .futuros-tit{
