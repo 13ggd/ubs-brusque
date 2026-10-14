@@ -315,7 +315,18 @@ The strategies are deliberately *not* uniform, and the split is the whole design
 - **Site's own files** (`./`, `index.html`, `estilo.css`, `app.js`, `config.js`) and **Google Fonts** —
   cache-first, revalidating in the background. Opens instantly; a code change reaches a returning
   visitor on their *next* load, which is why `VERSAO` at the top of `sw.js` must be bumped when
-  shipping (that string is what evicts every old cache in `activate`).
+  shipping (that string is what evicts every old cache in `activate`). Left alone, that meant a
+  returning visitor saw the *old* page on the first load after a deploy, and a tab left open never
+  changed at all (a preceptor once asked for a change that was already live; only Ctrl+F5, which
+  bypasses the service worker, showed it). `registrarServiceWorker()` therefore listens for
+  `controllerchange` — the moment the new worker takes over — and reloads the page: straight away
+  if the tab is hidden, otherwise via a `#versao-nova` banner (reuses `.sem-internet`'s amber style)
+  with an "Atualizar agora" button, since reloading under someone typing in "Minha rua" would wipe
+  their input. It does nothing when the page started with no controller (a first visit also fires
+  `controllerchange`, but there is no old version on screen), and never auto-reloads under `?teste`.
+  This only helps once a version containing it is live: tabs from before it still need one manual
+  reload. Verified with Playwright (visible tab → banner, button reloads and the v+1 cache is
+  active; hidden tab → reloads by itself; first visit → nothing).
 - **The Google Sheet CSV** — network-first, cache only as a fallback. Serving yesterday's hours from
   cache while the network was available would be the worst possible failure for this site. The cache
   key is the request URL **minus the `t=Date.now()` cache-buster** (`chaveDaPlanilha()`): keying by

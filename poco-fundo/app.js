@@ -143,6 +143,46 @@ function registrarServiceWorker(){
      mas se já terminou, o evento 'load' não vem mais, então registra agora. */
   if(document.readyState === 'complete') registrar();
   else window.addEventListener('load', registrar);
+
+  /* Versão nova do site no ar. O sw.js entrega primeiro o que tem guardado e
+     baixa a versão nova por trás, então quem já conhecia o site vê a antiga
+     até recarregar (às vezes duas vezes) — e uma aba deixada aberta nunca
+     troca sozinha. Quando o service worker novo assume o controle, a página
+     se recarrega: direto se a aba está oculta (a pessoa nem percebe), ou com
+     um aviso se ela está olhando — recarregar de repente apagaria o que está
+     digitando em "Minha rua". Se a página abriu SEM service worker (primeira
+     visita), o controle chegando também dispara este evento; nesse caso não
+     há versão velha na tela e não se faz nada. */
+  var tinhaControle = !!navigator.serviceWorker.controller;
+  var esperando = false;
+
+  function podeRecarregarSemAviso(){
+    return document.hidden && !document.body.classList.contains('com-teste');
+  }
+  function trocarPorVersaoNova(){ location.reload(); }
+  function avisarVersaoNova(){
+    if(document.getElementById('versao-nova')) return;
+    var faixa = document.createElement('div');
+    faixa.id = 'versao-nova';
+    faixa.className = 'sem-internet';
+    faixa.setAttribute('role', 'status');
+    faixa.innerHTML = '<strong>Atualizamos o site.</strong> ' +
+      '<button type="button">Atualizar agora</button>';
+    faixa.querySelector('button').addEventListener('click', trocarPorVersaoNova);
+    var ref = document.getElementById('sem-internet');
+    if(ref && ref.parentNode) ref.parentNode.insertBefore(faixa, ref);
+    else document.body.insertBefore(faixa, document.body.firstChild);
+  }
+
+  navigator.serviceWorker.addEventListener('controllerchange', function(){
+    if(!tinhaControle || esperando) return;
+    esperando = true;
+    if(podeRecarregarSemAviso()){ trocarPorVersaoNova(); return; }
+    avisarVersaoNova();
+    document.addEventListener('visibilitychange', function(){
+      if(podeRecarregarSemAviso()) trocarPorVersaoNova();
+    });
+  });
 }
 
 /* --------------------------------------------------------- sem internet -- */
