@@ -25,8 +25,8 @@ const CONFIG = {
     telefoneEncaminhamentos: '(47) 2017-0549',
     telefoneEncaminhamentosLink: '+554720170549',
     avisoLigacao: 'Caso receba uma ligação de um destes números, por favor atenda: será sobre seus exames e consultas.',
-    secretaria:     '(47) 3255-6800',
-    secretariaLink: '+554732556800',
+    secretaria:     '(47) 2017-0620',
+    secretariaLink: '+554720170620',
     /* Link "Abrir o mapa no celular". Use o formato oficial do Google
        ("Maps URLs"): search/?api=1&query=<nome ou endereço>&query_place_id=<ID>.
        O "query" é obrigatório e é o que aparece caso o celular não reconheça
