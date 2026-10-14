@@ -172,6 +172,72 @@
 
   [hidden]{ display:none !important; }
 
+  /* ===================================================== POLIMENTO (tela) ==
+     Só a barra, o formulário e a "mesa" onde a folha fica. Nada daqui mexe
+     na folha em si (tamanhos em mm/pt), e o @media print logo abaixo continua
+     vencendo — o que sai impresso é exatamente o que já era. */
+  body{background:linear-gradient(180deg,#dbe3dc 0,#e8ebe8 260px) no-repeat,#e8ebe8;}
+  ::selection{background:#BFE3CC;}
+
+  .barra{
+    background:linear-gradient(180deg,#033A1F 0%,var(--verde) 100%);
+    box-shadow:0 8px 20px -12px rgba(2,48,26,.7);
+    padding:14px clamp(12px,3vw,24px);
+  }
+  .barra select, .barra input[type=text]{box-shadow:inset 0 1px 2px rgba(0,0,0,.12);}
+  .barra :focus-visible{outline:3px solid #F7C948;outline-offset:2px;}
+  .barra button, .barra a.voltar{
+    transition:transform .15s cubic-bezier(.2,.7,.2,1), background-color .15s, filter .15s;
+  }
+  .barra button{box-shadow:0 1px 2px rgba(0,0,0,.25);}
+  .barra button:hover{filter:brightness(1.06);}
+  .barra button.secundario:hover{background:rgba(255,255,255,.26);}
+  .barra button:active, .barra a.voltar:active{transform:translateY(1px) scale(.985);}
+  .barra .dica{line-height:1.5;max-width:110ch;text-wrap:pretty;}
+  .barra code{background:rgba(255,255,255,.14);border-radius:4px;padding:1px 5px;}
+
+  .painel{
+    border:1px solid var(--linha);border-radius:14px;
+    padding:20px clamp(14px,3vw,26px) 22px;
+    box-shadow:0 1px 2px rgba(2,48,26,.07), 0 14px 30px -18px rgba(2,48,26,.35);
+  }
+  .painel h2{font-size:18px;letter-spacing:-.01em;}
+  .campos label{font-weight:600;}
+  .campos input, .setor-linha input{
+    border-radius:8px;border-color:#b8c4bb;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .campos input:focus, .setor-linha input:focus{
+    outline:none;border-color:#0A6E36;box-shadow:0 0 0 3px rgba(10,110,54,.22);
+  }
+  .setor-linha button, .painel .acoes button, #add-setor{
+    border-radius:8px !important;transition:background-color .15s, transform .15s, border-color .15s;
+  }
+  .setor-linha button:hover, .painel .acoes button:hover, #add-setor:hover{
+    background:#E6F2E9 !important;border-color:#0A6E36 !important;
+  }
+  .painel .acoes button:active, #add-setor:active{transform:translateY(1px);}
+  #salvar{background:var(--verde) !important;color:#fff;border-color:var(--verde) !important;font-weight:700;}
+  #salvar:hover{background:#015A27 !important;}
+
+  .folha{
+    border-radius:2px;
+    box-shadow:0 1px 3px rgba(0,0,0,.16), 0 22px 44px -20px rgba(0,0,0,.38);
+  }
+
+  @media (max-width:700px){
+    .campos{grid-template-columns:1fr;}
+    .setor-linha{flex-wrap:wrap;}
+    .setor-linha .nome-setor{flex:1 0 100%;}
+    .barra{gap:10px;position:static;}   /* barra alta demais pra ficar presa no topo do celular */
+    .barra label, .barra select{max-width:100%;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .barra button, .barra a.voltar, .campos input, .setor-linha input,
+    .setor-linha button, .painel .acoes button, #add-setor{transition:none;}
+    .barra button:active, .barra a.voltar:active, .painel .acoes button:active, #add-setor:active{transform:none;}
+  }
+
   /* ---------------- impressão ---------------- */
   @page{ size:A4; margin:0; }
   @media print{
