@@ -1767,11 +1767,12 @@ function desenhar(data, agora){
 
   /* os 7 dias a partir de `data` (hoje, amanhã, ...) — iguais para todos os
      setores, então saem do map abaixo. Dia que já passou não interessa a
-     quem consulta: some e dá lugar à mesma data da semana que vem. */
+     quem consulta: dá lugar à mesma data da semana que vem. A ordem
+     continua seg a dom (não começa em "hoje"), só as datas rolam. */
   var proximos7 = [0, 1, 2, 3, 4, 5, 6].map(function(i){
     var dt = somaDias(data, i);
-    return {key: ORD[(dt.getDay() + 6) % 7], iso: iso(dt)};
-  });
+    return {key: ORD[(dt.getDay() + 6) % 7], iso: iso(dt), hoje: i === 0};
+  }).sort(function(a, b){ return ORD.indexOf(a.key) - ORD.indexOf(b.key); });
 
   /* setores */
   document.getElementById('setores').innerHTML = SETORES.map(function(s){
@@ -1809,10 +1810,10 @@ function desenhar(data, agora){
       var d = p.iso, fer = feriadoInfo(d);
       if(fer && a && a.tipo === 'fechado')
         v += '<span class="semana-motivo">Feriado: ' + limpo(fer.nome) + '</span>';
-      return '<div class="semana-l ' + (i === 0 ? 'hoje' : '') + '">' +
+      return '<div class="semana-l ' + (p.hoje ? 'hoje' : '') + '">' +
         '<span class="dia">' + NOME[k] +
           '<span class="dia-data">' + d.slice(8, 10) + '/' + d.slice(5, 7) +
-          (i === 0 ? ' · hoje' : '') + '</span></span>' +
+          (p.hoje ? ' · hoje' : '') + '</span></span>' +
         '<span class="val">' + v + '</span></div>';
     }).join('');
 
