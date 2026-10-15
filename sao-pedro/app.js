@@ -942,7 +942,11 @@ function situacao(s, diaKey, dataISO, agora){
   if(av && av.tipo === 'fechado')
     return {cls:'alerta', sinal:'✕', palavra:'Fechado hoje', faixa:padrao, nova:null, av:av};
 
-  var f = (av && av.tipo === 'atencao' && av.novo) ? av.novo : padrao;
+  /* "horário alterado" só mexe num dia em que o setor atende de verdade: se o
+     padrão daquele dia da semana está vazio (ex.: vacina no sábado), o aviso
+     não o transforma em dia de atendimento. */
+  var muda = !!(padrao && av && av.tipo === 'atencao' && av.novo);
+  var f = muda ? av.novo : padrao;
   if(!f)
     return {cls:'off', sinal:'✕', palavra:'Não atende hoje', faixa:null, nova:null, av:null};
 
@@ -959,7 +963,7 @@ function situacao(s, diaKey, dataISO, agora){
     if(agora < b.ini && (proximaAbertura === null || b.ini < proximaAbertura)) proximaAbertura = b.ini;
   });
 
-  if(av && av.tipo === 'atencao' && av.novo)
+  if(muda)
     return {
       cls: aberto ? 'atencao' : 'off',
       sinal: aberto ? '!' : '✕',
@@ -1031,7 +1035,7 @@ function proximaAberturaGeral(data){
     SETORES.forEach(function(s){
       var av = avisoDe(s.id, dISO);
       if(av && av.tipo === 'fechado') return;
-      var faixa = (av && av.tipo === 'atencao' && av.novo) ? av.novo : s.h[key];
+      var faixa = (s.h[key] && av && av.tipo === 'atencao' && av.novo) ? av.novo : s.h[key];
       if(!faixa) return;
       faixa.split(',').forEach(function(bloco){
         var ini = mm(bloco.split('-')[0]);
@@ -1801,7 +1805,7 @@ function desenhar(data, agora){
       var v;
       if(a && a.tipo === 'fechado')
         v = (padrao ? '<s>' + fala(padrao) + '</s> ' : '') + '<strong>Fechado</strong>';
-      else if(a && a.tipo === 'atencao' && a.novo)
+      else if(padrao && a && a.tipo === 'atencao' && a.novo)
         v = (padrao ? '<s>' + fala(padrao) + '</s> → ' : '') + '<strong>' + fala(a.novo) + '</strong>';
       else
         v = padrao ? fala(padrao) : 'Não atende';
