@@ -1765,11 +1765,13 @@ function desenhar(data, agora){
      em si fica de fora, ligado uma vez só em montarBuscaDeRua(). */
   desenharMinhaRua(data, agora);
 
-  /* datas (AAAA-MM-DD) de seg a dom da semana de `data` — iguais para todos
-     os setores, então saem do map abaixo */
-  var segunda = new Date(data.getTime());
-  segunda.setDate(segunda.getDate() - ((data.getDay() + 6) % 7));
-  var datasDaSemana = ORD.map(function(k, i){ return iso(somaDias(segunda, i)); });
+  /* os 7 dias a partir de `data` (hoje, amanhã, ...) — iguais para todos os
+     setores, então saem do map abaixo. Dia que já passou não interessa a
+     quem consulta: some e dá lugar à mesma data da semana que vem. */
+  var proximos7 = [0, 1, 2, 3, 4, 5, 6].map(function(i){
+    var dt = somaDias(data, i);
+    return {key: ORD[(dt.getDay() + 6) % 7], iso: iso(dt)};
+  });
 
   /* setores */
   document.getElementById('setores').innerHTML = SETORES.map(function(s){
@@ -1788,12 +1790,13 @@ function desenhar(data, agora){
         limpo(t.av.texto) + '</div>'
       : '';
 
-    /* A lista mostra a semana corrente (seg a dom) e consulta os avisos de
-       cada data — não só o horário padrão —, senão uma mudança ou fechamento
-       cadastrado aparecia no card mas sumia daqui ("horários normais"). */
-    var semana = ORD.map(function(k, i){
+    /* A lista mostra os próximos 7 dias e consulta os avisos de cada data —
+       não só o horário padrão —, senão uma mudança ou fechamento cadastrado
+       aparecia no card mas sumia daqui ("horários normais"). */
+    var semana = proximos7.map(function(p, i){
+      var k = p.key;
       var padrao = s.h[k];
-      var a = avisoDe(s.id, datasDaSemana[i]);
+      var a = avisoDe(s.id, p.iso);
       var v;
       if(a && a.tipo === 'fechado')
         v = (padrao ? '<s>' + fala(padrao) + '</s> ' : '') + '<strong>Fechado</strong>';
@@ -1801,8 +1804,15 @@ function desenhar(data, agora){
         v = (padrao ? '<s>' + fala(padrao) + '</s> → ' : '') + '<strong>' + fala(a.novo) + '</strong>';
       else
         v = padrao ? fala(padrao) : 'Não atende';
-      return '<div class="semana-l ' + (k === diaKey ? 'hoje' : '') + '">' +
-        '<span class="dia">' + NOME[k] + (k === diaKey ? ' — hoje' : '') + '</span>' +
+      /* a data vai ao lado do dia: "Segunda-feira" sozinho não diz se é a
+         desta semana ou "toda segunda", e um feriado parecia rotina */
+      var d = p.iso, fer = feriadoInfo(d);
+      if(fer && a && a.tipo === 'fechado')
+        v += '<span class="semana-motivo">Feriado: ' + limpo(fer.nome) + '</span>';
+      return '<div class="semana-l ' + (i === 0 ? 'hoje' : '') + '">' +
+        '<span class="dia">' + NOME[k] +
+          '<span class="dia-data">' + d.slice(8, 10) + '/' + d.slice(5, 7) +
+          (i === 0 ? ' · hoje' : '') + '</span></span>' +
         '<span class="val">' + v + '</span></div>';
     }).join('');
 
