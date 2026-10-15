@@ -632,7 +632,10 @@ details.semana[open] summary::after{transform:rotate(180deg)}
   border-bottom:2px dotted var(--linha);
 }
 .semana-l:last-child{border-bottom:none}
-.semana-l .dia{color:var(--tinta2)}
+.semana-l .dia{color:var(--tinta2);flex:0 0 auto;white-space:nowrap}
+.semana-l .dia-data{display:block;font-weight:700;font-size:.82em;color:var(--tinta);white-space:nowrap}
+.semana-l.hoje .dia-data{color:inherit}
+.semana-l .semana-motivo{display:block;font-weight:400;font-size:.85em;color:var(--tinta2)}
 .semana-l .val{font-weight:700;text-align:right;flex:0 1 auto;min-width:0;overflow-wrap:anywhere}
 /* horário padrão riscado (quando há aviso naquele dia): sem negrito e em linha própria,
    senão a faixa longa estoura a largura do cartão no celular */
