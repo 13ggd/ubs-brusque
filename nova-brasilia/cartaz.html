@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cartaz com QR code — UBS</title>
 <meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <!--
   ===========================================================================
   CARTAZ PARA IMPRIMIR
@@ -69,50 +70,86 @@
   }
 
   /* ---------------- cartaz A4 ---------------- */
-  .orgao{ margin:0; font-size:12pt; color:var(--fraco); text-transform:uppercase; letter-spacing:.04em; }
-  .nome{ margin:2mm 0 0; font-size:30pt; line-height:1.05; font-weight:700; }
-  .chamada{
-    margin:6mm 0 0; font-size:21pt; line-height:1.2; font-weight:700; color:var(--verde);
+  :root{ --amarelo:#F7C948; --verde-vivo:#016B2E; --verde-claro:#E6F2E9; --alerta:#B3120F; }
+  #folha-cartaz{ padding:0; overflow:hidden; position:relative; }
+  #folha-cartaz, #folha-cartaz *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+  .topo{
+    position:relative; color:#fff; padding:9mm 13mm 25mm;
+    background:
+      radial-gradient(circle at 92% 8%, rgba(247,201,72,.95) 0 17mm, transparent 17.2mm),
+      radial-gradient(circle at 100% 30%, rgba(255,255,255,.10) 0 30mm, transparent 30.2mm),
+      radial-gradient(circle at -4% 100%, rgba(255,255,255,.08) 0 38mm, transparent 38.2mm),
+      linear-gradient(160deg, #016B2E 0%, #02301A 100%);
+    border-radius:0 0 22mm 22mm / 0 0 12mm 12mm;
   }
-  .sub-chamada{ margin:2mm 0 0; font-size:13pt; color:var(--fraco); }
+  .orgao{ margin:0; font-size:10.5pt; color:var(--amarelo); text-transform:uppercase; letter-spacing:.09em; font-weight:700; max-width:150mm; }
+  .nome{ margin:2mm 0 0; font-size:25pt; line-height:1.05; font-weight:700; max-width:150mm; }
+  .chamada{
+    margin:6mm 0 0; font-size:39pt; line-height:.98; font-weight:700; letter-spacing:-.01em;
+  }
+  .chamada em{
+    font-style:normal; color:#241a00; background:var(--amarelo);
+    padding:0 3mm; border-radius:3mm; display:inline-block; transform:rotate(-1.2deg);
+    margin-top:1.5mm;
+  }
+  .sub-chamada{ margin:4.5mm 0 0; font-size:12.5pt; line-height:1.3; opacity:.95; max-width:150mm; }
 
   .qr-area{
-    margin:7mm 0 0;
+    position:relative; margin:-17mm 13mm 0;
     display:flex; gap:9mm; align-items:center;
   }
-  .qr-caixa{ flex:0 0 auto; width:72mm; }
-  .qr-caixa svg{ width:100%; height:auto; display:block; border:1px solid var(--linha); }
-  .qr-lado{ flex:1; }
-  .qr-passo{ margin:0 0 4mm; font-size:14pt; line-height:1.35; }
-  .qr-passo b{ font-size:15pt; }
+  .qr-caixa{
+    flex:0 0 auto; width:70mm; padding:3.5mm; background:#fff;
+    border:2.2mm solid var(--amarelo); border-radius:7mm;
+    box-shadow:0 2mm 0 rgba(2,48,26,.18);
+  }
+  .qr-caixa svg{ width:100%; height:auto; display:block; }
+  .qr-lado{ flex:1; padding-top:17mm; }
+  .qr-passo{
+    margin:0 0 4mm; font-size:15pt; line-height:1.2; font-weight:700;
+    display:flex; align-items:center; gap:3.5mm; color:var(--verde);
+  }
+  .qr-passo b{
+    flex:0 0 auto; width:10mm; height:10mm; border-radius:50%;
+    background:var(--verde-vivo); color:#fff; font-size:16pt;
+    display:flex; align-items:center; justify-content:center;
+  }
   .endereco-site{
-    margin:0; padding:3mm 4mm;
-    border:2px dashed var(--linha); border-radius:4px;
-    font-size:13pt; font-weight:700; word-break:break-all; line-height:1.3;
+    margin:3.5mm 0 0; padding:2mm 3mm; background:var(--verde-claro);
+    border-radius:99px; text-align:center;
+    font-size:9.5pt; font-weight:700; word-break:break-all; line-height:1.25; color:var(--verde);
   }
 
-  .horarios{ margin:8mm 0 0; }
+  .horarios{ margin:6mm 13mm 0; }
   .horarios h2{
-    margin:0 0 3mm; font-size:15pt;
-    border-bottom:2px solid var(--verde); padding-bottom:1.5mm;
+    margin:0 0 3.5mm; font-size:15pt; color:var(--verde);
+    display:flex; align-items:center; gap:3mm;
   }
-  .horarios table{ width:100%; border-collapse:collapse; font-size:11pt; }
-  .horarios td{ padding:1.6mm 0; vertical-align:top; border-bottom:1px solid var(--linha); }
-  .horarios td:first-child{ font-weight:700; width:44%; padding-right:4mm; }
+  .horarios h2::after{ content:''; flex:1; height:2px; background:var(--amarelo); border-radius:2px; }
+  .horarios .grade{ display:grid; grid-template-columns:1fr 1fr; gap:1.8mm 3.5mm; }
+  .horarios .item{
+    background:var(--verde-claro); border-left:2mm solid var(--verde-vivo);
+    border-radius:2mm; padding:1.5mm 3.5mm;
+  }
+  .horarios .item b{ display:block; font-size:11.5pt; color:var(--verde); line-height:1.15; }
+  .horarios .item span{ display:block; font-size:10.5pt; margin-top:.6mm; line-height:1.25; }
+  .horarios .item.cheio{ grid-column:1 / -1; }
 
   .rodape-cartaz{
-    margin-top:auto; padding-top:6mm;
-    border-top:3px solid var(--verde);
-    display:flex; gap:6mm; justify-content:space-between; align-items:flex-end;
+    margin-top:auto; padding:5mm 13mm 6mm;
+    background:var(--verde); color:#fff;
+    display:flex; gap:6mm; justify-content:space-between; align-items:center;
   }
-  .rodape-cartaz p{ margin:0; font-size:11.5pt; line-height:1.4; }
-  .rodape-cartaz .rot{ color:var(--fraco); font-size:10pt; text-transform:uppercase; letter-spacing:.03em; }
+  .rodape-cartaz p{ margin:0; font-size:11.5pt; line-height:1.35; }
+  .rodape-cartaz .rot{ color:var(--amarelo); font-size:9pt; text-transform:uppercase; letter-spacing:.07em; font-weight:700; }
+  .rodape-cartaz #c-telefone{ font-size:17pt; font-weight:700; }
   .emergencia{
-    text-align:center; border:3px solid #B3261E; border-radius:6px;
-    padding:3mm 6mm; flex:0 0 auto;
+    text-align:center; background:var(--alerta); color:#fff; border-radius:5mm;
+    padding:3mm 7mm; flex:0 0 auto; border:1.2mm solid #fff;
   }
-  .emergencia .num{ display:block; font-size:24pt; font-weight:700; color:#B3261E; line-height:1; }
-  .emergencia .lab{ display:block; font-size:9.5pt; color:var(--fraco); margin-top:1mm; }
+  .emergencia .num{ display:block; font-size:30pt; font-weight:700; line-height:1; }
+  .emergencia .lab{ display:block; font-size:9pt; margin-top:1mm; line-height:1.2; }
 
   /* ---------------- bilhetes (8 por folha) ---------------- */
   .bilhetes{
@@ -123,17 +160,20 @@
     flex:1;
   }
   .bilhete{
-    border:1px dashed #9aa79c;
-    padding:5mm;
-    display:flex; gap:4mm; align-items:center;
+    border:1px dashed #9aa79c; padding:0; overflow:hidden;
+    display:flex; flex-direction:column;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
   }
-  .bilhete .b-qr{ flex:0 0 auto; width:27mm; }
+  .bilhete .b-topo{ background:var(--verde); color:#fff; padding:2.6mm 5mm; }
+  .bilhete .b-nome{ margin:0; font-size:12pt; font-weight:700; line-height:1.1; }
+  .bilhete .b-chama{ margin:.6mm 0 0; font-size:8.5pt; color:var(--amarelo); font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+  .bilhete .b-corpo{ flex:1; display:flex; gap:4mm; align-items:center; padding:3mm 5mm; }
+  .bilhete .b-qr{ flex:0 0 auto; width:29mm; padding:1.2mm; border:1.2mm solid var(--amarelo); border-radius:3mm; }
   .bilhete .b-qr svg{ width:100%; height:auto; display:block; }
   .bilhete .b-txt{ flex:1; min-width:0; }
-  .bilhete .b-nome{ margin:0; font-size:11pt; font-weight:700; line-height:1.15; }
-  .bilhete .b-frase{ margin:1.5mm 0 0; font-size:8.5pt; line-height:1.3; color:var(--fraco); }
-  .bilhete .b-url{ margin:1.5mm 0 0; font-size:8pt; font-weight:700; word-break:break-all; line-height:1.25; }
-  .bilhete .b-tel{ margin:1.5mm 0 0; font-size:9pt; }
+  .bilhete .b-frase{ margin:0; font-size:9.5pt; line-height:1.25; font-weight:700; color:var(--verde); }
+  .bilhete .b-url{ margin:1.6mm 0 0; font-size:7.5pt; font-weight:700; word-break:break-all; line-height:1.25; color:var(--fraco); }
+  .bilhete .b-tel{ margin:1.6mm 0 0; font-size:10pt; font-weight:700; }
 
   [hidden]{ display:none !important; }
 
@@ -148,6 +188,7 @@
       box-shadow:none;
       page-break-after:avoid;
     }
+    #folha-cartaz{ padding:0; }
   }
 </style>
 </head>
@@ -171,32 +212,33 @@
 
 <!-- ======================= CARTAZ A4 ======================= -->
 <div class="folha" id="folha-cartaz">
-  <p class="orgao" id="c-orgao"></p>
-  <h1 class="nome" id="c-nome"></h1>
-
-  <p class="chamada">Antes de sair de casa,<br>veja se está aberto.</p>
-  <p class="sub-chamada">Horários de cada setor, avisos do dia e telefones — sempre atualizados.</p>
+  <div class="topo">
+    <p class="orgao" id="c-orgao"></p>
+    <h1 class="nome" id="c-nome"></h1>
+    <p class="chamada">Antes de sair de casa,<br><em>veja se está aberto.</em></p>
+    <p class="sub-chamada">Horário de cada setor, avisos do dia e telefones — sempre atualizados, no seu celular.</p>
+  </div>
 
   <div class="qr-area">
     <div class="qr-caixa" id="c-qr"></div>
     <div class="qr-lado">
-      <p class="qr-passo"><b>1.</b> Abra a câmera do celular.</p>
-      <p class="qr-passo"><b>2.</b> Aponte para o quadrado ao lado.</p>
-      <p class="qr-passo"><b>3.</b> Toque no aviso que aparecer na tela.</p>
+      <p class="qr-passo"><b>1</b> Abra a câmera do celular</p>
+      <p class="qr-passo"><b>2</b> Aponte para o quadrado</p>
+      <p class="qr-passo"><b>3</b> Toque no aviso que aparecer</p>
       <p class="endereco-site" id="c-url"></p>
     </div>
   </div>
 
   <div class="horarios">
     <h2>Horários de atendimento</h2>
-    <table id="c-horarios"></table>
+    <div class="grade" id="c-horarios"></div>
   </div>
 
   <div class="rodape-cartaz">
     <div>
       <p class="rot">Onde fica</p>
       <p id="c-endereco"></p>
-      <p class="rot" style="margin-top:3mm">Telefone da UBS</p>
+      <p class="rot" style="margin-top:2.5mm">Telefone da UBS</p>
       <p id="c-telefone"></p>
     </div>
     <div class="emergencia">
@@ -306,10 +348,10 @@ function montarCartaz(){
   var linhas = (CONFIG.setoresReserva || []).map(function(s){
     var resumo = resumoSemana(s.h);
     if(!resumo) return '';
-    return '<tr><td>' + limpo(s.nome) + '</td><td>' + limpo(resumo) + '</td></tr>';
+    return '<div class="item"><b>' + limpo(s.nome) + '</b><span>' + limpo(resumo) + '</span></div>';
   }).filter(Boolean).join('');
   document.getElementById('c-horarios').innerHTML = linhas ||
-    '<tr><td colspan="2">Consulte os horários no site ou pelo telefone.</td></tr>';
+    '<div class="item cheio"><span>Consulte os horários no site ou pelo telefone.</span></div>';
 }
 
 function montarBilhetes(endereco){
@@ -317,12 +359,15 @@ function montarBilhetes(endereco){
   var qr = QR.svg(endereco, {nivel:'M', margem:2, descricao:'QR code do site da ' + u.nome});
   var um =
     '<div class="bilhete">' +
-      '<div class="b-qr">' + qr + '</div>' +
-      '<div class="b-txt">' +
-        '<p class="b-nome">' + limpo(u.nome) + '</p>' +
-        '<p class="b-frase">Veja se está aberto, o horário de cada setor e os avisos do dia.</p>' +
-        '<p class="b-url">' + limpo(endereco) + '</p>' +
-        '<p class="b-tel">☎ ' + limpo(u.telefone) + '</p>' +
+      '<div class="b-topo"><p class="b-nome">' + limpo(u.nome) + '</p>' +
+        '<p class="b-chama">Veja se está aberto</p></div>' +
+      '<div class="b-corpo">' +
+        '<div class="b-qr">' + qr + '</div>' +
+        '<div class="b-txt">' +
+          '<p class="b-frase">Aponte a câmera do celular: horário de cada setor e avisos do dia.</p>' +
+          '<p class="b-url">' + limpo(endereco) + '</p>' +
+          '<p class="b-tel">☎ ' + limpo(u.telefone) + '</p>' +
+        '</div>' +
       '</div>' +
     '</div>';
   var todos = '';
