@@ -280,6 +280,14 @@
   <button type="button" id="excluir" class="secundario">Apagar edição salva</button>
   <label><input type="radio" name="formato" value="cartaz" checked> Cartaz A4</label>
   <label><input type="radio" name="formato" value="bilhetes"> Bilhetes (8 por folha)</label>
+  <label>Mascote:
+    <select id="mascote-escolha">
+      <option value="coracao">Coração acenando</option>
+      <option value="sus">Símbolo SUS</option>
+      <option value="cruz">Cruz da saúde</option>
+      <option value="nenhum">Nenhum</option>
+    </select>
+  </label>
   <label><input type="checkbox" id="marcar" checked> Marcar como vindo do cartaz</label>
   <button type="button" id="imprimir">Imprimir</button>
   <p class="dica">
@@ -346,7 +354,16 @@
 <!-- ======================= CARTAZ A4 ======================= -->
 <div class="folha" id="folha-cartaz">
   <div class="topo">
-    <svg class="mascote" viewBox="0 0 130 130" role="img" aria-label="Coração simpático acenando">
+    <svg class="mascote" data-m="sus" hidden viewBox="0 0 130 130" role="img" aria-label="Símbolo de saúde com cruz e SUS">
+      <circle cx="65" cy="65" r="56" fill="#fff"/><circle cx="65" cy="65" r="50" fill="#2F80E0"/>
+      <rect x="52" y="22" width="26" height="60" rx="6" fill="#fff"/><rect x="35" y="39" width="60" height="26" rx="6" fill="#fff"/>
+      <text x="65" y="105" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-weight="700" font-size="24" fill="#fff" stroke="#0B2A66" stroke-width="1">SUS</text>
+    </svg>
+    <svg class="mascote" data-m="cruz" hidden viewBox="0 0 130 130" role="img" aria-label="Cruz de saúde">
+      <rect x="10" y="10" width="110" height="110" rx="28" fill="#fff"/>
+      <rect x="53" y="26" width="24" height="78" rx="7" fill="#2F80E0"/><rect x="26" y="53" width="78" height="24" rx="7" fill="#2F80E0"/>
+    </svg>
+    <svg class="mascote" data-m="coracao" viewBox="0 0 130 130" role="img" aria-label="Coração simpático acenando">
       <defs><radialGradient id="mg" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#FF7A7F"/><stop offset="1" stop-color="#D92D3A"/></radialGradient></defs>
       <path d="M17 66 Q4 74 6 90" fill="none" stroke="#D92D3A" stroke-width="9" stroke-linecap="round"/>
       <path d="M113 66 Q128 58 124 36" fill="none" stroke="#D92D3A" stroke-width="9" stroke-linecap="round"/>
@@ -786,6 +803,24 @@ Array.prototype.forEach.call(document.querySelectorAll('input[name=formato]'), f
 });
 document.getElementById('imprimir').addEventListener('click', function(){ window.print(); });
 
+})();
+</script>
+<script>
+(function(){
+  var sel = document.getElementById('mascote-escolha');
+  function aplicar(v){
+    Array.prototype.forEach.call(document.querySelectorAll('svg.mascote'), function(s){
+      if(s.getAttribute('data-m') !== v) s.setAttribute('hidden',''); else s.removeAttribute('hidden');
+    });
+  }
+  var v = 'coracao';
+  try{ v = localStorage.getItem('ubs-mascote') || v; }catch(e){}
+  if(!sel.querySelector('option[value="'+v+'"]')) v = 'coracao';
+  sel.value = v; aplicar(v);
+  sel.addEventListener('change', function(){
+    aplicar(sel.value);
+    try{ localStorage.setItem('ubs-mascote', sel.value); }catch(e){}
+  });
 })();
 </script>
 </body>
