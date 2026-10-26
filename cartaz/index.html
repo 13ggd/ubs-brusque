@@ -688,6 +688,9 @@ function preencherFormulario(u){
 function enderecoFinal(marca){
   var base = document.getElementById('f-url').value.trim();
   if(!base) return '';
+  /* Sem a barra final ("/paqueta?de=cartaz"), o navegador procura estilo.css e
+     app.js na raiz do domínio e a página abre sem estilo. Pasta sempre leva "/". */
+  if(base.indexOf('?') === -1 && !/\/$/.test(base) && !/\/[^\/]*\.[a-z]+$/i.test(base)) base += '/';
   if(!document.getElementById('marcar').checked) return base;
   return base + (base.indexOf('?') === -1 ? '?' : '&') + 'de=' + marca;
 }
