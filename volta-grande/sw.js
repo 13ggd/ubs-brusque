@@ -28,7 +28,7 @@
    faz o navegador de todo mundo descartar o cache antigo.
    =========================================================================== */
 
-var VERSAO       = 'ubs-v29';
+var VERSAO       = 'ubs-v30';
 var CACHE_SITE   = VERSAO + '-site';
 var CACHE_DADOS  = VERSAO + '-dados';
 var CACHE_FONTES = VERSAO + '-fontes';
@@ -52,7 +52,12 @@ self.addEventListener('install', function(evento){
       /* addAll falha inteiro se um arquivo falhar; aqui cada um é
          independente, pra uma falha boba não derrubar a instalação. */
       return Promise.all(ESSENCIAIS.map(function(caminho){
-        return cache.add(new Request(caminho, {cache: 'reload'}))['catch'](function(){});
+        var req = new Request(caminho, {cache: 'reload'});
+        return fetch(req).then(function(resposta){
+          var tipo = resposta.headers.get('content-type') || '';
+          var errado = /\.(css|js)$/.test(caminho) && tipo.indexOf('text/html') !== -1;
+          if(resposta.ok && !errado) return cache.put(req, resposta);
+        })['catch'](function(){});
       }));
     }).then(function(){ return self.skipWaiting(); })
   );
@@ -68,6 +73,19 @@ self.addEventListener('activate', function(evento){
   );
 });
 
+/* Resposta que vale guardar: ok E do tipo certo. CSS e JS que chegam como
+   HTML (página de erro ou de troca de deploy devolvida com status 200)
+   quebrariam o site de forma permanente, porque o cache-primeiro serviria
+   essa cópia para sempre — a tela ficaria sem estilo e sem dados. */
+function boaParaGuardar(pedido, resposta){
+  if(!resposta || !(resposta.ok || resposta.type === 'opaque')) return false;
+  if(pedido.destination === 'style' || pedido.destination === 'script'){
+    var tipo = resposta.headers.get('content-type') || '';
+    if(tipo.indexOf('text/html') !== -1) return false;
+  }
+  return true;
+}
+
 /* -------------------------------------------------------------- estratégias -- */
 
 /* Cache primeiro, buscando a versão nova por trás para a próxima visita. */
@@ -75,7 +93,7 @@ function cachePrimeiro(pedido, nomeCache){
   return caches.open(nomeCache).then(function(cache){
     return cache.match(pedido).then(function(guardado){
       var daRede = fetch(pedido).then(function(resposta){
-        if(resposta && (resposta.ok || resposta.type === 'opaque')){
+        if(boaParaGuardar(pedido, resposta)){
           cache.put(pedido, resposta.clone());
         }
         return resposta;
