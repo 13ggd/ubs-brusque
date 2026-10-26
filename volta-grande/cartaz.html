@@ -94,6 +94,7 @@
   }
   .sub-chamada{ margin:8mm 0 0; font-size:15pt; line-height:1.3; opacity:.95; max-width:150mm; }
 
+  .mascote[data-m=sus]{ width:66mm !important; top:8mm !important; transform:none !important; filter:none !important; }
   .mascote{ position:absolute; right:4mm; top:3mm; width:58mm; height:auto; filter:drop-shadow(0 1.2mm 0 rgba(6,20,60,.25)); transform:rotate(6deg); }
   .topo .orgao,.topo .nome{ max-width:125mm; }
 
@@ -177,8 +178,8 @@
   <label><input type="radio" name="formato" value="bilhetes"> Bilhetes (8 por folha)</label>
   <label>Mascote:
     <select id="mascote-escolha">
+      <option value="sus">Logo do SUS</option>
       <option value="coracao">Coração acenando</option>
-      <option value="sus">Símbolo SUS</option>
       <option value="cruz">Cruz da saúde</option>
       <option value="nenhum">Nenhum</option>
     </select>
@@ -196,16 +197,15 @@
 <!-- ======================= CARTAZ A4 ======================= -->
 <div class="folha" id="folha-cartaz">
   <div class="topo">
-    <svg class="mascote" data-m="sus" hidden viewBox="0 0 130 130" role="img" aria-label="Símbolo de saúde com cruz e SUS">
-      <circle cx="65" cy="65" r="56" fill="#fff"/><circle cx="65" cy="65" r="50" fill="#2F80E0"/>
-      <rect x="52" y="22" width="26" height="60" rx="6" fill="#fff"/><rect x="35" y="39" width="60" height="26" rx="6" fill="#fff"/>
-      <text x="65" y="105" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-weight="700" font-size="24" fill="#fff" stroke="#0B2A66" stroke-width="1">SUS</text>
+    <svg class="mascote" data-m="sus" viewBox="0 0 247 147" role="img" aria-label="Logo do SUS - Sistema Único de Saúde">
+      <rect x="2" y="2" width="243" height="143" rx="22" fill="#fff"/>
+      <g transform="translate(20 20)"><g transform="matrix(2.8249584,0,0,-2.8249584,-606.01855,163.1583)" ><g ><g ><path style="fill:#005bab;fill-opacity:1;fill-rule:evenodd;stroke:none" d="m 241.222,36.686 -2.38,0.698 c -1.537,0.492 -2.585,1.959 -2.585,3.564 0,2.097 1.679,3.761 3.775,3.761 l 4.684,0 0,-1.664 -3.285,0 c -0.631,0 -1.187,-0.486 -1.187,-1.188 0,-0.42 0.28,-0.909 0.767,-1.049 l 2.309,-0.767 c 1.608,-0.488 2.444,-2.098 2.444,-3.915 0,-2.305 -1.887,-4.19 -4.192,-4.19 l -4.965,0 0,1.885 4.266,0 c 0.63,0 1.327,0.632 1.327,1.47 0,0.628 -0.349,1.186 -0.978,1.395 m -21.808,0 -2.375,0.698 c -1.468,0.492 -2.516,1.959 -2.516,3.564 0,2.097 1.676,3.761 3.773,3.761 l 4.683,0 0,-1.664 -3.283,0 c -0.631,0 -1.192,-0.486 -1.192,-1.188 0,-0.42 0.285,-0.909 0.773,-1.049 l 2.305,-0.767 c 1.537,-0.488 2.375,-2.098 2.375,-3.915 0,-2.305 -1.818,-4.19 -4.123,-4.19 l -4.962,0 0,1.885 4.264,0 c 0.628,0 1.327,0.632 1.327,1.47 0,0.628 -0.418,1.186 -1.049,1.395 m 10.832,-5.169 c -2.866,0 -5.1,2.03 -5.1,4.543 l 0,8.581 3.844,0 0,-8.933 c 0,-1.115 0.977,-2.023 2.235,-2.023 1.188,0 2.238,0.908 2.238,2.023 l 0,8.933 1.815,0 0,-8.581 c 0,-2.513 -2.236,-4.543 -5.032,-4.543" /><path style="fill:#005bab;fill-opacity:1;fill-rule:evenodd;stroke:none" d="m 273.708,30.793 c 0,0 -6.629,-0.457 -12.26,0.057 0.104,-6.855 0.942,-10.365 1.079,-11.119 l 12.313,0 c -0.592,3.602 -1.053,9.416 -1.132,11.062 m -20.894,14.222 c 0.827,-0.068 8.088,-0.698 8.572,-0.698 0,0.03 11.491,-11.685 11.491,-11.685 l 14.771,0 0,12.383 -34.834,0 z m 9.623,0.727 12.403,0 0,12.014 -12.403,0 0,-12.014 z m -0.082,-3.459 0,0 -1.615,1.646 c -2.141,-0.024 -9.061,0.701 -11.289,1.086 l 0,-12.383 c 11.112,-1.097 16.936,-1.377 23.445,-1.169 l 0.108,0 -10.649,10.82 z m 11.293,-10.292 1.515,0 0,-9.63 c -0.19,1.007 -0.753,6.868 -0.686,8.741 -0.181,0.2 -0.829,0.889 -0.829,0.889" /></g></g></g></g>
     </svg>
     <svg class="mascote" data-m="cruz" hidden viewBox="0 0 130 130" role="img" aria-label="Cruz de saúde">
       <rect x="10" y="10" width="110" height="110" rx="28" fill="#fff"/>
       <rect x="53" y="26" width="24" height="78" rx="7" fill="#2F80E0"/><rect x="26" y="53" width="78" height="24" rx="7" fill="#2F80E0"/>
     </svg>
-    <svg class="mascote" data-m="coracao" viewBox="0 0 130 130" role="img" aria-label="Coração simpático acenando">
+    <svg class="mascote" data-m="coracao" hidden viewBox="0 0 130 130" role="img" aria-label="Coração simpático acenando">
       <defs><radialGradient id="mg" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#FF7A7F"/><stop offset="1" stop-color="#D92D3A"/></radialGradient></defs>
       <path d="M17 66 Q4 74 6 90" fill="none" stroke="#D92D3A" stroke-width="9" stroke-linecap="round"/>
       <path d="M113 66 Q128 58 124 36" fill="none" stroke="#D92D3A" stroke-width="9" stroke-linecap="round"/>
@@ -409,13 +409,13 @@ document.getElementById('imprimir').addEventListener('click', function(){ window
       if(s.getAttribute('data-m') !== v) s.setAttribute('hidden',''); else s.removeAttribute('hidden');
     });
   }
-  var v = 'coracao';
-  try{ v = localStorage.getItem('ubs-mascote') || v; }catch(e){}
-  if(!sel.querySelector('option[value="'+v+'"]')) v = 'coracao';
+  var v = 'sus';
+  try{ v = localStorage.getItem('ubs-mascote-2') || v; }catch(e){}
+  if(!sel.querySelector('option[value="'+v+'"]')) v = 'sus';
   sel.value = v; aplicar(v);
   sel.addEventListener('change', function(){
     aplicar(sel.value);
-    try{ localStorage.setItem('ubs-mascote', sel.value); }catch(e){}
+    try{ localStorage.setItem('ubs-mascote-2', sel.value); }catch(e){}
   });
 })();
 </script>
