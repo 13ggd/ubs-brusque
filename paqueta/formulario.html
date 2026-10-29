@@ -1,127 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Avisar mudança de horário — UBS Paquetá</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#02301A">
-<!--
-  ===========================================================================
-  FORMULÁRIO DE ATUALIZAÇÃO (opcional)
-  ---------------------------------------------------------------------------
-  Esta página não faz parte do site que o morador vê — é uma ferramenta
-  interna, pra equipe da UBS avisar um fechamento ou mudança de horário sem
-  precisar abrir a planilha do Google e editar direto. Por isso o
-  "noindex, nofollow" acima: não deve aparecer em busca nenhuma.
-
-  Ela só embute (via <iframe>) o Google Forms configurado em
-  CONFIG.unidade.formularioMudancas, no config.js. O formulário em si — as
-  perguntas, pra qual aba da planilha ele escreve, a pergunta de código de
-  acesso — é montado à parte, no Google Forms/Apps Script; esta página não
-  sabe nada sobre isso, só mostra o link configurado dentro de um iframe.
-
-  O link desta página não deve ser divulgado no site público nem no
-  cartaz — é só para quem já tem o código de acesso do formulário.
-  ===========================================================================
--->
+<title>Site em manutenção</title>
 <style>
-  :root{
-    --tinta:#111;
-    --fraco:#555;
-    --verde:#02301A;
-    --fundo:#e8ebe8;
+  :root { --fundo:#f4f7fb; --texto:#14283c; --suave:#51647a; --cartao:#fff; --borda:#d7e0ea; --marca:#0b5cab; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fundo:#0f1722; --texto:#e8eef5; --suave:#9fb0c3; --cartao:#172233; --borda:#2a3a50; --marca:#6db3f2; }
   }
-  *{ box-sizing:border-box; }
-  body{
-    margin:0;
-    font-family:'Atkinson Hyperlegible', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    color:var(--tinta);
-    background:var(--fundo);
-  }
-  header{
-    background:var(--verde);
-    color:#fff;
-    padding:16px 20px;
-  }
-  header h1{
-    margin:0 0 4px;
-    font-size:1.1rem;
-  }
-  header p{
-    margin:0;
-    font-size:0.85rem;
-    color:#cfe0d5;
-  }
-  main{
-    max-width:760px;
-    margin:0 auto;
-    padding:20px;
-  }
-  .aviso{
-    background:#fff;
-    border:1px solid #d8b400;
-    border-left:6px solid #d8b400;
-    border-radius:6px;
-    padding:16px;
-    color:var(--tinta);
-  }
-  .aviso code{
-    background:#f1efe4;
-    padding:2px 5px;
-    border-radius:3px;
-  }
-  iframe{
-    width:100%;
-    height:1100px;
-    border:0;
-    display:block;
-    background:#fff;
-    border-radius:6px;
-  }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px;
+         background:var(--fundo); color:var(--texto);
+         font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:30rem; background:var(--cartao); border:1px solid var(--borda);
+         border-radius:16px; padding:32px 28px; text-align:center; }
+  h1 { margin:0 0 12px; font-size:1.5rem; color:var(--marca); }
+  p { margin:0 0 12px; color:var(--suave); }
+  p:last-child { margin-bottom:0; }
+  .icone { font-size:2.5rem; margin-bottom:8px; }
 </style>
 </head>
 <body>
-
-<header>
-  <h1>Avisar mudança de horário</h1>
-  <p>UBS Paquetá — ferramenta interna da equipe</p>
-</header>
-
 <main>
-  <div id="form-container">
-    <p class="aviso">Carregando…</p>
-  </div>
+  <div class="icone" aria-hidden="true">🛠️</div>
+  <h1>Site em manutenção</h1>
+  <p>Este site está temporariamente fora do ar.</p>
+  <p>Para saber horários e atendimentos, procure diretamente a sua Unidade Básica de Saúde ou ligue para a Secretaria de Saúde de Brusque.</p>
+  <p><strong>Em caso de urgência, ligue 192 (SAMU).</strong></p>
 </main>
-
-<script src="config.js"></script>
-<script>
-(function(){
-'use strict';
-
-var link = CONFIG.unidade.formularioMudancas;
-var caixa = document.getElementById('form-container');
-
-if(!link){
-  caixa.innerHTML =
-    '<p class="aviso">Este formulário ainda não foi configurado. ' +
-    'Peça para quem administra o site colar o link do Google Forms em ' +
-    '<code>CONFIG.unidade.formularioMudancas</code>, no arquivo ' +
-    '<code>config.js</code>.</p>';
-  return;
-}
-
-var comEmbedded = link.indexOf('embedded=true') !== -1
-  ? link
-  : link + (link.indexOf('?') === -1 ? '?' : '&') + 'embedded=true';
-
-var iframe = document.createElement('iframe');
-iframe.src = comEmbedded;
-iframe.title = 'Formulário: avisar mudança de horário';
-caixa.innerHTML = '';
-caixa.appendChild(iframe);
-})();
-</script>
-
 </body>
 </html>
