@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UBS Régua do Dia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F4EE;--card:#FFFFFF;--ink:#10241B;--mut:#46594F;--g:#1D6B47;--gt:#DCEBDF;--r:#A4262C;--rt:#F7E1DF;--a:#C47F12;--at:#FBEBCB;--ad:#7A4E05;--tr:#E1E6DE}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#C9CEC6;font-family:"Atkinson Hyperlegible Next",system-ui,sans-serif;color:var(--ink);padding:48px 32px}
+h1.doc{font-size:28px;font-weight:800;margin-bottom:6px}
+p.doc{max-width:760px;font-size:16px;line-height:1.5;margin-bottom:32px}
+.row{display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap}
+.cap{font-size:14px;font-weight:700;margin-bottom:10px}
+.phone{width:390px;background:var(--bg);overflow:hidden;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:12px;padding:14px 20px}
+.bar>div:first-child{flex:1}.bar b{display:block;font-size:20px;line-height:1.2}.bar span{font-size:13px;color:var(--mut)}
+.aa{width:44px;height:44px;border-radius:22px;background:var(--card);display:grid;place-items:center;font-weight:800;font-size:16px}
+.wrap{padding:4px 12px 0}
+.hero{border-radius:28px;padding:22px 20px;color:#fff;display:flex;flex-direction:column;gap:16px}
+.hero.g{background:var(--g)}.hero.r{background:var(--r)}.hero.a{background:var(--at);color:#4A3003}
+.hero .when{font-size:15px;font-weight:500;opacity:.85}
+.hero h2{font-size:44px;font-weight:800;line-height:1.05;letter-spacing:-.02em}
+.hero p{font-size:18px;line-height:1.3;margin-top:4px}
+/* régua */
+.regua{position:relative;height:10px;border-radius:5px;background:var(--tr)}
+.regua i{position:absolute;top:0;height:100%;border-radius:5px;background:var(--g)}
+.regua i.a{background:var(--a)}
+.regua .now{position:absolute;top:-5px;width:4px;height:calc(100% + 10px);border-radius:2px;background:var(--ink);transform:translateX(-2px)}
+.regua.big{height:12px;border-radius:6px;margin-bottom:24px}
+.regua.big i{border-radius:6px}
+.regua .lab{position:absolute;top:19px;font-size:12px;font-weight:500;transform:translateX(-50%)}
+.regua .lab:first-of-type{transform:none}.regua .lab.last{transform:translateX(-100%)}
+.hero.g .regua{background:#155537}.hero.g .regua i{background:#5FA67F}.hero.g .now{background:#fff}.hero.g .lab{color:#CFE6D7}
+.hero.r .regua{background:#8A1F24}.hero.r .now{background:#fff}.hero.r .lab{color:#FBDCD9}
+.hero.a .regua{background:#F3D9A4}.hero.a .regua i{background:#E2B55C}.hero.a .now{background:#4A3003}.hero.a .lab{color:var(--ad)}
+.btn{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;border-radius:24px;padding:12px 18px 12px 16px;font-weight:700;font-size:16px;background:var(--g);color:#fff;text-decoration:none}
+.btn.w{background:#fff;color:var(--g)}.btn.t{background:var(--gt);color:var(--g)}.btn.d{background:#4A3003}
+.btn svg,.ic{width:18px;height:18px;flex:none}
+.sec{padding:28px 20px 8px;display:flex;flex-direction:column;gap:14px}
+.sec>h3{font-size:24px;line-height:1.2;letter-spacing:-.01em}
+.sec>h3+.sub{margin-top:-12px}
+.sub{font-size:15px;color:var(--mut)}
+.card{background:var(--card);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.card.big{border-radius:24px;padding:20px}
+.tag{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;border-radius:14px;padding:5px 10px;font-size:13px;font-weight:700}
+.tag::before{content:"";width:8px;height:8px;border-radius:4px;background:currentColor}
+.tag.g{background:var(--gt);color:var(--g)}.tag.a{background:var(--at);color:var(--ad)}.tag.r{background:var(--rt);color:var(--r)}
+.card h4{font-size:20px;line-height:1.25}
+.card p{font-size:16px;line-height:1.45}
+.muted{color:var(--mut)}
+.recado{background:var(--gt);border-radius:20px;padding:18px}
+.recado b{font-size:13px;color:var(--g);display:block;margin-bottom:6px}
+.recado p{font-size:16px;line-height:1.45}
+.list{background:var(--card);border-radius:20px;padding:6px 18px}
+.li{padding:14px 0;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--tr)}
+.li:last-child{border-bottom:0}
+.li .t{display:flex;justify-content:space-between;font-size:17px;font-weight:700}
+.st{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500}
+.st::before{content:"";width:10px;height:10px;border-radius:5px;background:currentColor}
+.st.g{color:var(--g)}.st.a{color:#8A5A07}.st.r{color:var(--r)}
+.link{font-weight:700;color:var(--g);font-size:16px}
+.fut{background:var(--card);border-radius:20px;padding:16px;display:flex;gap:14px}
+.fut .d{width:56px;flex:none;border-radius:14px;padding:8px 0;text-align:center;font-weight:800}
+.fut .d b{display:block;font-size:22px;line-height:1.1}.fut .d small{font-size:12px}
+.fut .k{font-size:13px;font-weight:700}.fut .t{font-size:17px;font-weight:700;line-height:1.25;margin:4px 0}
+.foot{padding:24px 20px;font-size:13px;color:var(--mut);display:flex;flex-direction:column;gap:4px}
+.foot a{color:var(--g);font-weight:700}
+.tabs{margin-top:auto;display:flex;background:var(--card);padding:10px 8px 26px}
+.tabs div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--mut)}
+.tabs span{width:56px;height:30px;border-radius:15px;display:grid;place-items:center}
+.tabs .on{color:var(--g);font-weight:700}.tabs .on span{background:var(--gt)}
+.days{display:flex;gap:8px;padding:4px 20px}
+.days div{background:var(--card);border-radius:16px;padding:8px 12px;text-align:center;font-weight:700;font-size:14px}
+.days small{display:block;font-weight:400;font-size:12px;color:var(--mut)}
+.days .on{background:var(--ink);color:#fff}.days .on small{color:#C9D3CD}
+.stack{padding:16px 12px 8px;display:flex;flex-direction:column;gap:10px}
+.hd{display:flex;justify-content:space-between;align-items:center;font-size:18px;font-weight:700}
+.note{background:var(--at);color:#5A3A04;border-radius:16px;padding:12px 14px;font-size:15px;line-height:1.4;display:flex;gap:10px}
+.wk div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--tr);font-size:15px}
+.wk div b{text-align:right}
+.busca{background:var(--ink);border-radius:28px;padding:20px;display:flex;flex-direction:column;gap:14px;color:#fff}
+.busca h3{font-size:22px}
+.field{background:#fff;border-radius:16px;padding:14px;display:flex;gap:10px;align-items:center;color:var(--ink);font-size:18px}
+.field span{flex:1}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts div{border-radius:20px;padding:10px 14px;font-weight:700;font-size:15px;background:#22392F}
+.opts .on{background:var(--gt);color:var(--g)}
+.team .hd b{font-size:20px}
+.hb{display:inline-flex;gap:6px;align-items:center;background:var(--gt);color:var(--g);border-radius:14px;padding:6px 10px;font-size:14px;font-weight:700}
+.pp{display:flex;align-items:center;gap:12px}
+.pp .av{width:40px;height:40px;border-radius:20px;background:var(--tr);display:grid;place-items:center;font-size:14px;font-weight:700;color:var(--mut);flex:none}
+.pp div{flex:1}.pp b{display:block;font-size:16px}.pp small{font-size:14px;color:var(--mut)}
+.row2{background:var(--card);border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:10px}
+.row2 div{flex:1}.row2 b{display:block;font-size:17px}.row2 small{font-size:14px;color:var(--mut)}
+.map{height:150px;border-radius:18px;background:#DDE6D8;position:relative;overflow:hidden}
+.map i{position:absolute;background:#fff}
+.tel{background:var(--card);border-radius:20px;padding:16px 16px 16px 18px;display:flex;align-items:center;gap:12px}
+.tel div{flex:1}.tel small{font-size:14px;font-weight:700;color:var(--mut)}.tel b{display:block;font-size:22px;font-weight:800}.tel em{font-style:normal;font-size:14px;color:var(--mut)}
+.call{width:52px;height:52px;border-radius:26px;background:var(--g);display:grid;place-items:center;flex:none}
+.samu{background:var(--r);color:#fff;border-radius:24px;padding:18px 18px 18px 20px;display:flex;align-items:center}
+.samu div{flex:1}.samu small{font-size:16px;color:#FBDCD9}.samu b{display:block;font-size:34px;font-weight:800;line-height:1.1}
+.samu .call{background:#fff;width:60px;height:60px;border-radius:30px}
+.hours{display:flex;gap:6px;align-items:center;font-weight:700;color:var(--g);font-size:15px}
+.btns{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.acc .li .t{font-size:17px}
+.acc p{font-size:15px;color:var(--mut);line-height:1.45}
+.tl{display:flex;justify-content:space-between;font-size:15px;padding:13px 0;border-bottom:1px solid var(--tr)}
+.tl:last-child{border:0}.tl b{color:var(--g)}
+.banner{border-radius:20px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4}
+.banner.am{background:var(--at);color:#5A3A04}
+.banner.ink{background:var(--ink);color:#fff;align-items:center}
+.banner.ink .btn{background:#fff;color:var(--ink);padding:10px 14px}
+.sheetwrap{background:#7C8A82;padding-top:160px}
+.sheet{background:var(--bg);border-radius:28px 28px 0 0;padding:12px 20px 34px;display:flex;flex-direction:column;gap:16px}
+.grab{width:40px;height:5px;border-radius:3px;background:#D5DCD3;margin:0 auto}
+.seg{display:flex;background:var(--bg);border-radius:22px;padding:4px;gap:4px}
+.seg div{flex:1;height:44px;border-radius:18px;display:grid;place-items:center;font-weight:700}
+.seg .on{background:var(--ink);color:#fff}
+.opt{background:var(--card);border-radius:20px;padding:14px 16px;display:flex;gap:14px;align-items:center}
+.opt div{flex:1}.opt b{display:block;font-size:17px}.opt small{font-size:14px;color:var(--mut)}
+.sw{width:52px;height:32px;border-radius:16px;background:var(--tr);padding:4px}.sw i{display:block;width:24px;height:24px;border-radius:12px;background:#fff}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+ <symbol id="phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+ <symbol id="nav" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="m3 11 19-9-9 19-2-8-8-2z"/></symbol>
+ <symbol id="clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g></symbol>
+ <symbol id="grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></g></symbol>
+ <symbol id="users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></g></symbol>
+ <symbol id="pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g></symbol>
+ <symbol id="chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m9 18 6-6-6-6"/></symbol>
+ <symbol id="down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m6 9 6 6 6-6"/></symbol>
+ <symbol id="up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m18 15-6-6-6 6"/></symbol>
+ <symbol id="search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g></symbol>
+ <symbol id="wifi" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 20h.01M8.5 16.43a5 5 0 0 1 7 0M2 8.82a15 15 0 0 1 4.17-2.65M10.66 5c4.01-.36 8.14.9 11.34 3.76M16.85 11.25a10 10 0 0 1 2.22 1.68M5 13a10 10 0 0 1 5.24-2.76M2 2l20 20"/></symbol>
+ <symbol id="cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></g></symbol>
+</svg>
+<h1 class="doc">Versão A — Régua do dia</h1>
+<p class="doc">Jeito de aplicativo, com quatro abas embaixo. O elemento que se repete é a régua do dia (7h às 19h) com uma linha preta na hora de agora: mostra de relance quando cada setor atende. Verde-escuro sobre fundo claro, fonte Atkinson Hyperlegible, feita para quem enxerga pouco. Dados de exemplo da UBS Paquetá, sexta 30/10 às 14h20.</p>
+<div class="row">
+
+<!-- A1 -->
+<div><div class="cap">A1 · Agora</div>
+<div class="phone">
+ <div class="bar"><div><b>UBS Paquetá</b><span>Bairro Paquetá · Brusque</span></div><div class="aa">Aa</div></div>
+ <div class="wrap"><div class="hero g">
+  <div class="when">Sexta, 30 de outubro · 14h20</div>
+  <div><h2>Aberta agora</h2><p>Fecha às 19h. Ainda dá tempo: faltam 4h40.</p></div>
+  <div class="regua big"><i style="left:0;width:100%"></i><span class="now" style="left:61.1%"></span><span class="lab" style="left:0">7h</span><span class="lab" style="left:25%">10h</span><span class="lab" style="left:50%">13h</span><span class="lab" style="left:75%">16h</span><span class="lab last" style="left:100%">19h</span></div>
+  <a class="btn w"><svg><use href="#phone"/></svg>Ligar (47) 2017-0548</a>
+ </div></div>
+ <div class="sec"><h3>Mudou hoje</h3><div class="sub">O que está diferente do horário de sempre.</div>
+  <div class="card"><span class="tag a">Mudou o horário</span><h4>Farmácia só de manhã</h4><p>Hoje das 8h às 12h. À tarde a farmácia não vai atender.</p><p class="muted"><b>Quando: hoje, 30/10</b></p></div>
+  <div class="recado"><b>Recado da equipe</b><p>Campanha de multivacinação até 28/11. Traga a caderneta das crianças e adolescentes.</p></div>
+ </div>
+ <div class="sec"><h3>Quem atende agora</h3><div class="sub">Toque num setor para ver a semana inteira.</div>
+  <div class="list">
+   <div class="li"><div class="t">Consulta com médico<svg class="ic"><use href="#chev"/></svg></div><div class="st g">Atendendo até 19h</div><div class="regua"><i style="left:0;width:100%"></i><span class="now" style="left:61.1%"></span></div></div>
+   <div class="li"><div class="t">Sala de vacina<svg class="ic"><use href="#chev"/></svg></div><div class="st g">Atendendo até 16h30</div><div class="regua"><i style="left:8.3%;width:29.2%"></i><i style="left:50%;width:29.2%"></i><span class="now" style="left:61.1%"></span></div></div>
+   <div class="li"><div class="t">Curativo e injeção<svg class="ic"><use href="#chev"/></svg></div><div class="st g">Atendendo até 19h</div><div class="regua"><i style="left:0;width:100%"></i><span class="now" style="left:61.1%"></span></div></div>
+   <div class="li"><div class="t">Farmácia<svg class="ic"><use href="#chev"/></svg></div><div class="st a">Fechada à tarde (mudou hoje)</div><div class="regua"><i class="a" style="left:8.3%;width:33.3%"></i><span class="now" style="left:61.1%"></span></div></div>
+   <div class="li"><div class="t">Dentista<svg class="ic"><use href="#chev"/></svg></div><div class="st r">Não atende às sextas · volta terça, 3/11</div><div class="regua"><span class="now" style="left:61.1%"></span></div></div>
+  </div>
+  <a class="link">Ver os 7 setores ›</a>
+ </div>
+ <div class="sec"><h3>Vem aí</h3><div class="sub">Avisos que ainda vão acontecer.</div>
+  <div class="fut"><div class="d" style="background:var(--rt);color:var(--r)"><b>2/11</b><small>seg</small></div><div><div class="k" style="color:var(--r)">Vai fechar</div><div class="t">UBS fechada no feriado de Finados</div><div class="sub">Segunda, 2/11 · dia todo</div></div></div>
+  <div class="fut"><div class="d" style="background:var(--at);color:var(--ad)"><b>12/11</b><small>qui</small></div><div><div class="k" style="color:var(--ad)">Vai mudar o horário</div><div class="t">Sala de vacina fecha mais cedo</div><div class="sub">Quinta, 12/11 · até as 11h30</div></div></div>
+ </div>
+ <div class="foot">Horários lidos da planilha da UBS agora há pouco (14h18).<a>Ver todas as unidades de saúde de Brusque</a></div>
+ <div class="tabs"><div class="on"><span><svg class="ic" style="width:22px;height:22px"><use href="#clock"/></svg></span>Agora</div><div><span><svg class="ic" style="width:22px;height:22px"><use href="#grid"/></svg></span>Setores</div><div><span><svg class="ic" style="width:22px;height:22px"><use href="#users"/></svg></span>Minha equipe</div><div><span><svg class="ic" style="width:22px;height:22px"><use href="#pin"/></svg></span>Onde fica</div></div>
+</div></div>
+
+<!-- A2 -->
+<div><div class="cap">A2 · Setores</div>
+<div class="phone">
+ <div class="bar"><div><b>Setores</b><span>O que você precisa hoje?</span></div><div class="aa">Aa</div></div>
+ <div class="days"><div class="on">Hoje<small>sex 30</small></div><div>Seg<small>2/11</small></div><div>Ter<small>3/11</small></div><div>Qua<small>4/11</small></div><div>Qui<small>5/11</small></div></div>
+ <div class="stack">
+  <div class="card big"><div class="hd" style="font-size:22px">Sala de vacina<svg class="ic"><use href="#up"/></svg></div><span class="tag g">Atendendo até 16h30</span>
+   <div class="regua big" style="background:var(--tr)"><i style="left:8.3%;width:29.2%"></i><i style="left:50%;width:29.2%"></i><span class="now" style="left:61.1%"></span><span class="lab" style="left:0">7h</span><span class="lab" style="left:25%">10h</span><span class="lab" style="left:50%">13h</span><span class="lab" style="left:75%">16h</span><span class="lab last" style="left:100%">19h</span></div>
+   <p>Para tomar vacina.</p><p><b>Leve:</b> documento e a carteirinha de vacinação.</p>
+   <div class="note"><svg class="ic"><use href="#cal"/></svg>Nos dias 11 e 25 de novembro a equipe está em reunião das 13h às 15h.</div>
+   <div class="wk"><span class="sub"><b>A semana</b></span><div>Segunda a sexta<b>8h às 11h30 e 13h às 16h30</b></div><div>Sábado e domingo<b class="muted">Não atende</b></div></div>
+  </div>
+  <div class="card"><div class="hd">Consulta com médico<svg class="ic"><use href="#down"/></svg></div><span class="tag g">Atendendo até 19h</span><div class="regua"><i style="left:0;width:100%"></i><span class="now" style="left:61.1%"></span></div></div>
+  <div class="card"><div class="hd">Enfermagem<svg class="ic"><use href="#down"/></svg></div><span class="tag g">Atendendo até 19h</span><div class="regua"><i style="left:0;width:100%"></i><span class="now" style="left:61.1%"></span></div></div>
+  <div class="card"><div class="hd">Curativo e injeção<svg class="ic"><use href="#down"/></svg></div><span class="tag g">Atendendo até 19h</span><div class="regua"><i style="left:0;width:100%"></i><span class="now" style="left:61.1%"></span></div></div>
+  <div class="card"><div class="hd">Farmácia<svg class="ic"><use href="#down"/></svg></div><span class="tag a">Fechada à tarde (mudou hoje)</span><div class="regua"><i class="a" style="left:8.3%;width:33.3%"></i><span class="now" style="left:61.1%"></span></div></div>
+  <div class="card"><div class="hd">Dentista<svg class="ic"><use href="#down"/></svg></div><span class="tag r">Não atende às sextas</span><div class="regua"><span class="now" style="left:61.1%"></span></div></div>
+  <div class="card"><div class="hd">Coleta de exames<svg class="ic"><use href="#down"/></svg></div><span class="tag r">Volta terça, 3/11, às 7h</span><div class="regua"><span class="now" style="left:61.1%"></span></div></div>
+ </div>
+ <div class="foot">A linha preta marca a hora de agora. Verde é quando o setor atende.</div>
+ <div class="tabs"><div><span><svg class="ic" style="width:22px;height:22px"><use href="#clock"/></svg></span>Agora</div><div class="on"><span><svg class="ic" style="width:22px;height:22px"><use href="#grid"/></svg></span>Setores</div><div><span><svg class="ic" style="width:22px;height:22px"><use href="#users"/></svg></span>Minha equipe</div><div><span><svg class="ic" style="width:22px;height:22px"><use href="#pin"/></svg></span>Onde fica</div></div>
+</div></div>
+
+<!-- A3 -->
+<div><div class="cap">A3 · Minha equipe</div>
+<div class="phone">
+ <div class="bar"><div><b>Minha equipe</b><span>Qual equipe atende a sua rua?</span></div><div class="aa">Aa</div></div>
+ <div class="wrap"><div class="busca"><h3>Digite o nome da sua rua</h3>
+  <div class="field"><svg class="ic" style="color:var(--mut)"><use href="#search"/></svg><span>santa cr</span>✕</div>
+  <div class="sub" style="color:#C9D3CD">Toque na sua:</div>
+  <div class="opts"><div class="on">Rua Santa Cruz</div><div>Travessa Santa Cruz do Sul</div></div>
+ </div></div>
+ <div class="sec"><h3>Rua Santa Cruz</h3><div class="sub">Esta rua é dividida entre duas equipes. Veja o seu trecho.</div>
+  <div class="card big team"><div class="hd"><b>Equipe 3</b><span class="hb"><svg class="ic" style="width:14px;height:14px"><use href="#clock"/></svg>7h às 13h</span></div>
+   <p class="muted" style="font-size:15px">Trecho: do semáforo do Colzani até a Agropecuária Mistura</p>
+   <div class="pp"><span class="av">HM</span><div><b>Dra. Helena M.</b><small>Médica</small></div></div>
+   <div class="pp"><span class="av">JK</span><div><b>Juliana K.</b><small>Enfermeira</small></div><span class="tag a">Não veio hoje</span></div>
+   <div class="pp"><span class="av">MP</span><div><b>Marcos P.</b><small>Agente de saúde</small></div></div>
+  </div>
+  <div class="card big team"><div class="hd"><b>Equipe 1</b><span class="hb"><svg class="ic" style="width:14px;height:14px"><use href="#clock"/></svg>13h às 19h</span></div>
+   <p class="muted" style="font-size:15px">Trecho: do mercado Rainha até o fim da rua</p>
+   <div class="pp"><span class="av">RS</span><div><b>Dr. Rafael S.</b><small>Médico</small></div></div>
+   <div class="pp"><span class="av">BT</span><div><b>Bruna T.</b><small>Enfermeira</small></div></div>
+  </div>
+  <div class="recado"><p style="font-size:15px">O horário acima é só da consulta com a sua equipe. Vacina, farmácia, curativo e enfermagem atendem qualquer pessoa, no horário de cada setor.</p></div>
+  <div class="sub" style="font-size:13px">Sua rua fica guardada só neste celular.</div>
+ </div>
+ <div class="sec"><h3>Não achou a sua rua?</h3><p style="font-size:16px;line-height:1.45">A lista pode estar incompleta. Ligue para a UBS que a gente te diz qual é a sua equipe: (47) 2017-0548.</p></div>
+ <div class="sec"><h3>Todas as equipes</h3>
+  <div class="row2"><div><b>Equipe 1</b><small>13h às 19h · 36 ruas atendidas</small></div><span class="link" style="font-size:14px">Ver ruas ▾</span></div>
+  <div class="row2"><div><b>Equipe 2</b><small>7h às 13h · 9 ruas atendidas</small></div><span class="link" style="font-size:14px">Ver ruas ▾</span></div>
+  <div class="row2"><div><b>Equipe 3</b><small>7h às 13h · 28 ruas atendidas</small></div><span class="link" style="font-size:14px">Ver ruas ▾</span></div>
+ </div>
+ <div style="height:24px"></div>
+ <div class="tabs"><div><span><svg class="ic" style="width:22px;height:22px"><use href="#clock"/></svg></span>Agora</div><div><span><svg class="ic" style="width:22px;height:22px"><use href="#grid"/></svg></span>Setores</div><div class="on"><span><svg class="ic" style="width:22px;height:22px"><use href="#users"/></svg></span>Minha equipe</div><div><span><svg class="ic" style="width:22px;height:22px"><use href="#pin"/></svg></span>Onde fica</div></div>
+</div></div>
+
+<!-- A4 -->
+<div><div class="cap">A4 · Onde fica</div>
+<div class="phone">
+ <div class="bar"><div><b>Onde fica</b><span>Endereço, telefones e urgência</span></div><div class="aa">Aa</div></div>
+ <div class="wrap"><div class="card big" style="border-radius:28px;gap:14px">
+  <div class="map"><i style="left:0;top:62px;width:100%;height:14px"></i><i style="left:140px;top:0;width:14px;height:100%"></i><i style="left:200px;top:0;width:40px;height:100%;background:#C9DBC4"></i><i style="left:0;top:110px;width:140px;height:40px;background:#CFE0F0"></i><svg style="position:absolute;left:129px;top:36px;width:36px;height:36px" viewBox="0 0 24 24"><path fill="#1D6B47" stroke="#fff" stroke-width="1.5" d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div>
+  <h4>Rua Waldemar Hoffmann, sem número</h4><p class="muted">Bairro Paquetá — Brusque/SC</p>
+  <a class="btn"><svg><use href="#nav"/></svg>Abrir o mapa no celular</a>
+ </div></div>
+ <div class="sec"><h3>Telefones</h3><div class="sub">Funcionam mesmo sem internet no celular.</div>
+  <div class="tel"><div><small>Recepção da UBS</small><b>(47) 2017-0548</b><em>Para marcar consulta e tirar dúvidas</em></div><span class="call"><svg class="ic" style="color:#fff;width:22px;height:22px"><use href="#phone"/></svg></span></div>
+  <div class="tel"><div><small>Encaminhamentos</small><b>(47) 2017-0549</b><em>Exames e consultas com especialista</em></div><span class="call"><svg class="ic" style="color:#fff;width:22px;height:22px"><use href="#phone"/></svg></span></div>
+  <div class="recado"><p style="font-size:15px">Recebeu ligação de um destes números? Atenda: é a UBS falando dos seus exames e consultas.</p></div>
+ </div>
+ <div class="sec"><h3>Urgência</h3><div class="sub">Quando não dá para esperar a UBS abrir.</div>
+  <div class="samu"><div><small>Caso grave? Ligue</small><b>SAMU 192</b></div><span class="call"><svg class="ic" style="color:var(--r);width:26px;height:26px"><use href="#phone"/></svg></span></div>
+  <div class="card"><h4 style="font-size:18px">Pronto Atendimento 24 horas</h4><div class="hours"><svg class="ic" style="width:16px;height:16px"><use href="#clock"/></svg>Todos os dias, 24 horas</div><p class="muted" style="font-size:15px">Rua Vendelino Maffezzolli, 215 — Santa Terezinha. Tem farmácia no local.</p><a class="btn t"><svg><use href="#nav"/></svg>Como chegar</a></div>
+  <div class="card"><h4 style="font-size:18px">Hospital Azambuja e Hospital Dom Joaquim</h4><div class="hours"><svg class="ic" style="width:16px;height:16px"><use href="#clock"/></svg>Todos os dias, 24 horas</div><p class="muted" style="font-size:15px">Atendem pelo SUS.</p><div class="btns"><a class="btn t"><svg><use href="#nav"/></svg>Como chegar — Azambuja</a><a class="btn t"><svg><use href="#nav"/></svg>Como chegar — Dom Joaquim</a></div></div>
+  <div class="card"><h4 style="font-size:18px">Sala de vacina da Policlínica</h4><div class="hours"><svg class="ic" style="width:16px;height:16px"><use href="#clock"/></svg>Das 8h às 19h</div><p class="muted" style="font-size:15px">Rua Prefeito Germano Schaefer, 66 — Centro. Se a vacina da UBS estiver fechada, vacine aqui.</p><a class="btn t"><svg><use href="#nav"/></svg>Como chegar</a></div>
+ </div>
+ <div class="sec"><h3>Informações de saúde</h3><div class="sub">Orientações que valem para qualquer UBS.</div>
+  <div class="list acc">
+   <div class="li"><div class="t">Pressão arterial<svg class="ic"><use href="#up"/></svg></div><p>Meça em repouso, sentado, sem café ou cigarro na meia hora antes.</p><p>Até 12 por 8 é considerado normal. 14 por 9 ou mais, repetido, é hora de procurar a UBS.</p><p>Dor de cabeça muito forte, visão embaçada ou dor no peito: procure atendimento na hora.</p></div>
+   <div class="li"><div class="t">Glicemia (açúcar no sangue)<svg class="ic"><use href="#down"/></svg></div></div>
+   <div class="li"><div class="t">Vacinação<svg class="ic"><use href="#down"/></svg></div></div>
+   <div class="li"><div class="t">Preventivo (exame da mulher)<svg class="ic"><use href="#down"/></svg></div></div>
+  </div>
+ </div>
+ <div class="sec"><h3>Outros telefones úteis</h3>
+  <div class="list"><div class="tl">Polícia<b>190</b></div><div class="tl">Bombeiros<b>193</b></div><div class="tl">CVV — prevenção ao suicídio, 24h<b>188</b></div><div class="tl">Conselho Tutelar<b>(47) 3351-0113</b></div><div class="tl">CAPS 2<b>(47) 3304-4710</b></div><div class="tl">CAPS Álcool e Drogas<b>(47) 3306-9305</b></div></div>
+  <a class="link" style="font-size:15px">Ver mais 3 telefones</a>
+ </div>
+ <div class="foot"><a>Ver todas as unidades de saúde de Brusque</a>Prefeitura de Brusque · Secretaria de Saúde</div>
+ <div class="tabs"><div><span><svg class="ic" style="width:22px;height:22px"><use href="#clock"/></svg></span>Agora</div><div><span><svg class="ic" style="width:22px;height:22px"><use href="#grid"/></svg></span>Setores</div><div><span><svg class="ic" style="width:22px;height:22px"><use href="#users"/></svg></span>Minha equipe</div><div class="on"><span><svg class="ic" style="width:22px;height:22px"><use href="#pin"/></svg></span>Onde fica</div></div>
+</div></div>
+
+<!-- A5-A7 -->
+<div>
+<div class="cap">A5 · Sem internet + fechada no feriado</div>
+<div class="phone">
+ <div class="bar"><div><b>UBS Paquetá</b><span>Bairro Paquetá · Brusque</span></div><div class="aa">Aa</div></div>
+ <div style="padding:0 12px 10px"><div class="banner am"><svg class="ic" style="width:22px;height:22px"><use href="#wifi"/></svg><div><b style="font-size:16px">Você está sem internet</b><br>Mostrando horários guardados no celular ontem às 16h. Podem estar desatualizados.<br><b>Ligar (47) 2017-0548</b></div></div></div>
+ <div class="wrap" style="padding-bottom:24px"><div class="hero r">
+  <div class="when">Segunda, 2 de novembro · 9h00</div>
+  <div><h2>Fechada hoje</h2><p>Feriado de Finados. Abre amanhã, terça, às 7h.</p></div>
+  <div class="regua big"><span class="now" style="left:16.7%"></span><span class="lab" style="left:0">7h</span><span class="lab" style="left:25%">10h</span><span class="lab" style="left:50%">13h</span><span class="lab" style="left:75%">16h</span><span class="lab last" style="left:100%">19h</span></div>
+  <div style="background:#fff;border-radius:18px;padding:14px 16px;color:var(--ink)"><b style="color:var(--r);font-size:15px">Precisa hoje?</b><br><b style="font-size:16px">Pronto Atendimento 24 horas · SAMU 192</b></div>
+ </div></div>
+ <div class="foot" style="padding-top:0">Horários guardados no celular ontem às 16h (sem internet agora).</div>
+</div>
+
+<div class="cap" style="margin-top:32px">A6 · Painel de acessibilidade</div>
+<div class="phone sheetwrap"><div class="sheet">
+ <div class="grab"></div>
+ <div class="hd" style="font-size:22px">Ver e ouvir melhor<span class="aa" style="width:40px;height:40px">✕</span></div>
+ <div class="card"><b style="font-size:16px">Tamanho da letra</b><div class="seg"><div style="font-size:16px">A</div><div class="on" style="font-size:20px">A</div><div style="font-size:26px">A</div></div></div>
+ <div class="opt"><span style="font-size:22px">◐</span><div><b>Alto contraste</b><small>Fundo preto, letra amarela</small></div><span class="sw"><i></i></span></div>
+ <div class="opt"><span style="font-size:22px">🔈︎</span><div><b>Ouvir a página</b><small>O celular lê em voz alta</small></div>›</div>
+ <div class="opt"><span style="font-size:22px">✋︎</span><div><b>Libras</b><small>Abre o tradutor VLibras</small></div>›</div>
+ <div class="opt"><span style="font-size:22px">⊕</span><div><b>Outro idioma</b><small>English · Español · Kreyòl</small></div>›</div>
+</div></div>
+
+<div class="cap" style="margin-top:32px">A7 · Versão nova + fechando logo</div>
+<div class="phone">
+ <div class="bar"><div><b>UBS Paquetá</b><span>Bairro Paquetá · Brusque</span></div><div class="aa">Aa</div></div>
+ <div style="padding:0 12px 10px"><div class="banner ink"><div style="flex:1"><b>Saiu uma versão nova da página</b><br><span style="color:#C9D3CD;font-size:14px">Atualize quando terminar o que está fazendo.</span></div><a class="btn">Atualizar</a></div></div>
+ <div class="wrap" style="padding-bottom:24px"><div class="hero a">
+  <div class="when">Sexta, 30 de outubro · 18h25</div>
+  <div><h2>Fecha em 35 min</h2><p>Só consulta, enfermagem e curativo ainda atendem, até as 19h.</p></div>
+  <div class="regua big"><i style="left:0;width:100%"></i><span class="now" style="left:95.1%"></span><span class="lab" style="left:0">7h</span><span class="lab" style="left:25%">10h</span><span class="lab" style="left:50%">13h</span><span class="lab" style="left:75%">16h</span><span class="lab last" style="left:100%">19h</span></div>
+  <a class="btn d"><svg><use href="#phone"/></svg>Ligar (47) 2017-0548</a>
+ </div></div>
+</div>
+</div>
+
+</div>
+</body>
+</html>
