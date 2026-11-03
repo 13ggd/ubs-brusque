@@ -1,0 +1,984 @@
+/* ===========================================================================
+   UBS Paquetá — estilos
+   Escrito MOBILE FIRST: as regras base valem para celular, e só depois
+   crescem para telas maiores. A maioria das pessoas vai abrir no celular.
+   Fonte: Atkinson Hyperlegible, criada pelo Braille Institute para baixa visão.
+   =========================================================================== */
+
+:root{
+  --esc:1;                    /* multiplicador do tamanho da letra (botões A A A) */
+  --verde:#016B2E;
+  --verde-escuro:#02301A;
+  --verde-claro:#E6F2E9;
+  --aberto:#0A6E36;
+  --aberto-cartao:#0A6E36;    /* usado só no card "aberto agora" (fundo com texto branco) */
+  --fechado:#4B5563;
+  --fechado-cartao:#4B5563;   /* usado só no card "fechado agora" (fundo com texto branco) */
+  --alerta:#B3120F;
+  --alerta-cartao:#B3120F;    /* usado só na etiqueta do aviso (fundo com texto branco) */
+  --alerta-claro:#FDECEA;
+  --atencao:#8A4E00;
+  --atencao-cartao:#8A4E00;   /* mesma ideia, para o aviso tipo "atenção" */
+  --atencao-claro:#FDF2E0;
+  --papel:#FFFFFF;
+  --fundo:#F0F3F0;
+  --tinta:#0F1611;
+  --tinta2:#414B44;
+  --linha:#C9D3CB;
+  --on-bg:#E3F3E9;
+  --off-bg:#EEF0F1;
+  --raio:14px;
+  --toque:56px;               /* altura mínima de qualquer coisa clicável */
+  /* Profundidade discreta: sombras curtas, esverdeadas e de baixa opacidade —
+     dão hierarquia aos cartões sem competir com o conteúdo. Somem no alto
+     contraste (ver mais abaixo). */
+  --sombra-1:0 1px 2px rgba(2,48,26,.07), 0 6px 16px -10px rgba(2,48,26,.20);
+  --sombra-2:0 2px 4px rgba(2,48,26,.10), 0 14px 28px -14px rgba(2,48,26,.38);
+  --sombra-fab:0 2px 6px rgba(0,0,0,.22), 0 8px 18px -6px rgba(0,0,0,.34);
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+
+/* Modo de alto contraste — ativado pelo botão flutuante de acessibilidade.
+   Troca só as variáveis de cor; o resto do CSS não precisa saber disso. */
+body.alto-contraste{
+  --fundo:#000000; --papel:#0A0A0A;
+  --tinta:#FFFFFF; --tinta2:#E0E0E0; --linha:#707070;
+  --verde:#00E676; --verde-escuro:#000000; --verde-claro:#052012;
+  --on-bg:#052012; --off-bg:#1A1A1A;
+  --aberto:#00E676; --fechado:#BDBDBD; --fechado-cartao:#333333;
+  --alerta:#FF5252; --alerta-claro:#2B0000;
+  --atencao:#FFA726; --atencao-claro:#2B1B00;
+}
+body.alto-contraste .topo{ border-bottom:3px solid #fff }
+body.alto-contraste .cartao-status,
+body.alto-contraste .urgencia{ border:3px solid #fff }
+body.alto-contraste .setor,
+body.alto-contraste .cartao,
+body.alto-contraste .botao,
+body.alto-contraste .aviso,
+body.alto-contraste .pessoa{ border-width:3px }
+/* Sombra não ajuda quem precisa de contraste máximo: só borda. */
+body.alto-contraste .setor,
+body.alto-contraste .cartao,
+body.alto-contraste .botao,
+body.alto-contraste .aviso,
+body.alto-contraste .pessoa,
+body.alto-contraste .cartao-status,
+body.alto-contraste .tudo-certo,
+body.alto-contraste .rua-cartao,
+body.alto-contraste .saude-bloco,
+body.alto-contraste .foto-unidade{ box-shadow:none }
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+::selection{background:#BFE3CC;color:var(--verde-escuro)}
+body.alto-contraste ::selection{background:#00E676;color:#000}
+
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+}
+
+body{
+  background:var(--fundo);
+  color:var(--tinta);
+  font-family:'Atkinson Hyperlegible',Verdana,system-ui,sans-serif;
+  font-size:calc(18px * var(--esc));
+  line-height:1.55;
+  overflow-wrap:break-word;
+  padding-bottom:calc(24px + env(safe-area-inset-bottom));
+}
+body.com-teste{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+
+.wrap{
+  width:100%;
+  max-width:720px;
+  margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left));
+  padding-right:max(16px, env(safe-area-inset-right));
+}
+
+img,svg{max-width:100%;height:auto}
+a{color:inherit}
+
+:focus-visible{outline:4px solid var(--verde);outline-offset:3px;border-radius:6px}
+
+/* ---------------------------------------------------------------- TOPO -- */
+.topo{
+  background:linear-gradient(180deg,#033A1F 0%,var(--verde-escuro) 100%);
+  color:#fff;
+  padding:calc(18px + env(safe-area-inset-top)) 0 22px;
+  border-radius:0 0 22px 22px;
+  box-shadow:0 8px 20px -12px rgba(2,48,26,.55);
+}
+/* reserva o canto onde o botão flutuante ☰ fica por cima (só as duas
+   primeiras linhas, que ficam na altura dele), pra nada passar por baixo */
+.topo .orgao,.topo h1{padding-right:68px}
+.topo .orgao{font-size:calc(14px * var(--esc));opacity:.85;margin-bottom:5px;line-height:1.35}
+.topo h1{font-size:calc(32px * var(--esc));font-weight:700;line-height:1.06;letter-spacing:-.015em;text-wrap:balance}
+.topo .subtitulo{font-size:calc(17px * var(--esc));opacity:.88;margin-top:7px;line-height:1.35;text-wrap:pretty}
+body.alto-contraste .topo{background:#000;border-radius:0;box-shadow:none}
+
+.topo :focus-visible{outline-color:#63D68F}
+
+/* ------------------------------------------------------ PULAR CONTEÚDO -- */
+/* Fica invisível até alguém navegar pelo teclado (tecla Tab) e focar nele. */
+.pular-link{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:#fff;color:var(--verde-escuro);
+  padding:12px 18px;border-radius:0 0 10px 0;
+  font-weight:700;text-decoration:none;font-size:16px;
+}
+.pular-link:focus{left:0}
+
+/* ------------------------------------------------- ACESSIBILIDADE (FAB) -- */
+.a11y-fab{
+  position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));
+  z-index:50;width:60px;height:60px;border-radius:50%;
+  background:var(--verde-escuro);color:#fff;border:3px solid #fff;
+  box-shadow:var(--sombra-fab);
+  font-family:'Atkinson Hyperlegible',sans-serif;font-weight:700;font-size:19px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:transform .15s var(--ease);
+}
+body.com-teste .a11y-fab{bottom:calc(94px + env(safe-area-inset-bottom))}
+body.alto-contraste .a11y-fab{background:#00E676;color:#000;border-color:#fff}
+
+.a11y-fundo{
+  position:fixed;inset:0;background:rgba(2,24,13,.55);z-index:60;
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+}
+
+.a11y-painel{
+  position:fixed;left:0;right:0;bottom:0;z-index:70;
+  background:var(--papel);color:var(--tinta);
+  border-radius:22px 22px 0 0;
+  padding:12px 18px calc(20px + env(safe-area-inset-bottom));
+  max-width:720px;margin:0 auto;max-height:82vh;overflow-y:auto;
+  box-shadow:0 -10px 30px rgba(0,0,0,.26);
+  border-top:3px solid var(--linha);
+}
+/* "alça" da folha deslizante: dica visual de que é uma gaveta */
+.a11y-painel::before{
+  content:"";display:block;width:44px;height:5px;border-radius:99px;
+  background:var(--linha);margin:0 auto 12px;
+}
+@media (prefers-reduced-motion:no-preference){
+  .a11y-fundo:not([hidden]){animation:aparece .2s ease-out}
+  .a11y-painel:not([hidden]){animation:sobe .28s var(--ease)}
+  @keyframes aparece{from{opacity:0}to{opacity:1}}
+  @keyframes sobe{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+}
+.a11y-topo{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.a11y-topo h2{font-size:calc(21px * var(--esc));font-weight:700;color:var(--verde-escuro)}
+body.alto-contraste .a11y-topo h2{color:var(--tinta)}
+.a11y-fechar{
+  width:46px;height:46px;border-radius:50%;border:2px solid var(--linha);
+  background:var(--papel);font-size:19px;font-weight:700;cursor:pointer;color:var(--tinta);
+  flex:0 0 auto;
+}
+.a11y-grupo{margin-bottom:16px}
+.a11y-grupo:last-child{margin-bottom:0}
+.a11y-grupo-tit{font-size:calc(15px * var(--esc));font-weight:700;color:var(--tinta2);margin-bottom:8px}
+.a11y-letra-btns{display:flex;gap:8px}
+.a11y-letra-btns button{
+  font-family:inherit;font-weight:700;cursor:pointer;flex:1;
+  background:var(--fundo);border:2px solid var(--linha);
+  color:var(--tinta);border-radius:10px;
+  min-height:var(--toque);
+  display:flex;align-items:center;justify-content:center;
+}
+.a11y-letra-btns button.a1{font-size:17px}
+.a11y-letra-btns button.a2{font-size:22px}
+.a11y-letra-btns button.a3{font-size:28px}
+.a11y-letra-btns button[aria-pressed="true"]{background:var(--verde);color:#fff;border-color:var(--verde)}
+.a11y-idioma-ajuda{font-size:calc(13.5px * var(--esc));color:var(--tinta2);margin-bottom:8px;line-height:1.4}
+.idioma-bt{
+  font-family:inherit;font-weight:700;cursor:pointer;flex:1;
+  background:var(--fundo);border:2px solid var(--linha);
+  color:var(--tinta);border-radius:10px;
+  min-height:var(--toque);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+}
+.idioma-bt:hover{background:var(--verde-claro)}
+.a11y-toggle{
+  width:100%;text-align:left;display:flex;align-items:center;gap:10px;
+  background:var(--fundo);border:2px solid var(--linha);border-radius:12px;
+  padding:14px 16px;min-height:var(--toque);font-family:inherit;
+  font-size:calc(17px * var(--esc));font-weight:600;color:var(--tinta);cursor:pointer;
+}
+.a11y-toggle[aria-pressed="true"]{background:var(--verde);border-color:var(--verde);color:#fff}
+.a11y-toggle .ic{font-size:calc(20px * var(--esc));flex:0 0 auto}
+
+/* --------------------------------------------------- RESPOSTA PRINCIPAL -- */
+.resposta{padding:20px 0 0}
+
+.cartao-status{
+  border-radius:20px;padding:26px 18px 24px;text-align:center;color:#fff;
+  border:4px solid transparent;box-shadow:var(--sombra-2);
+}
+/* degradê bem leve (mais claro no topo) só dá volume; a cor de base, que
+   garante o contraste do texto branco, continua sendo a mesma de antes */
+.cartao-status.sim{background:linear-gradient(180deg,#0C7A3E 0%,var(--aberto-cartao) 100%);border-color:#04562A}
+.cartao-status.nao{background:linear-gradient(180deg,#566170 0%,var(--fechado-cartao) 100%);border-color:#374151}
+.cartao-status.carregando{background:#5B6B60;border-color:#44514A}
+body.alto-contraste .cartao-status.sim{background:var(--aberto-cartao)}
+body.alto-contraste .cartao-status.nao{background:var(--fechado-cartao)}
+
+.marca{
+  width:calc(66px * var(--esc));height:calc(66px * var(--esc));
+  border-radius:50%;background:rgba(255,255,255,.2);
+  box-shadow:0 0 0 6px rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:calc(38px * var(--esc));font-weight:700;line-height:1;
+  margin:0 auto 12px;
+}
+.status-palavra{
+  font-size:calc(32px * var(--esc));font-weight:700;
+  line-height:1.1;letter-spacing:-.015em;text-transform:uppercase;text-wrap:balance;
+}
+.status-detalhe{font-size:calc(20px * var(--esc));margin-top:9px;line-height:1.35}
+.status-hoje{
+  font-size:calc(15px * var(--esc));margin-top:13px;padding-top:13px;
+  border-top:2px solid rgba(255,255,255,.28);opacity:.92;line-height:1.4;
+}
+
+.status-aviso-link{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:14px;padding:12px 16px;border-radius:99px;
+  background:#fff;color:var(--alerta-cartao);
+  font-size:calc(16px * var(--esc));font-weight:700;
+  text-decoration:none;min-height:48px;
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
+  transition:transform .15s var(--ease),box-shadow .15s var(--ease);
+}
+.status-aviso-link:hover{box-shadow:0 4px 12px rgba(0,0,0,.25)}
+
+/* ------------------------------------------------------------- BOTÕES -- */
+.botoes{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+.botao{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  text-decoration:none;background:var(--papel);color:var(--tinta);
+  border:3px solid var(--verde);border-radius:var(--raio);
+  padding:16px 14px;min-height:66px;
+  font-size:calc(19px * var(--esc));font-weight:700;text-align:center;
+  box-shadow:var(--sombra-1);
+  transition:transform .15s var(--ease),box-shadow .15s var(--ease),background-color .15s;
+}
+.botao:hover{background:var(--verde-claro)}
+.botao.cheio:hover{background:#015A27}
+.botao .icone{font-size:calc(24px * var(--esc));line-height:1}
+.botao.cheio{background:var(--verde);color:#fff}
+
+/* ---------------------------------------------------- MENU (ir para...) -- */
+/* Botão flutuante no canto superior direito — em cima, oposto ao de
+   acessibilidade (que fica embaixo). Abre uma lista de atalhos para pular
+   direto a uma parte da página — a página continua sendo uma rolagem só
+   (sem "voltar" confuso de menu por abas), isso só ajuda quem não quer
+   rolar tudo até achar o que quer. */
+.nav-fab{
+  position:fixed;right:14px;top:calc(14px + env(safe-area-inset-top));
+  z-index:50;width:60px;height:60px;border-radius:50%;
+  background:var(--verde);color:#fff;border:3px solid #fff;
+  box-shadow:var(--sombra-fab);
+  font-size:26px;line-height:1;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:transform .15s var(--ease);
+}
+body.alto-contraste .nav-fab{background:#00E676;color:#000;border-color:#fff}
+
+/* -------------------------------------------------- INFORMAÇÕES DE SAÚDE -- */
+/* Botão flutuante no canto inferior ESQUERDO — oposto ao de acessibilidade
+   (inferior direito) e abaixo do menu (superior direito), pra não competir
+   com nenhum dos dois. No celular abre um painel por cima da tela, igual
+   aos outros dois; no computador (telas largas) esse botão some, porque o
+   painel deixa de precisar ser aberto — passa a ficar sempre visível ao
+   lado do conteúdo — ver o @media lá embaixo, em "COMPUTADOR". */
+.saude-fab{
+  position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom));
+  z-index:50;width:60px;height:60px;border-radius:50%;
+  background:var(--verde);color:#fff;border:3px solid #fff;
+  box-shadow:var(--sombra-fab);
+  font-size:26px;line-height:1;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:transform .15s var(--ease);
+}
+body.com-teste .saude-fab{bottom:calc(94px + env(safe-area-inset-bottom))}
+body.alto-contraste .saude-fab{background:#00E676;color:#000;border-color:#fff}
+
+.saude-intro{
+  font-size:calc(16px * var(--esc));color:var(--tinta2);
+  line-height:1.4;margin-bottom:14px;
+}
+/* Cada bloco é uma caixa colorida, igual à cara de um "recado" (ver
+   .aviso.recado, mais abaixo, em AVISOS) — mesmo fundo/borda verde-claro,
+   mesma etiqueta com selo, só que sempre visível em vez de aparecer só
+   quando alguém cria um recado na planilha. É um <details>: fechado,
+   mostra só a etiqueta + título (.saude-resumo, que é o <summary>); só
+   ao tocar é que os itens (.saude-lista) aparecem — mesma lógica do
+   "Ver os dias da semana ▾" de cada setor (ver details.semana), pra não
+   jogar o texto inteiro corrido na tela de uma vez. */
+.saude-bloco{
+  background:var(--verde-claro);border:3px solid var(--verde);
+  border-radius:var(--raio);margin-bottom:14px;box-shadow:var(--sombra-1);
+}
+.saude-bloco:last-child{margin-bottom:0}
+.saude-resumo:hover .saude-tit{text-decoration:underline;text-underline-offset:3px}
+.saude-resumo{
+  list-style:none;cursor:pointer;position:relative;
+  padding:14px 34px 14px 16px;min-height:var(--toque);
+  display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+}
+.saude-resumo::-webkit-details-marker{display:none}
+.saude-resumo::after{
+  content:"▼";position:absolute;right:16px;top:16px;
+  font-size:calc(12px * var(--esc));color:var(--verde-escuro);
+  transition:transform .2s;
+}
+.saude-bloco[open] .saude-resumo::after{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){
+  .saude-resumo::after{transition:none}
+}
+.saude-tarja{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--verde);color:#fff;border-radius:8px;padding:6px 11px;
+  font-size:calc(13px * var(--esc));font-weight:700;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.saude-tit{
+  font-size:calc(18px * var(--esc));font-weight:700;color:var(--verde-escuro);
+  line-height:1.3;
+}
+body.alto-contraste .saude-tit{color:var(--tinta)}
+.saude-lista{list-style:none;padding:0 16px 16px}
+.saude-lista li{
+  position:relative;padding-left:20px;margin-bottom:9px;
+  font-size:calc(16px * var(--esc));line-height:1.5;
+}
+.saude-lista li:last-child{margin-bottom:0}
+.saude-lista li::before{content:"•";position:absolute;left:2px;color:var(--verde);font-weight:700}
+
+/* Colunas do computador (#saude-esquerda/#saude-direita) — mesmo conteúdo
+   do painel do celular (as caixas ".saude-bloco" de cima), metade de cada
+   lado. Escondidas por padrão (regra mobile-first); só aparecem no
+   @media "COMPUTADOR" lá embaixo, que também ajusta a largura de cada
+   caixa pra caber na coluna, sem depender de pixel fixo — é isso que
+   deixa responsivo à resolução do navegador: no celular vira o painel
+   modal (ver #saude-painel), e a partir de min-width:1320px vira estas
+   duas colunas mais estreitas. */
+.saude-lateral{display:none}
+.saude-coluna-tit{
+  font-size:calc(13px * var(--esc));font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--tinta2);margin-bottom:16px;
+}
+
+.nav-lista{list-style:none}
+.nav-lista li{margin-bottom:10px}
+.nav-lista li:last-child{margin-bottom:0}
+.nav-item{
+  width:100%;text-align:left;text-decoration:none;
+  display:flex;align-items:center;gap:12px;
+  background:var(--fundo);border:2px solid var(--linha);border-radius:12px;
+  padding:14px 16px;min-height:var(--toque);
+  font-size:calc(18px * var(--esc));font-weight:700;color:var(--tinta);
+  transition:transform .15s var(--ease),background-color .15s,border-color .15s;
+}
+.nav-item:hover{background:var(--verde-claro);border-color:var(--verde)}
+.nav-item .ic{font-size:calc(21px * var(--esc));flex:0 0 auto}
+
+/* -------------------------------------------------------------- SEÇÕES -- */
+.secao{padding-top:30px}
+.secao h2{
+  font-size:calc(24px * var(--esc));font-weight:700;
+  line-height:1.2;margin-bottom:5px;letter-spacing:-.015em;
+  text-wrap:balance;padding-right:64px;   /* o ☰ flutuante fica no canto direito */
+}
+.secao .ajuda{font-size:calc(16px * var(--esc));color:var(--tinta2);margin-bottom:13px;line-height:1.4}
+/* Só o texto de ajuda de "O que você precisa?" — lembra que urgência e
+   emergência são atendidas a qualquer horário. Texto corrido não chamava
+   atenção, então vira um balão vermelho (mesma família visual dos avisos:
+   fundo claro, borda e tarja lateral em --alerta) com um ícone de alerta. */
+#setores-secao .ajuda{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--alerta-claro);
+  border:2px solid var(--alerta);border-left-width:8px;
+  border-radius:12px;
+  padding:13px 15px;margin-bottom:16px;
+  color:var(--alerta);font-weight:700;line-height:1.45;
+}
+#setores-secao .ajuda::before{
+  content:"!";flex:none;
+  width:1.7em;height:1.7em;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--alerta);color:var(--papel);
+  font-weight:800;font-size:.95em;line-height:1;
+}
+
+.futuros-bloco{margin-top:22px;padding-top:18px;border-top:2px solid var(--linha)}
+.futuros-tit{
+  font-size:calc(19px * var(--esc));font-weight:700;
+  line-height:1.25;margin-bottom:5px;letter-spacing:-.015em;
+}
+
+/* -------------------------------------------------------------- AVISOS -- */
+.aviso{
+  background:var(--alerta-claro);border:3px solid var(--alerta);
+  border-radius:var(--raio);padding:16px;margin-bottom:12px;
+  text-align:center;box-shadow:var(--sombra-1);
+}
+.aviso.atencao{background:var(--atencao-claro);border-color:var(--atencao)}
+.aviso.recado{background:var(--verde-claro);border-color:var(--verde)}
+
+.av-tarja{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--alerta-cartao);color:#fff;border-radius:8px;padding:6px 11px;
+  font-size:calc(14px * var(--esc));font-weight:700;
+  text-transform:uppercase;letter-spacing:.04em;margin-bottom:11px;
+}
+.aviso.atencao .av-tarja{background:var(--atencao-cartao)}
+.aviso.recado .av-tarja{background:var(--verde)}
+
+.av-titulo{font-size:calc(21px * var(--esc));font-weight:700;line-height:1.25;margin-bottom:7px;text-wrap:balance}
+.av-texto{font-size:calc(17px * var(--esc));line-height:1.5;text-wrap:pretty}
+.av-quando{
+  font-size:calc(15px * var(--esc));color:var(--tinta2);font-weight:700;
+  margin-top:11px;padding-top:11px;border-top:2px solid rgba(0,0,0,.12);line-height:1.4;
+}
+
+.tudo-certo{
+  background:var(--verde-claro);border:3px solid var(--verde);
+  border-radius:var(--raio);padding:16px;
+  display:flex;gap:12px;align-items:flex-start;box-shadow:var(--sombra-1);
+}
+.tudo-certo .ok{font-size:calc(28px * var(--esc));line-height:1.1;color:var(--verde);flex:0 0 auto}
+.tudo-certo p{font-size:calc(18px * var(--esc));line-height:1.45}
+
+/* ----------------------------------------------------------- MINHA RUA -- */
+.rua-rotulo{
+  display:block;font-size:calc(15px * var(--esc));font-weight:700;
+  color:var(--tinta2);margin-bottom:6px;
+}
+.rua-campo{
+  width:100%;min-height:var(--toque);
+  background:var(--papel);color:var(--tinta);
+  border:2px solid var(--linha);border-radius:12px;
+  padding:10px 14px;font:inherit;font-size:calc(18px * var(--esc));
+  box-shadow:inset 0 1px 2px rgba(2,48,26,.08);
+  transition:border-color .15s,box-shadow .15s;
+}
+.rua-campo:focus{border-color:var(--verde);outline:3px solid var(--verde);outline-offset:2px}
+
+.rua-sugestoes{display:flex;flex-direction:column;gap:8px}
+.rua-sugestoes:not(:empty){margin-top:10px}
+/* Cada rua é um botão do tamanho do dedo, não um item de lista: quem está
+   procurando a própria rua no celular toca, não digita o nome inteiro. */
+.rua-op{
+  width:100%;min-height:var(--toque);text-align:left;
+  background:var(--papel);color:var(--tinta);
+  border:2px solid var(--linha);border-radius:12px;
+  padding:12px 14px;font:inherit;font-size:calc(17px * var(--esc));
+  font-weight:700;cursor:pointer;box-shadow:var(--sombra-1);
+  transition:transform .15s var(--ease),border-color .15s,background-color .15s;
+}
+.rua-op:hover{border-color:var(--verde);background:var(--verde-claro)}
+.rua-nada,.rua-mais{
+  font-size:calc(15px * var(--esc));color:var(--tinta2);line-height:1.5;
+}
+.rua-nada a{color:var(--verde);font-weight:700}
+
+.rua-cartao{
+  background:var(--papel);border:2px solid var(--verde);
+  border-radius:var(--raio);padding:16px;box-shadow:var(--sombra-1);
+}
+.rua-nome{
+  font-size:calc(21px * var(--esc));font-weight:700;line-height:1.2;
+  margin-bottom:12px;text-align:center;
+}
+.rua-time + .rua-time{margin-top:14px;padding-top:14px;border-top:2px dotted var(--linha)}
+.rua-time-nome{
+  font-size:calc(17px * var(--esc));font-weight:700;color:var(--verde-escuro);
+  text-align:center;
+}
+body.alto-contraste .rua-time-nome{color:var(--tinta)}
+.rua-quando{font-size:calc(17px * var(--esc));margin-top:4px;line-height:1.45;text-align:center}
+.rua-sem-dado{color:var(--tinta2)}
+.rua-sem-dado a{color:var(--verde);font-weight:700}
+
+.rua-pessoas{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.rua-pessoas li{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;
+  font-size:calc(16px * var(--esc));line-height:1.35;
+}
+.rua-pessoa-nome{font-weight:700}
+.rua-funcao{color:var(--tinta2);font-size:calc(15px * var(--esc))}
+.rua-falta{
+  color:var(--alerta);font-weight:700;font-size:calc(15px * var(--esc));
+}
+/* Quem faltou hoje: o vermelho contorna o NOME da pessoa (sem risco), e o
+   "Ausente hoje" fica ao lado do nome, não numa linha embaixo. */
+.rua-pessoas li.rua-ausente{align-items:center}
+.rua-ausente .rua-pessoa-nome{
+  border:2px solid var(--alerta);color:var(--alerta);
+  border-radius:8px;padding:1px 8px;
+}
+
+/* Mesma palheta do "sem internet": é uma ressalva sobre o que está na tela,
+   não uma emergência. O trecho da rua e a divisão entre duas equipes são as
+   duas coisas que o site NÃO pode decidir sozinho. */
+.rua-trecho,.rua-duas{
+  background:var(--atencao-claro);border-left:8px solid var(--atencao);
+  border-radius:8px;padding:10px 12px;margin-top:10px;
+  font-size:calc(15px * var(--esc));color:#5A3400;line-height:1.5;
+}
+.rua-duas{margin-top:0;margin-bottom:12px}
+body.alto-contraste .rua-trecho,
+body.alto-contraste .rua-duas{color:var(--tinta)}
+.rua-duas a{color:inherit;font-weight:700}
+
+.rua-fechado{
+  background:var(--alerta-claro);border-left:8px solid var(--alerta);
+  border-radius:8px;padding:10px 12px;margin-top:10px;
+  font-size:calc(15px * var(--esc));color:var(--alerta);line-height:1.5;
+}
+body.alto-contraste .rua-fechado{color:var(--tinta)}
+.rua-fechado a{color:inherit;font-weight:700}
+
+/* A frase que impede a pior leitura possível deste card ("então a UBS só
+   abre de tarde") — discreta, mas sempre presente. */
+.rua-nota{
+  margin-top:14px;padding-top:12px;border-top:2px solid var(--linha);
+  font-size:calc(15px * var(--esc));color:var(--tinta2);line-height:1.5;
+}
+.rua-nota a{color:var(--verde);font-weight:700}
+
+.rua-trocar{
+  margin-top:14px;min-height:var(--toque);width:100%;
+  background:transparent;color:var(--verde);
+  border:2px solid var(--verde);border-radius:12px;
+  padding:10px 14px;font:inherit;font-size:calc(16px * var(--esc));
+  font-weight:700;cursor:pointer;
+  transition:transform .15s var(--ease),background-color .15s;
+}
+.rua-trocar:hover{background:var(--verde-claro)}
+
+/* -------------------------------------------------------------- SETORES -- */
+.setor{
+  background:var(--papel);border:2px solid var(--linha);
+  border-radius:var(--raio);margin-bottom:12px;overflow:hidden;
+  box-shadow:var(--sombra-1);
+}
+.setor.fechado-hoje{border-color:var(--alerta);border-width:3px}
+.sv-topo{padding:16px}
+.sv-nome{font-size:calc(21px * var(--esc));font-weight:700;line-height:1.2;text-align:center;text-wrap:balance}
+.sv-para{font-size:calc(16px * var(--esc));color:var(--tinta2);margin-top:5px;line-height:1.4;text-align:center}
+.sv-levar{
+  font-size:calc(15px * var(--esc));color:var(--verde-escuro);margin-top:7px;
+  line-height:1.4;background:var(--verde-claro);border-radius:8px;padding:7px 10px;
+  text-align:center;
+}
+body.alto-contraste .sv-levar{color:var(--tinta)}
+
+.sv-estado{
+  display:flex;align-items:center;gap:10px;
+  margin-top:13px;padding:12px;border-radius:10px;
+}
+.sv-estado.on{background:var(--on-bg);border:2px solid var(--aberto)}
+.sv-estado.off{background:var(--off-bg);border:2px solid var(--fechado)}
+.sv-estado.alerta{background:var(--alerta-claro);border:2px solid var(--alerta)}
+.sv-estado.atencao{background:var(--atencao-claro);border:2px solid var(--atencao)}
+
+.sv-sinal{font-size:calc(24px * var(--esc));font-weight:700;line-height:1;flex:0 0 auto}
+.sv-estado.on .sv-sinal{color:var(--aberto)}
+.sv-estado.off .sv-sinal{color:var(--fechado)}
+.sv-estado.alerta .sv-sinal{color:var(--alerta)}
+.sv-estado.atencao .sv-sinal{color:var(--atencao)}
+
+.sv-txt{flex:1;min-width:0}
+.sv-palavra{font-size:calc(18px * var(--esc));font-weight:700;line-height:1.25;display:block}
+.sv-estado.on .sv-palavra{color:var(--aberto)}
+.sv-estado.off .sv-palavra{color:var(--fechado)}
+.sv-estado.alerta .sv-palavra{color:var(--alerta)}
+.sv-estado.atencao .sv-palavra{color:var(--atencao)}
+.sv-hora{font-size:calc(17px * var(--esc));margin-top:3px;display:block;line-height:1.35}
+.sv-hora s{color:var(--fechado)}
+
+.sv-motivo{
+  background:var(--alerta-claro);border-top:2px solid var(--alerta);
+  padding:13px 16px;font-size:calc(16px * var(--esc));line-height:1.45;
+}
+.sv-motivo.atencao{background:var(--atencao-claro);border-top-color:var(--atencao)}
+
+details.semana{border-top:2px solid var(--linha)}
+details.semana summary{
+  list-style:none;cursor:pointer;padding:14px 16px;min-height:var(--toque);
+  font-size:calc(17px * var(--esc));font-weight:700;color:var(--verde);
+  display:flex;align-items:center;gap:8px;
+  transition:background-color .15s;
+}
+details.semana summary:hover{background:var(--verde-claro)}
+details.semana summary::-webkit-details-marker{display:none}
+details.semana summary::after{content:"▼";font-size:calc(12px * var(--esc));transition:transform .2s}
+details.semana[open] summary::after{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){
+  details.semana summary::after{transition:none}
+  details.tel-uteis summary::after{transition:none}
+}
+
+.semana-lista{padding:0 16px 14px}
+.semana-l{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:10px 0;font-size:calc(17px * var(--esc));
+  border-bottom:2px dotted var(--linha);
+}
+.semana-l:last-child{border-bottom:none}
+.semana-l .dia{color:var(--tinta2);flex:0 0 auto;white-space:nowrap}
+.semana-l .dia-data{display:block;font-weight:700;font-size:.82em;color:var(--tinta);white-space:nowrap}
+.semana-l.hoje .dia-data{color:inherit}
+.semana-l .semana-motivo{display:block;font-weight:400;font-size:.85em;color:var(--tinta2)}
+.semana-l .val{font-weight:700;text-align:right;flex:0 1 auto;min-width:0;overflow-wrap:anywhere}
+/* horário padrão riscado (quando há aviso naquele dia): sem negrito e em linha própria,
+   senão a faixa longa estoura a largura do cartão no celular */
+.semana-l .val s{display:block;font-weight:400;color:var(--tinta2)}
+.semana-l.hoje{
+  background:var(--verde-claro);margin:0 -8px;
+  padding-left:8px;padding-right:8px;border-radius:8px;
+}
+.semana-l.hoje .dia,.semana-l.hoje .val{color:var(--verde)}
+
+/* -------------------------------------------------------------- EQUIPE -- */
+.time{margin-bottom:20px}
+.time:last-child{margin-bottom:0}
+.time-nome{
+  font-size:calc(17px * var(--esc));font-weight:700;color:var(--verde-escuro);
+  margin-bottom:10px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+}
+body.alto-contraste .time-nome{color:var(--tinta)}
+.time-conta{
+  font-size:calc(13px * var(--esc));font-weight:600;color:var(--verde-escuro);
+  background:var(--verde-claro);padding:3px 10px;border-radius:99px;
+}
+body.alto-contraste .time-conta{background:#052012;color:#00E676}
+/* Contraste próprio: a borda na cor de --verde-claro ficava quase da mesma
+   cor do fundo da página, e o selo virava texto solto sem contorno visível.
+   Aqui a borda usa a mesma cor escura do texto, como qualquer selo normal. */
+.time-horario{background:transparent;border:2px solid var(--verde-escuro)}
+body.alto-contraste .time-horario{background:transparent;border-color:#00E676}
+
+.pessoas{display:flex;flex-direction:column;gap:8px}
+
+details.ruas-equipe{margin-top:10px;border-top:2px dotted var(--linha)}
+details.ruas-equipe summary{
+  list-style:none;cursor:pointer;padding:10px 0;min-height:var(--toque);
+  font-size:calc(15px * var(--esc));font-weight:700;color:var(--verde);
+  display:flex;align-items:center;gap:8px;
+}
+details.ruas-equipe summary::-webkit-details-marker{display:none}
+details.ruas-equipe summary::after{content:"▼";font-size:calc(11px * var(--esc));transition:transform .2s}
+details.ruas-equipe[open] summary::after{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){
+  details.ruas-equipe summary::after{transition:none}
+}
+.ruas-lista{
+  padding:0 0 10px;margin:0;columns:2;column-gap:18px;list-style:none;
+  font-size:calc(15px * var(--esc));color:var(--tinta2);
+}
+.ruas-lista li{break-inside:avoid;padding:3px 0}
+
+/* Lista compacta: uma linha por pessoa (nome — função), mas cada linha
+   continua sendo um card com borda, como antes — só sem a foto e a altura
+   toda. Alvo de toque do tamanho do dedo (min-height), abre o painel. */
+.pessoa{
+  background:var(--papel);border:2px solid var(--linha);border-radius:var(--raio);
+  padding:12px 14px;min-height:var(--toque);
+  display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;
+  cursor:pointer;position:relative;padding-right:42px;box-shadow:var(--sombra-1);
+  transition:transform .15s var(--ease),border-color .15s,background-color .15s;
+}
+.pessoa:hover{border-color:var(--verde);background:#FAFCFA}
+body.alto-contraste .pessoa:hover{background:var(--papel)}
+.pessoa-nome{font-size:calc(18px * var(--esc));font-weight:700;line-height:1.3}
+.pessoa-funcao{font-size:calc(15px * var(--esc));color:var(--tinta2);line-height:1.3}
+.pessoa-seta{
+  position:absolute;right:14px;top:50%;transform:translateY(-52%);
+  font-size:calc(24px * var(--esc));color:var(--verde);line-height:1;
+  transition:transform .15s var(--ease);
+}
+.pessoa:hover .pessoa-seta{transform:translate(2px,-52%)}
+.pessoa-ausente{
+  flex:1 0 100%;font-size:calc(14px * var(--esc));font-weight:700;
+  color:var(--alerta-cartao);line-height:1.35;
+}
+.pessoa-com-falta{border-color:var(--alerta);border-width:3px}
+
+/* Painel de detalhe (abre ao clicar num card da equipe) — mesma "folha"
+   deslizante de baixo já usada pra acessibilidade/menu, só que centrado
+   no conteúdo da pessoa em vez de opções. */
+.pessoa-painel{text-align:center}
+.pessoa-foto-grande{
+  width:112px;height:112px;border-radius:50%;margin:4px auto 16px;
+  background:var(--verde-claro);color:var(--verde-escuro);
+  display:flex;align-items:center;justify-content:center;
+  font-size:calc(34px * var(--esc));font-weight:700;
+  object-fit:cover;
+}
+body.alto-contraste .pessoa-foto-grande{background:#052012;color:#00E676}
+.pessoa-detalhe-lista{
+  list-style:none;display:flex;flex-direction:column;gap:6px;
+  font-size:calc(17px * var(--esc));margin-bottom:8px;
+}
+.pessoa-detalhe-lista li:first-child{font-weight:700;color:var(--verde-escuro)}
+body.alto-contraste .pessoa-detalhe-lista li:first-child{color:var(--tinta)}
+.pessoa-detalhe-obs{font-size:calc(15px * var(--esc));color:var(--tinta2);margin-top:4px;line-height:1.4}
+
+/* ------------------------------------------------------------ URGÊNCIA -- */
+.urgencia{background:linear-gradient(180deg,#033A1F 0%,var(--verde-escuro) 100%);color:#fff;border-radius:20px;padding:22px 16px;text-align:center;box-shadow:var(--sombra-2)}
+body.alto-contraste .urgencia{background:var(--verde-escuro);box-shadow:none}
+.urgencia h2{font-size:calc(22px * var(--esc));font-weight:700;margin-bottom:5px;padding-right:0}  /* centralizado: sem o recuo do ☰ */
+.urgencia .sub{font-size:calc(16px * var(--esc));opacity:.85;margin-bottom:16px;line-height:1.4}
+.urgencia :focus-visible{outline-color:#63D68F}
+
+.samu{
+  display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  background:#fff;color:var(--verde-escuro);border-radius:var(--raio);
+  padding:18px 14px;text-decoration:none;margin-bottom:14px;min-height:78px;
+  box-shadow:0 3px 10px rgba(0,0,0,.25);
+  transition:transform .15s var(--ease),box-shadow .15s var(--ease);
+}
+.samu:hover{box-shadow:0 5px 16px rgba(0,0,0,.32)}
+.samu .num{font-size:calc(42px * var(--esc));font-weight:700;line-height:1}
+.samu .lab{font-size:calc(17px * var(--esc));font-weight:700;text-align:left;line-height:1.3}
+
+.lugar{padding:14px 0;border-top:2px solid rgba(255,255,255,.18)}
+/* o nome é o que o olho deve pegar primeiro (caixa branca, igual à do SAMU); o botão é só o atalho */
+.lugar-nome{
+  background:#fff;color:var(--verde-escuro);border-radius:var(--raio);
+  display:block;width:fit-content;max-width:100%;margin:0 auto;
+  padding:8px 20px;font-size:calc(21px * var(--esc));font-weight:800;line-height:1.2;
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+.lugar-det{font-size:calc(16px * var(--esc));opacity:.85;margin-top:10px;line-height:1.4}
+.lugar-hora{
+  display:block;width:fit-content;margin:8px auto 0;font-size:calc(15px * var(--esc));font-weight:700;
+  background:rgba(255,255,255,.16);border-radius:8px;padding:5px 10px;
+}
+.lugar-mapa{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  margin:12px 4px 0;padding:10px 20px;border-radius:var(--raio);
+  background:transparent;color:#fff;
+  border:2px solid rgba(255,255,255,.55);
+  font-size:calc(15px * var(--esc));font-weight:600;
+  text-decoration:none;min-height:48px;
+  transition:transform .15s var(--ease),background .15s var(--ease),border-color .15s var(--ease);
+}
+.lugar-mapa:hover{background:rgba(255,255,255,.14);border-color:#fff}
+body.alto-contraste .lugar-mapa{border:3px solid #fff}
+
+/* -------------------------------------------------------- ONDE FICA --- */
+.foto-unidade{
+  display:block;width:100%;max-height:260px;object-fit:cover;
+  border-radius:var(--raio);border:2px solid var(--linha);margin-bottom:14px;
+  box-shadow:var(--sombra-2);
+}
+.cartao{background:var(--papel);border:2px solid var(--linha);border-radius:var(--raio);padding:18px;text-align:center;box-shadow:var(--sombra-1)}
+.info{padding:13px 0;border-bottom:2px solid var(--linha)}
+.info:first-child{padding-top:0}
+.info:last-child{border-bottom:none;padding-bottom:0}
+.info-rot{font-size:calc(15px * var(--esc));color:var(--tinta2);margin-bottom:4px}
+.info-val{font-size:calc(19px * var(--esc));font-weight:700;line-height:1.35}
+.info-val a{color:var(--verde)}
+/* Link com ícone (ex: Instagram) — alinha o glifo com o texto */
+.info-val a.elo-icone{display:inline-flex;align-items:center;gap:7px}
+.info-val a.elo-icone .ig-logo{flex:0 0 auto}
+
+.tel-linha{margin-top:8px}
+.tel-linha:first-child{margin-top:0}
+.tel-rot{
+  display:block;font-size:calc(14px * var(--esc));font-weight:600;
+  color:var(--tinta2);margin-bottom:1px;
+}
+.tel-num{font-size:calc(19px * var(--esc));font-weight:700;color:var(--verde)}
+.tel-aviso{
+  font-size:calc(14px * var(--esc));font-weight:400;color:var(--tinta2);
+  line-height:1.4;margin-top:10px;
+}
+
+/* o .info de cima já traz a linha divisória; sem border-top aqui, senão
+   aparecia uma linha dupla antes de "Outros telefones úteis" */
+details.tel-uteis{margin-top:0}
+.info:has(+ details.tel-uteis[hidden]){border-bottom:none;padding-bottom:0}
+details.tel-uteis summary{
+  list-style:none;cursor:pointer;padding-top:14px;min-height:var(--toque);
+  font-size:calc(17px * var(--esc));font-weight:700;color:var(--verde);
+  display:flex;align-items:center;gap:8px;
+}
+details.tel-uteis summary::-webkit-details-marker{display:none}
+details.tel-uteis summary::after{content:"▼";font-size:calc(12px * var(--esc));transition:transform .2s}
+details.tel-uteis[open] summary::after{transform:rotate(180deg)}
+.tel-uteis-lista{padding-top:6px}
+.tel-uteis-item{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:10px 0;font-size:calc(15px * var(--esc));
+  border-bottom:2px dotted var(--linha);
+}
+.tel-uteis-item:last-child{border-bottom:none}
+.tel-uteis-item a{font-weight:700;color:var(--verde);text-decoration:none}
+
+/* Tarja de "sem internet", em cima de tudo na área da resposta principal.
+   Usa a cor de "atenção" (âmbar), não a de alerta (vermelho): não é um erro
+   nem uma emergência — é uma ressalva sobre a idade da informação na tela. */
+.sem-internet{
+  background:var(--atencao-claro);
+  border:2px solid var(--atencao);
+  border-left-width:8px;
+  border-radius:12px;
+  padding:13px 15px;margin-bottom:14px;
+  font-size:calc(15px * var(--esc));color:#5A3400;line-height:1.5;
+}
+.sem-internet strong{color:var(--atencao)}
+.sem-internet a{color:inherit;font-weight:700}
+.sem-internet button{
+  font:inherit;font-weight:700;margin-left:6px;padding:8px 14px;min-height:44px;
+  border:2px solid var(--atencao);border-radius:10px;
+  background:transparent;color:inherit;cursor:pointer;
+}
+
+/* No alto contraste o fundo âmbar vira quase preto, então o texto marrom
+   escuro sumiria. Mesmo motivo vale pro .fonte-dados.erro logo abaixo, que
+   usa o mesmo par de cores. */
+body.alto-contraste .sem-internet,
+body.alto-contraste .fonte-dados.erro{color:var(--tinta)}
+
+.fonte-dados{
+  background:#EEF1EE;border:2px solid var(--linha);border-radius:12px;
+  padding:13px 15px;margin-top:14px;
+  font-size:calc(14px * var(--esc));color:var(--tinta2);line-height:1.5;
+}
+.fonte-dados.erro{background:var(--atencao-claro);border-color:var(--atencao);color:#5A3400}
+
+.rodape{
+  font-size:calc(15px * var(--esc));color:var(--tinta2);
+  text-align:center;padding:30px 0 8px;line-height:1.6;
+  text-wrap:balance;
+}
+.rodape p{margin:0}
+/* Link "ver todas as unidades" — separado do crédito, e visível (verde + sublinhado) */
+.rodape-unidades{margin-top:12px;font-size:calc(16px * var(--esc))}
+.rodape-unidades a{color:var(--verde);font-weight:700;text-decoration:underline}
+
+/* ------------------------------------------------- BARRA DE TESTE ----- */
+/* Só aparece se o endereço tiver ?teste no final. Fora isso, fica oculta. */
+.teste{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:40;
+  background:#0F1611;color:#fff;border-top:3px solid #33413A;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+body.com-teste .teste{display:block}
+.teste-in{
+  max-width:720px;margin:0 auto;padding:10px 16px 11px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.teste-selo{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:#33413A;padding:4px 8px;border-radius:6px;
+}
+.teste-ct{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1}
+.teste input[type=date]{
+  background:#33413A;color:#fff;border:2px solid #4A5A50;border-radius:8px;
+  padding:7px 8px;font-family:inherit;font-size:14px;min-height:44px;
+}
+.teste input[type=range]{flex:1;min-width:90px;accent-color:#63D68F;min-height:44px}
+.teste-h{font-size:15px;font-weight:700;min-width:50px;text-align:right;color:#63D68F}
+.teste button{
+  background:#33413A;color:#fff;border:2px solid #4A5A50;border-radius:8px;
+  padding:8px 12px;font-family:inherit;font-size:13px;cursor:pointer;min-height:44px;
+}
+.teste :focus-visible{outline-color:#63D68F}
+
+/* ------------------------------------------------ TOQUE (feedback) ------- */
+/* Um "apertinho" ao tocar: confirma pro dedo que o toque pegou, sem animar
+   nada sozinho. Quem pediu menos movimento no aparelho não recebe isso. */
+@media (prefers-reduced-motion:no-preference){
+  .botao:active,.pessoa:active,.rua-op:active,.rua-trocar:active,.nav-item:active,
+  .samu:active,.lugar-mapa:active,.status-aviso-link:active{transform:scale(.98)}
+  .a11y-fab:active,.nav-fab:active,.saude-fab:active{transform:scale(.93)}
+}
+@media (prefers-reduced-motion:reduce){
+  .botao,.pessoa,.rua-op,.rua-trocar,.nav-item,.samu,.lugar-mapa,.status-aviso-link,
+  .a11y-fab,.nav-fab,.saude-fab,.pessoa-seta,.rua-campo,details.semana summary{transition:none}
+}
+
+/* ================================================= TELAS MAIORES ====== */
+@media (min-width:600px){
+  body{font-size:calc(19px * var(--esc))}
+  .wrap{padding-left:20px;padding-right:20px}
+  .topo{padding:24px 0 22px}
+  .topo h1{font-size:calc(38px * var(--esc))}
+  .cartao-status{padding:28px 22px}
+  .marca{width:calc(74px * var(--esc));height:calc(74px * var(--esc));font-size:calc(44px * var(--esc))}
+  .status-palavra{font-size:calc(38px * var(--esc))}
+  .botoes{grid-template-columns:1fr 1fr;gap:12px}
+  .urgencia{padding:22px 20px}
+  .sv-topo{padding:18px}
+  .secao h2{font-size:calc(26px * var(--esc))}
+}
+/* conteúdo centralizado de 720px: só passa por baixo do ☰ (canto direito)
+   abaixo desta largura */
+@media (min-width:868px){
+  .topo .orgao,.topo h1{padding-right:0}
+  .secao h2{padding-right:0}
+}
+
+/* Telas bem estreitas (celular antigo, 320px) */
+@media (max-width:360px){
+  .status-palavra{font-size:calc(27px * var(--esc))}
+  .samu .num{font-size:calc(36px * var(--esc))}
+  .topo h1{font-size:calc(28px * var(--esc))}
+}
+
+/* Modo paisagem em celular: encurta o cartão para não ocupar a tela toda */
+@media (max-height:480px) and (orientation:landscape){
+  .cartao-status{padding:16px}
+  .marca{display:none}
+}
+
+/* ============================================= COMPUTADOR (tela larga) ==
+   Só nessa largura o conteúdo de "Informações de saúde" (as caixas
+   ".saude-bloco", coloridas que nem um "recado" — ver montarSaude() no
+   app.js) fica sempre visível, dividido ao meio entre duas colunas soltas
+   nas margens da página — #saude-esquerda e #saude-direita, dentro de
+   ".pagina-larga", uma de cada lado de #conteudo, no espaço em branco que
+   já fica vazio ali em telas largas. .pagina-larga só existe abaixo do
+   cabeçalho/resposta principal, então as colunas nunca aparecem por cima
+   deles. O botão flutuante 🩺 e o painel do celular ficam escondidos
+   aqui — não tem mais o que abrir, o conteúdo já está todo à vista. */
+@media (min-width:1320px){
+  .pagina-larga{
+    display:flex;align-items:flex-start;justify-content:center;
+    gap:32px;padding:0 20px;
+  }
+  #conteudo.wrap{margin:0}
+  .saude-fab,#saude-fundo,#saude-painel{display:none}
+  /* sticky: a coluna acompanha a rolagem em vez de ficar parada no topo.
+     max-height + overflow evitam que, com vários blocos abertos, o fim
+     da coluna fique inalcançável (ela rola por dentro). */
+  .saude-lateral{
+    display:block;flex:0 0 240px;width:240px;margin-top:30px;
+    position:sticky;top:16px;
+    max-height:calc(100vh - 32px);overflow-y:auto;
+  }
+}
+
+/* ====================================================== IMPRESSÃO ===== */
+/* Para a equipe imprimir e colar na porta da unidade. */
+@media print{
+  body{background:#fff;padding:0;font-size:14px}
+  .teste,.a11y-fab,.a11y-painel,.a11y-fundo,.nav-fab,.nav-painel,.saude-fab,.saude-painel,#saude-fundo,.saude-lateral,.pular-link,.botoes,details.semana,.fonte-dados,.sem-internet{display:none!important}
+  .topo,.urgencia{background:#fff;color:#000;border:2px solid #000}
+  .lugar-mapa{color:#000;border-color:#000}
+  .lugar-nome{box-shadow:none;border:2px solid #000;color:#000}
+  .cartao-status{border:3px solid #000;color:#000!important;background:#fff!important}
+  .secao{page-break-inside:avoid}
+}
+
